@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="okay">OK</string>
+    <string name="app_name">CafeQR</string>
+    <string name="permission_required_text">Permission is required to access the location of the device</string>
+</resources>

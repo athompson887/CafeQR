@@ -1,0 +1,4 @@
+include ':cafelib'
+include ':merchant'
+include ':customer'
+rootProject.name = "Cafe"

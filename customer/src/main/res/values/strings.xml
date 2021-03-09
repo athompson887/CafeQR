@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">CafeQR Customer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="crash">Crash</string>
+    <string name="okay">OK</string>
+    <string name="scan_the_cafeqr_code">Scan the CafeQr Code</string>
+    <string name="error_message">Error Message</string>
+    <string name="success_message">You have scanned a genuine CafeQr Code. Just a tick...</string>
+    <string name="permissions_not_granted">Permissions not granted by the user.</string>
+    <string name="hey_great_news">Hey! Great News</string>
+</resources>
