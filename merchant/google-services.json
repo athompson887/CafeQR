@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "567707216858-k0gevd6kjt51vne7qk0sqs7cc32fk7b0.apps.googleusercontent.com",
+          "client_id": "567707216858-c227niqhert7dvbuktdhsob63mtvmfcb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.athompson.cafe",
-            "certificate_hash": "2682fc9e6de772d1879ab6b48d61a384af2c7c1b"
+            "certificate_hash": "2c8686a7b0e6ad52c8ebbcd73591a5c287712b52"
           }
         },
         {

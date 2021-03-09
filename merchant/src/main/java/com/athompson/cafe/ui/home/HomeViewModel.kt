@@ -19,6 +19,7 @@ class HomeViewModel() : ViewModel() {
         value = null
     }
 
+
     //mode
     fun setMode(md: Enums.HomeScreenMode) {
         _mode.postValue(md)
@@ -28,7 +29,6 @@ class HomeViewModel() : ViewModel() {
     }
     var mode: LiveData<Enums.HomeScreenMode> = _mode
 
-    //status
     fun setStatus(st: String) {
         _status.postValue(st)
     }

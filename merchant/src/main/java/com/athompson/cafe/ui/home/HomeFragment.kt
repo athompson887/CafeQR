@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.athompson.cafe.Enums
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentHomeBinding
@@ -33,9 +34,11 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-class HomeFragment : Fragment(){
+class HomeFragment : Fragment() {
     private var homeMenuItem: MenuItem? = null
     private var deleteMenuItem: MenuItem? = null
     private var logoutMenuItem: MenuItem? = null
@@ -72,7 +75,7 @@ class HomeFragment : Fragment(){
                 .requestEmail()
                 .build()
 
-        mGoogleClient = context?.let { GoogleSignIn.getClient(it,gso) }
+        mGoogleClient = context?.let { GoogleSignIn.getClient(it, gso) }
 
     }
 
@@ -82,8 +85,7 @@ class HomeFragment : Fragment(){
         logoutMenuItem = menu.findItem(R.id.action_logout)
         deleteMenuItem = menu.findItem(R.id.action_delete)
         //initially
-        if(homeViewModel.mode.value==Enums.HomeScreenMode.LOGIN)
-        {
+        if (homeViewModel.mode.value == Enums.HomeScreenMode.LOGIN) {
             homeMenuItem?.hide()
             logoutMenuItem?.hide()
             deleteMenuItem?.hide()
@@ -124,21 +126,21 @@ class HomeFragment : Fragment(){
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         homeViewModel.mode.observe(viewLifecycleOwner, {
-            if(it!=null)
-            when (it) {
-                Enums.HomeScreenMode.WELCOME -> {
-                    renderWelcomeScreen()
+            if (it != null)
+                when (it) {
+                    Enums.HomeScreenMode.WELCOME -> {
+                        renderWelcomeScreen()
+                    }
+                    Enums.HomeScreenMode.LOGIN -> {
+                        renderLoginScreen()
+                    }
+                    Enums.HomeScreenMode.FORGOTTEN_PASSWORD -> {
+                        renderForgottenPasswordScreen()
+                    }
+                    Enums.HomeScreenMode.REGISTER -> {
+                        renderRegisterScreen()
+                    }
                 }
-                Enums.HomeScreenMode.LOGIN -> {
-                    renderLoginScreen()
-                }
-                Enums.HomeScreenMode.FORGOTTEN_PASSWORD -> {
-                    renderForgottenPasswordScreen()
-                }
-                Enums.HomeScreenMode.REGISTER -> {
-                    renderRegisterScreen()
-                }
-            }
         })
 
         homeViewModel.status.observe(viewLifecycleOwner, {
@@ -250,14 +252,14 @@ class HomeFragment : Fragment(){
 
         val currentUser = homeViewModel.userDocument
         val user = User(
-                    currentUser?.get(FIRST_NAME_FIELD).toString(),
-                    currentUser?.get(LAST_NAME_FIELD).toString(),
-                    currentUser?.get(DISPLAY_NAME_FIELD).toString(),
-                    currentUser?.get(EMAIL_FIELD).toString(),
-                    currentUser?.get(UID_FIELD).toString())
-        binding.title.text = getString(R.string.hi_full_name,user.firstName.safe(),user.lastName.safe())
+                currentUser?.get(FIRST_NAME_FIELD).toString(),
+                currentUser?.get(LAST_NAME_FIELD).toString(),
+                currentUser?.get(DISPLAY_NAME_FIELD).toString(),
+                currentUser?.get(EMAIL_FIELD).toString(),
+                currentUser?.get(UID_FIELD).toString())
+        binding.title.text = getString(R.string.hi_full_name, user.firstName.safe(), user.lastName.safe())
 
-        val uri =  firebaseAuth?.currentUser?.photoUrl
+        val uri = firebaseAuth?.currentUser?.photoUrl
         if (uri.toString().isEmpty())
             binding.image.setImageResource(R.drawable.welcome)
         else
@@ -305,19 +307,23 @@ class HomeFragment : Fragment(){
     private fun deleteUser() {
         val db = FirebaseFirestore.getInstance()
         val id = FirebaseAuth.getInstance().currentUser?.uid
-        if(!id.isNullOrBlank())
-            db.collection(USER_DB).document(id).delete()
+        if (!id.isNullOrBlank()) {
+            db.collection(USER_DB).document(FirebaseAuth.getInstance().currentUser.uid).delete()
                     .addOnSuccessListener {
-                        FirebaseAuth.getInstance().currentUser?.delete()?.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                homeViewModel.setStatus(getString(R.string.user_deleted))
-                                updateUI()
+                        FirebaseAuth.getInstance().currentUser?.delete()?.addOnCompleteListener {
+                            homeViewModel.setStatus(getString(R.string.user_deleted))
+                            lifecycleScope.launch {
+                                delay(1000L)
+                                homeViewModel.setMode(Enums.HomeScreenMode.LOGIN)
                             }
                         }
+                                ?.addOnFailureListener {
+                                   val s = it.message
+                                    print(s)
+                                    homeViewModel.setStatus("Failed to delete CafeQr User")
+                                }
                     }
-                    .addOnFailureListener {
-
-                    }
+        }
     }
 
     private fun recoverPassword() {
@@ -375,15 +381,13 @@ class HomeFragment : Fragment(){
 
                         firebaseAuth?.currentUser?.updateProfile(profileUpdates)
                                 ?.addOnCompleteListener {
-                                    checkQrUserExists(email)
+                                    checkQrUserExists()
                                 }
-
                     } else {
                         if (task.exception is FirebaseAuthUserCollisionException) {
                             homeViewModel.setStatus(getString(R.string.account_with_email_already_exists))
                             binding.progress.remove()
-                        }
-                        else {
+                        } else {
                             homeViewModel.setStatus(getString(R.string.incorrect_email))
                             binding.progress.remove()
                         }
@@ -395,17 +399,16 @@ class HomeFragment : Fragment(){
     //
     // There should only be one CafeQr user for a particular email address
     //
-    private fun checkQrUserExists(uid: String) {
+    private fun checkQrUserExists() {
         val db = FirebaseFirestore.getInstance()
-        db.collection("users")
-                .whereEqualTo("uid", uid)
+        val id = FirebaseAuth.getInstance().currentUser?.email
+        db.collection(USER_DB)
+                .whereEqualTo(EMAIL_FIELD, id)
                 .get()
                 .addOnSuccessListener {
-                    if(it.documents.isNullOrEmpty()) {
+                    if (it.documents.isNullOrEmpty()) {
                         createCafeQrUser()
-                    }
-                    else
-                    {
+                    } else {
                         homeViewModel.userDocument = it.documents[0]
                     }
                 }
@@ -416,7 +419,7 @@ class HomeFragment : Fragment(){
 
     fun createCafeQrUser() {
         val db = FirebaseFirestore.getInstance()
-        val user = User("","",firebaseAuth?.currentUser?.displayName,firebaseAuth?.currentUser?.email,firebaseAuth?.currentUser?.uid)
+        val user = User("", "", firebaseAuth?.currentUser?.displayName, firebaseAuth?.currentUser?.email, firebaseAuth?.currentUser?.uid)
         db.collection(USER_DB)
                 .add(user)
                 .addOnSuccessListener {
@@ -459,7 +462,7 @@ class HomeFragment : Fragment(){
                 ?.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         val uid = firebaseAuth?.currentUser?.uid
-                        if(uid!=null)
+                        if (uid != null)
                             getCafeQrUser(uid)
                         else
                             failed()
@@ -468,34 +471,30 @@ class HomeFragment : Fragment(){
                 }
     }
 
-    private fun failed()
-    {
+    private fun failed() {
         homeViewModel.setStatus(getString(R.string.auth_failed))
         binding.progress.remove()
         updateUI()
     }
 
-    private fun getCafeQrUser(uid: String)
-    {
+    private fun getCafeQrUser(uid: String) {
         val db = FirebaseFirestore.getInstance()
         db.collection(USER_DB)
                 .whereEqualTo("uid", uid)
                 .get()
-                .addOnSuccessListener{
-                    if(it.documents.isNotEmpty()) {
+                .addOnSuccessListener {
+                    if (it.documents.isNotEmpty()) {
                         homeViewModel.userDocument = it.documents[0]
                         val doc = homeViewModel.userDocument
-                        homeViewModel.setStatus("" + doc?.get("firstName") + " " +doc?.get("lastName") + " " + doc?.get("id"))
+                        homeViewModel.setStatus("" + doc?.get("firstName") + " " + doc?.get("lastName") + " " + doc?.get("id"))
                         homeViewModel.setMode(Enums.HomeScreenMode.WELCOME)
                         binding.progress.remove()
-                    }
-                    else
-                    {
+                    } else {
                         homeViewModel.setStatus("Failed to get CafeQr user data")
                         binding.progress.remove()
                     }
                 }
-                .addOnFailureListener{
+                .addOnFailureListener {
                     homeViewModel.setStatus("Failed to create user")
                     binding.progress.remove()
                 }
