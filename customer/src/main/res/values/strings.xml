@@ -19,4 +19,8 @@
     <string name="success_message">You have scanned a genuine CafeQr Code. Just a tick...</string>
     <string name="permissions_not_granted">Permissions not granted by the user.</string>
     <string name="hey_great_news">Hey! Great News</string>
+    <string name="permission_required">Permissions Required</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="to_scan_camera_required">To be able to scan we need to access the camera</string>
 </resources>
