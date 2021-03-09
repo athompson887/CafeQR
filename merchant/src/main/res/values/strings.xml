@@ -51,4 +51,8 @@
     <string name="signInWithEmailSuccess">signInWithEmail:success</string>
     <string name="signInWithEmailFailure">signInWithEmail:failure</string>
     <string name="failed_to_create_user">Failed to create user</string>
+    <string name="user_deleted">User deleted</string>
+    <string name="plaese_complete_email">Please complete email address</string>
+    <string name="password_sent">Password reset link was sent your email address</string>
+    <string name="email_error">Mail sending error</string>
 </resources>

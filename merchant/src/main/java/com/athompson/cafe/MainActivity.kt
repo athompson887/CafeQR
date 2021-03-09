@@ -47,19 +47,4 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionList
     private fun initFireBase() {
         firebaseAuth = Firebase.auth
     }
-
-//    fun populate() {
-//        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener({ task ->
-//                    if (task.isSuccessful) {
-//                        for (document in task.result!!) {
-//                            logDebug(TAG, document.id + " => " + document.data)
-//                        }
-//                    } else {
-//                        logError(TAG, "Error getting documents." + task.exception)
-//                    }
-//                })
-//    }
 }

@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.athompson.cafe.Enums
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentHomeBinding
-import com.athompson.cafelib.extensions.FragmentExtensions.logDebug
-import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.StringExtensions.safe
@@ -18,6 +16,13 @@ import com.athompson.cafelib.extensions.StringExtensions.validEmail
 import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import com.athompson.cafelib.shared.SharedConstants.DISPLAY_NAME_FIELD
+import com.athompson.cafelib.shared.SharedConstants.EMAIL_FIELD
+import com.athompson.cafelib.shared.SharedConstants.FIRST_NAME_FIELD
+import com.athompson.cafelib.shared.SharedConstants.LAST_NAME_FIELD
+import com.athompson.cafelib.shared.SharedConstants.UID_FIELD
+import com.athompson.cafelib.shared.SharedConstants.USER_DB
+import com.athompson.cafelib.shared.data.User
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -43,7 +48,6 @@ class HomeFragment : Fragment(){
 
     companion object {
         private const val RC_SIGN_IN = 9001
-        private const val TAG = "HomeFragment"
     }
 
     override fun onStart() {
@@ -77,6 +81,13 @@ class HomeFragment : Fragment(){
         homeMenuItem = menu.findItem(R.id.action_home)
         logoutMenuItem = menu.findItem(R.id.action_logout)
         deleteMenuItem = menu.findItem(R.id.action_delete)
+        //initially
+        if(homeViewModel.mode.value==Enums.HomeScreenMode.LOGIN)
+        {
+            homeMenuItem?.hide()
+            logoutMenuItem?.hide()
+            deleteMenuItem?.hide()
+        }
         super.onCreateOptionsMenu(menu, menuInflater)
     }
 
@@ -177,6 +188,7 @@ class HomeFragment : Fragment(){
         binding.forgottenPasswordButton.remove()
         binding.googleSignInButton.remove()
         binding.recoverPasswordButton.remove()
+        binding.progress.remove()
         binding.or.remove()
     }
 
@@ -196,6 +208,7 @@ class HomeFragment : Fragment(){
         binding.passwordStatus.remove()
         binding.forgottenPasswordButton.remove()
         binding.registerButton.remove()
+        binding.progress.remove()
         binding.or.remove()
     }
 
@@ -209,6 +222,7 @@ class HomeFragment : Fragment(){
         binding.title.text = getString(R.string.login)
         binding.image.setImageResource(R.drawable.login)
         binding.recoverPasswordButton.remove()
+        binding.progress.remove()
         binding.signUpButton.remove()
     }
 
@@ -232,12 +246,16 @@ class HomeFragment : Fragment(){
         binding.forgottenPasswordButton.remove()
         binding.or.remove()
         binding.recoverPasswordButton.remove()
+        binding.progress.remove()
 
         val currentUser = homeViewModel.userDocument
-        val email = currentUser?.get("email").toString()
-        val firstName = currentUser?.get("firstName").toString()
-        val lastName = currentUser?.get("lastName").toString()
-        binding.title.text = "Hi ${firstName.safe() + " " + lastName.safe()}"
+        val user = User(
+                    currentUser?.get(FIRST_NAME_FIELD).toString(),
+                    currentUser?.get(LAST_NAME_FIELD).toString(),
+                    currentUser?.get(DISPLAY_NAME_FIELD).toString(),
+                    currentUser?.get(EMAIL_FIELD).toString(),
+                    currentUser?.get(UID_FIELD).toString())
+        binding.title.text = getString(R.string.hi_full_name,user.firstName.safe(),user.lastName.safe())
 
         val uri =  firebaseAuth?.currentUser?.photoUrl
         if (uri.toString().isEmpty())
@@ -285,26 +303,34 @@ class HomeFragment : Fragment(){
     }
 
     private fun deleteUser() {
-        val user = firebaseAuth?.currentUser
-        user?.delete()?.addOnCompleteListener { task ->
-            if (task.isSuccessful()) {
-                homeViewModel.setStatus("User deleted")
-                updateUI()
-            }
-        }
+        val db = FirebaseFirestore.getInstance()
+        val id = FirebaseAuth.getInstance().currentUser?.uid
+        if(!id.isNullOrBlank())
+            db.collection(USER_DB).document(id).delete()
+                    .addOnSuccessListener {
+                        FirebaseAuth.getInstance().currentUser?.delete()?.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                homeViewModel.setStatus(getString(R.string.user_deleted))
+                                updateUI()
+                            }
+                        }
+                    }
+                    .addOnFailureListener {
+
+                    }
     }
 
     private fun recoverPassword() {
         val email = binding.email.text.toString()
         if (email.isEmpty()) {
-            homeViewModel.setStatus("Please complete email address")
+            homeViewModel.setStatus(getString(R.string.plaese_complete_email))
         } else {
             firebaseAuth?.sendPasswordResetEmail(email)
                     ?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            homeViewModel.setStatus("Password reset link was sent your email address")
+                            homeViewModel.setStatus(getString(R.string.password_sent))
                         } else {
-                            homeViewModel.setStatus("Mail sending error")
+                            homeViewModel.setStatus(getString(R.string.email_error))
                         }
                     }
         }
@@ -312,22 +338,22 @@ class HomeFragment : Fragment(){
 
     private fun validate(email: String, password: String): Boolean {
         if (email.isEmpty()) {
-            binding.emailStatus.setText(getString(R.string.email_required))
+            binding.emailStatus.text = getString(R.string.email_required)
             binding.emailStatus.show()
             return false
         }
         if (!email.validEmail()) {
-            binding.emailStatus.setText(getString(R.string.valid_email_required))
+            binding.emailStatus.text = getString(R.string.valid_email_required)
             binding.emailStatus.show()
             return false
         }
         if (password.isEmpty()) {
-            binding.passwordStatus.setText(getString(R.string.password_required))
+            binding.passwordStatus.text = getString(R.string.password_required)
             binding.passwordStatus.show()
             return false
         }
         if (password.length < 6) {
-            binding.passwordStatus.setText(getString(R.string.password_must_be))
+            binding.passwordStatus.text = getString(R.string.password_must_be)
             binding.passwordStatus.show()
             return false
         }
@@ -364,21 +390,23 @@ class HomeFragment : Fragment(){
                     }
                 }
     }
+
+
     //
     // There should only be one CafeQr user for a particular email address
     //
-    private fun checkQrUserExists(email: String) {
+    private fun checkQrUserExists(uid: String) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
-                .whereEqualTo("email", email)
+                .whereEqualTo("uid", uid)
                 .get()
                 .addOnSuccessListener {
                     if(it.documents.isNullOrEmpty()) {
-                        createCafeQrUser(email, "Andrew", "Thompson")
+                        createCafeQrUser()
                     }
                     else
                     {
-                        homeViewModel.userDocument = it.documents.get(0)
+                        homeViewModel.userDocument = it.documents[0]
                     }
                 }
                 .addOnFailureListener {
@@ -386,16 +414,13 @@ class HomeFragment : Fragment(){
                 }
     }
 
-    fun createCafeQrUser(email: String, firstName: String, lastName: String) {
+    fun createCafeQrUser() {
         val db = FirebaseFirestore.getInstance()
-        val user = HashMap<String, Any>()
-        user.put("firstName", firstName)
-        user.put("lastName", lastName)
-        user.put("email", email)
-        db.collection("users")
+        val user = User("","",firebaseAuth?.currentUser?.displayName,firebaseAuth?.currentUser?.email,firebaseAuth?.currentUser?.uid)
+        db.collection(USER_DB)
                 .add(user)
                 .addOnSuccessListener {
-                    homeViewModel.setStatus("User created with id$id")
+                    homeViewModel.setStatus("User created with id${user.uid}")
                     homeViewModel.setMode(Enums.HomeScreenMode.WELCOME)
                     binding.progress.remove()
                 }
@@ -433,22 +458,28 @@ class HomeFragment : Fragment(){
         firebaseAuth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        logDebug(HomeFragment.TAG, "signInWithEmail:success")
-                        getCafeQrUser(email)
-                    } else {
-                        logError(HomeFragment.TAG, "signInWithEmail:failure" + task.exception)
-                        homeViewModel.setStatus(getString(R.string.auth_failed))
-                        binding.progress.remove()
-                        updateUI()
-                    }
+                        val uid = firebaseAuth?.currentUser?.uid
+                        if(uid!=null)
+                            getCafeQrUser(uid)
+                        else
+                            failed()
+
+                    } else failed()
                 }
     }
 
-    private fun getCafeQrUser(email: String)
+    private fun failed()
+    {
+        homeViewModel.setStatus(getString(R.string.auth_failed))
+        binding.progress.remove()
+        updateUI()
+    }
+
+    private fun getCafeQrUser(uid: String)
     {
         val db = FirebaseFirestore.getInstance()
-        db.collection("users")
-                .whereEqualTo("email", email)
+        db.collection(USER_DB)
+                .whereEqualTo("uid", uid)
                 .get()
                 .addOnSuccessListener{
                     if(it.documents.isNotEmpty()) {
@@ -509,7 +540,7 @@ class HomeFragment : Fragment(){
     }
 
 
-    interface OnFragmentInteractionListener {}
+    interface OnFragmentInteractionListener
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

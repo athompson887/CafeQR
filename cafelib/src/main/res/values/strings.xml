@@ -3,4 +3,6 @@
     <string name="okay">OK</string>
     <string name="app_name">CafeQR</string>
     <string name="permission_required_text">Permission is required to access the location of the device</string>
+    <string name="full_name">%1$s %1$s</string>
+    <string name="hi_full_name">Hi %1$s %2$s</string>
 </resources>
