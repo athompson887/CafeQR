@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.athompson.cafe.Enums
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentHomeBinding
+import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.StringExtensions.safe
@@ -26,7 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 class HomeFragment : Fragment() {
-    private var logoutMenuItem: MenuItem? = null
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
@@ -50,15 +50,15 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.action_menu_home, menu)
-        logoutMenuItem = menu.findItem(R.id.action_logout)
+        menuInflater.inflate(R.menu.action_menu_dashboard, menu)
         super.onCreateOptionsMenu(menu, menuInflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-               R.id.action_logout -> {
-                logoutUser()
+               R.id.action_settings -> {
+                   startActivity(Intent(activity, SettingsActivity::class.java))
+                   return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -128,7 +128,7 @@ class HomeFragment : Fragment() {
         userLoggedIn()
     }
 
-    private fun logoutUser() {
+    private fun openSettings() {
         firebaseAuth?.signOut()
         listener?.loggedOut()
     }

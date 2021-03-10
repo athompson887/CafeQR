@@ -24,4 +24,6 @@
     <color name="body_text">#AA222222</color>
 
     <color name="colorLightGrey">#F1F1F1</color>
+    <color name="colorBorder">#E8E6E6</color>
+    <color name="colorDarkGrey">#878787</color>
 </resources>

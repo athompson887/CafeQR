@@ -1,7 +1,9 @@
 package com.athompson.cafe.ui.activities
 
 import android.app.Dialog
+import android.os.Handler
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.athompson.cafe.R
@@ -15,6 +17,7 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var mProgressDialog: Dialog
     private lateinit var dialogBinding: DialogProgressBinding
+    private var doubleBackToExitPressedOnce = false
     
     fun showProgressDialog(text: String) {
         mProgressDialog = Dialog(this)
@@ -29,5 +32,24 @@ open class BaseActivity : AppCompatActivity() {
 
     fun hideProgressDialog() {
         mProgressDialog.dismiss()
+    }
+
+    fun doubleBackToExit() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+
+        Toast.makeText(
+            this,
+            resources.getString(R.string.please_click_back_again_to_exit),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        @Suppress("DEPRECATION")
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 }

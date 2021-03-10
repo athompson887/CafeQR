@@ -177,7 +177,7 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
         } else {
             // Redirect the user to Main Screen after log in.
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
         }
         finish()
     }

@@ -1,29 +1,15 @@
 package com.athompson.cafe.ui.activities
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.athompson.cafe.R
+import com.athompson.cafe.Constants
 import com.athompson.cafe.databinding.ActivityMainBinding
-import com.athompson.cafe.ui.home.HomeFragment
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var firebaseAuth: FirebaseAuth
-
 
     companion object {
         const val TAG: String = "MainActivity"
@@ -33,27 +19,12 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionList
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
-        initFireBase()
-        val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_home,
-            R.id.navigation_dashboard,
-            R.id.navigation_notifications
-        ))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
-    }
+        val sharedPreferences =
+            getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
 
+        val username = sharedPreferences.getString(Constants.LOGGED_IN_USERNAME, "")!!
+        // Set the result to the tv_main.
+        binding.tvMain.text= "The logged in user is $username."
 
-    private fun initFireBase() {
-        firebaseAuth = Firebase.auth
-    }
-
-    override fun loggedOut() {
-        lifecycleScope.launch(context = Dispatchers.Main) {
-            delay(1000)
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
-        }
     }
 }

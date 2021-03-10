@@ -24,7 +24,7 @@ class DashboardFragment : Fragment() {
             ViewModelProvider(this).get(DashboardViewModel::class.java)
 
         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            binding.textDashboard.text = it
+
         })
 
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
