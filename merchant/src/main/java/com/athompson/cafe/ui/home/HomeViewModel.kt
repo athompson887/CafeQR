@@ -10,22 +10,12 @@ import com.google.firebase.firestore.DocumentSnapshot
 class HomeViewModel() : ViewModel() {
     var userDocument: DocumentSnapshot? = null
 
-    //user
-    val user:User? = null
-    fun setUser(u:User?) {
-        _user.postValue(u)
-    }
-    private val _user = MutableLiveData<User?>().apply {
-        value = null
-    }
-
-
     //mode
     fun setMode(md: Enums.HomeScreenMode) {
         _mode.postValue(md)
     }
     private val _mode = MutableLiveData<Enums.HomeScreenMode>().apply {
-        value = Enums.HomeScreenMode.LOGIN
+        value = Enums.HomeScreenMode.WELCOME
     }
     var mode: LiveData<Enums.HomeScreenMode> = _mode
 

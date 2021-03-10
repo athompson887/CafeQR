@@ -1,4 +1,4 @@
-package com.athompson.cafe
+package com.athompson.cafe.ui.actvities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,11 +8,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityMainBinding
 import com.athompson.cafe.ui.home.HomeFragment
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -33,7 +31,11 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionList
         setContentView(binding.root)
         initFireBase()
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.navigation_home,
+            R.id.navigation_dashboard,
+            R.id.navigation_notifications
+        ))
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
     }
