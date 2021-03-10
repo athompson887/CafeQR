@@ -7,9 +7,7 @@ import android.os.Build
 
 object ContextExtensions {
 
-
-
-    fun Context?.isOnline(): Boolean {
+    fun Context.isOnline(): Boolean {
         this?.apply {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -38,7 +36,7 @@ object ContextExtensions {
     // Online
     //   }
     @Suppress("DEPRECATION")
-    fun Context?.isOnline(failBlock : () -> Unit  = { globalIntenetFailBock() }, successBlock : () -> Unit ) {
+    fun Context.isOnline(failBlock : () -> Unit  = { globalInternetFailBock() }, successBlock : () -> Unit ) {
         this?.apply {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -67,10 +65,10 @@ object ContextExtensions {
                     failBlock()
                 }
             }
-        }?:failBlock()
+        }
     }
 
-    fun Context?.globalIntenetFailBock(){
+    private fun Context.globalInternetFailBock(){
         // show alter to user or implement custom code here
     }
 }

@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import com.athompson.cafelib.extensions.ResourceExtensions.asColor
 import com.athompson.cafelib.shared.SharedConstants.ERROR_RETURN
 import java.lang.NumberFormatException
 
@@ -77,7 +78,7 @@ object StringExtensions {
         try {
             val spannable = SpannableString(text)
             val start = text.indexOf(substring)
-            spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, color)), start, start + substring.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(ForegroundColorSpan(color.asColor()), start, start + substring.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             text = spannable
         } catch (e: Exception) {
             e.printStackTrace()

@@ -3,8 +3,11 @@ package com.athompson.cafe.ui.activities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
+import android.widget.Toast
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityRegisterBinding
+import com.athompson.cafe.firestore.FireStoreClass
+import com.athompson.cafe.models.User
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -82,8 +85,7 @@ class RegisterActivity : BaseActivity() {
                 false
             }
 
-            binding.etPassword.trimmed() != binding.etConfirmPassword.trimmed()
-                .trim { it <= ' ' } -> {
+            binding.etPassword.trimmed() != binding.etConfirmPassword.trimmed() -> {
                 showErrorSnackBar(
                     resources.getString(R.string.err_msg_password_and_confirm_password_mismatch),
                     true
@@ -116,17 +118,27 @@ class RegisterActivity : BaseActivity() {
                 .addOnCompleteListener { task ->
                     hideProgressDialog()
                     if (task.isSuccessful) {
-                        val firebaseUser: FirebaseUser = task.result!!.user!!
-                        showErrorSnackBar(
-                            "You are registered successfully. Your user id is ${firebaseUser.uid}",
-                            false
+                        val firebaseUser: FirebaseUser = task.result?.user!!
+                        val user = User(
+                            firebaseUser.uid,
+                            binding.etFirstName.trimmed(),
+                            binding.etLastName.trimmed(),
+                           binding.etEmail.trimmed()
                         )
-                        FirebaseAuth.getInstance().signOut()
-                        finish()
+
+                        FireStoreClass().registerUser(this@RegisterActivity, user)
                     } else {
                         showErrorSnackBar(task.exception?.message.toString(), true)
                     }
                 }
         }
+    }
+
+
+    fun userRegistrationSuccess() {
+        hideProgressDialog()
+        Toast.makeText(this@RegisterActivity, resources.getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 }

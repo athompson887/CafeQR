@@ -22,4 +22,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="body_text">#AA222222</color>
+
+    <color name="colorLightGrey">#F1F1F1</color>
 </resources>

@@ -2,12 +2,17 @@ package com.athompson.cafe.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
+import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
+import com.athompson.cafe.firestore.FireStoreClass
+import com.athompson.cafe.models.User
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ContextExtensions.isOnline
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -46,7 +51,9 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.btnLogin.setOnClickListener{
-            logInRegisteredUser()
+
+            if(isOnline())
+                logInRegisteredUser()
         }
         binding.tvRegister.setOnClickListener{
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -131,11 +138,12 @@ class LoginActivity : BaseActivity() {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
 
-                    hideProgressDialog()
+
 
                     if (task.isSuccessful) {
-                        loginSuccess()
+                        FireStoreClass().getUserDetails(this@LoginActivity)
                     } else {
+                        hideProgressDialog()
                         loginError(task.exception?.message.toString())
                     }
                 }
@@ -154,5 +162,26 @@ class LoginActivity : BaseActivity() {
     private fun loginError(message:String)
     {
         showErrorSnackBar(message, true)
+    }
+
+    fun userLoggedInSuccess(user: User) {
+        // Hide the progress dialog.
+        hideProgressDialog()
+
+        // Print the user details in the log as of now.
+        Log.i("First Name: ", user.firstName)
+        Log.i("Last Name: ", user.lastName)
+        Log.i("Email: ", user.email)
+
+        if (user.profileCompleted == 0) {
+            // If the user profile is incomplete then launch the UserProfileActivity.
+            val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
+            startActivity(intent)
+        } else {
+            // Redirect the user to Main Screen after log in.
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
+        finish()
     }
 }

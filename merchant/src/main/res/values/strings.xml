@@ -49,4 +49,17 @@
     <string name="welcome_subtitle">Manage your account here</string>
     <string name="failed_to_create_user">Failed to create user</string>
     <string name="successful_login">You are logged in successfully.</string>
+    <string name="register_success">You are registered successfully.</string>
+    <string name="title_complete_profile">COMPLETE PROFILE</string>
+    <string name="et_hint_mobile_number">Mobile Number</string>
+    <string name="rb_lbl_male">MALE</string>
+    <string name="rb_lbl_female">FEMALE</string>
+    <string name="btn_lbl_save">Save</string>
+    <string name="read_storage_permission_denied">Oops, you just denied the permission for storage. You can also allow it from settings.</string>
+    <string name="image_selection_failed">Image selection Failed!</string>
+    <string name="err_msg_enter_mobile_number">Please enter mobile number.</string>
+    <string name="msg_profile_update_success">Your profile is updated successfully.</string>
+    <string name="content_description">image</string>
+    <string name="error_getting_user_details">Error while getting user details.</string>
+    <string name="error_registering_useer">Error while registering the user.</string>
 </resources>

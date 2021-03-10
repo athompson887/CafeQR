@@ -18,7 +18,7 @@ object ViewExtensions {
     }
 
     fun EditText.trimmed(): String {
-       return this.toString().trim { it <= ' ' }
+       return this.text.toString().trim { it <= ' ' }
     }
     fun EditText.isEmpty(): Boolean {
         val tr = this.trimmed()
