@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.actvities
+package com.athompson.cafe.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import android.os.Handler
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.WindowManager
-import com.athompson.cafe.Enums
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
+import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -140,7 +140,7 @@ class LoginActivity : BaseActivity() {
     }
     fun loginSuccess()
     {
-        showErrorSnackBar("You are logged in successfully.", false)
+        showErrorSnackBar(getString(R.string.successful_login), false)
         Handler().postDelayed(
                 {
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -150,7 +150,7 @@ class LoginActivity : BaseActivity() {
         )
     }
 
-    fun loginError(message:String)
+    private fun loginError(message:String)
     {
         showErrorSnackBar(message, true)
     }

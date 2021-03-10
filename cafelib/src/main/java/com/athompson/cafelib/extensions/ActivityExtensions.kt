@@ -6,9 +6,13 @@ import android.content.Intent
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import com.athompson.cafelib.R
+import com.athompson.cafelib.extensions.SnackBarExtensions.snackBarWithAction
 import com.athompson.cafelib.shared.AppPermission
 import com.athompson.cafelib.shared.SharedConstants.LOGGING_ON
+import com.google.android.material.snackbar.Snackbar
 
 object ActivityExtensions {
 
@@ -70,4 +74,29 @@ object ActivityExtensions {
     fun AppCompatActivity.requestAllPermissions(permission: AppPermission) {
         ActivityCompat.requestPermissions(this, arrayOf(permission.permissionName), permission.requestCode)
     }
+
+    fun AppCompatActivity.showErrorSnackBar(message: String, errorMessage: Boolean) {
+
+        val snackBar =
+                Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+        val snackBarView = snackBar.view
+
+        if (errorMessage) {
+            snackBarView.setBackgroundColor(
+                    ContextCompat.getColor(
+                            this,
+                            R.color.colorSnackBarError
+                    )
+            )
+        }else{
+            snackBarView.setBackgroundColor(
+                    ContextCompat.getColor(
+                            this,
+                            R.color.colorSnackBarSuccess
+                    )
+            )
+        }
+        snackBar.show()
+    }
+
 }

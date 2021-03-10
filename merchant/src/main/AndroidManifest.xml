@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cafe">
         <activity
-            android:name=".ui.actvities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,20 +20,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.actvities.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.actvities.RegisterActivity"
+            android:name=".ui.activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".ui.actvities.ForgotPasswordActivity"
+        <activity android:name=".ui.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".ui.actvities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name">
         </activity>
     </application>

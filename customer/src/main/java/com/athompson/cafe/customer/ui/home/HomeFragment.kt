@@ -161,7 +161,7 @@ class HomeFragment : Fragment() {
     }
 
 
-    inner class QRCodeImageAnalyzer() : ImageAnalysis.Analyzer {
+    inner class QRCodeImageAnalyzer : ImageAnalysis.Analyzer {
 
         override fun analyze(imageProxy: ImageProxy) {
             scanBarcode(imageProxy)

@@ -7,7 +7,7 @@ import com.athompson.cafe.Enums
 import com.athompson.cafelib.shared.data.User
 import com.google.firebase.firestore.DocumentSnapshot
 
-class HomeViewModel() : ViewModel() {
+class HomeViewModel : ViewModel() {
     var userDocument: DocumentSnapshot? = null
 
     //mode

@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.actvities
+package com.athompson.cafe.ui.activities
 
 import android.content.Intent
 import android.os.Bundle

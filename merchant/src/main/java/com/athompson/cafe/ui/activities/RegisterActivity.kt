@@ -1,14 +1,12 @@
-package com.athompson.cafe.ui.actvities
+package com.athompson.cafe.ui.activities
 
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.WindowManager
 import com.athompson.cafe.R
-import com.athompson.cafe.databinding.ActivityLoginBinding
 import com.athompson.cafe.databinding.ActivityRegisterBinding
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
+import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 

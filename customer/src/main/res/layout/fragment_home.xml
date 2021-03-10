@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <include android:id="@+id/scanView" layout="@layout/home_scan_layout" />
+    <include layout="@layout/home_scan_layout" />
 
-    <include android:id="@+id/welcomeView" layout="@layout/home_welcome_layout" />
+    <include layout="@layout/home_welcome_layout" />
 
-    <include android:id="@+id/errorView" layout="@layout/home_error_layout" />
+    <include layout="@layout/home_error_layout" />
 
-    <include android:id="@+id/successView" layout="@layout/home_success_layout" />
+    <include layout="@layout/home_success_layout" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

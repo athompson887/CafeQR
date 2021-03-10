@@ -51,7 +51,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image"
-            tools:text="Logging In..." />
+            tools:text="Hi Andrew Thompson" />
 
         <ProgressBar
             android:id="@+id/progress"
