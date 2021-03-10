@@ -14,3 +14,15 @@ data class User(
     val gender: String = "",
     val profileCompleted: Int = 0
 ) : Parcelable
+{
+    override fun toString(): String {
+        println(id)
+        println(firstName)
+        println(lastName)
+        println(email)
+        println(mobile)
+        println(gender)
+        println(profileCompleted)
+        return super.toString()
+    }
+}

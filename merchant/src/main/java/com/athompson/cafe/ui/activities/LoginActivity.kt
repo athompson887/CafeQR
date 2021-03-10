@@ -168,10 +168,7 @@ class LoginActivity : BaseActivity() {
         // Hide the progress dialog.
         hideProgressDialog()
 
-        // Print the user details in the log as of now.
-        Log.i("First Name: ", user.firstName)
-        Log.i("Last Name: ", user.lastName)
-        Log.i("Email: ", user.email)
+        user.toString()
 
         if (user.profileCompleted == 0) {
             // If the user profile is incomplete then launch the UserProfileActivity.

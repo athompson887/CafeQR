@@ -47,10 +47,8 @@ class RegisterActivity : BaseActivity() {
         setSupportActionBar(binding.toolbarRegisterActivity)
 
         val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-        }
+            actionBar?.setDisplayHomeAsUpEnabled(true)
+            actionBar?.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
 
         binding.toolbarRegisterActivity.setNavigationOnClickListener { onBackPressed() }
     }
@@ -111,8 +109,8 @@ class RegisterActivity : BaseActivity() {
 
             showProgressDialog(resources.getString(R.string.please_wait))
 
-            val email: String = binding.etEmail.text.toString().trim { it <= ' ' }
-            val password: String = binding.etPassword.text.toString().trim { it <= ' ' }
+            val email: String = binding.etEmail.trimmed()
+            val password: String = binding.etPassword.trimmed()
 
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
