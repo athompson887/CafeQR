@@ -1,12 +1,13 @@
 package com.athompson.cafe.ui.activities
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.WindowManager
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityRegisterBinding
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
+import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -53,27 +54,27 @@ class RegisterActivity : BaseActivity() {
 
     private fun validateRegisterDetails(): Boolean {
         return when {
-            TextUtils.isEmpty(binding.etFirstName.text.toString().trim { it <= ' ' }) -> {
+            binding.etFirstName.isEmpty() -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etLastName.text.toString().trim { it <= ' ' }) -> {
+            binding.etLastName.isEmpty() -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_last_name), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etEmail.text.toString().trim { it <= ' ' }) -> {
+            binding.etEmail.isEmpty() -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etPassword.text.toString().trim { it <= ' ' }) -> {
+            binding.etPassword.isEmpty() -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_password), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etConfirmPassword.text.toString().trim { it <= ' ' }) -> {
+            binding.etConfirmPassword.isEmpty() -> {
                 showErrorSnackBar(
                     resources.getString(R.string.err_msg_enter_confirm_password),
                     true
@@ -81,7 +82,7 @@ class RegisterActivity : BaseActivity() {
                 false
             }
 
-            binding.etPassword.text.toString().trim { it <= ' ' } != binding.etConfirmPassword.text.toString()
+            binding.etPassword.trimmed() != binding.etConfirmPassword.trimmed()
                 .trim { it <= ' ' } -> {
                 showErrorSnackBar(
                     resources.getString(R.string.err_msg_password_and_confirm_password_mismatch),
@@ -117,13 +118,13 @@ class RegisterActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         showErrorSnackBar(
-                                "You are registered successfully. Your user id is ${firebaseUser.uid}",
-                                false
+                            "You are registered successfully. Your user id is ${firebaseUser.uid}",
+                            false
                         )
                         FirebaseAuth.getInstance().signOut()
                         finish()
                     } else {
-                        showErrorSnackBar(task.exception!!.message.toString(), true)
+                        showErrorSnackBar(task.exception?.message.toString(), true)
                     }
                 }
         }

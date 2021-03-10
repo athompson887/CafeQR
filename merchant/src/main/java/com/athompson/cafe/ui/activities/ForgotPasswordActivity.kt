@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityForgotPasswordBinding
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : BaseActivity() {
@@ -21,7 +22,7 @@ class ForgotPasswordActivity : BaseActivity() {
 
         binding.btnSubmit.setOnClickListener {
 
-            val email: String = binding.etEmail.text.toString().trim { it <= ' ' }
+            val email: String = binding.etEmail.trimmed()
 
             if (email.isEmpty()) {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
@@ -45,7 +46,7 @@ class ForgotPasswordActivity : BaseActivity() {
 
                             finish()
                         } else {
-                            showErrorSnackBar(task.exception!!.message.toString(), true)
+                            showErrorSnackBar(task.exception?.message.toString(), true)
                         }
                     }
             }

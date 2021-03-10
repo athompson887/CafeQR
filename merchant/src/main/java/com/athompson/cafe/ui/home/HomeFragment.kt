@@ -130,6 +130,7 @@ class HomeFragment : Fragment() {
 
     private fun logoutUser() {
         firebaseAuth?.signOut()
+        listener?.loggedOut()
     }
 
     //
@@ -153,7 +154,7 @@ class HomeFragment : Fragment() {
                 }
     }
 
-    fun createCafeQrUser() {
+    private fun createCafeQrUser() {
         val db = FirebaseFirestore.getInstance()
         val user = User("", "", firebaseAuth?.currentUser?.displayName, firebaseAuth?.currentUser?.email, firebaseAuth?.currentUser?.uid)
         db.collection(USER_DB)
@@ -199,7 +200,9 @@ class HomeFragment : Fragment() {
                 }
     }
 
-    interface OnFragmentInteractionListener
+    interface OnFragmentInteractionListener{
+       fun loggedOut()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

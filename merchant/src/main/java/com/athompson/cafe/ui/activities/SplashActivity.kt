@@ -5,7 +5,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.athompson.cafe.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Suppress("DEPRECATION")
@@ -18,14 +23,10 @@ class SplashActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
-
-        Handler().postDelayed(
-            {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                finish()
-            },
-            2500
-        )
+        lifecycleScope.launch(context = Dispatchers.Main) {
+            delay(1000)
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            finish()
+        }
     }
 }

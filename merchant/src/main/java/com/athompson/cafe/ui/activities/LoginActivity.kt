@@ -3,12 +3,13 @@ package com.athompson.cafe.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.WindowManager
+import androidx.lifecycle.lifecycleScope
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -16,6 +17,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Suppress("DEPRECATION")
@@ -61,7 +65,7 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    fun initGoogleClient() {
+    private fun initGoogleClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -102,11 +106,11 @@ class LoginActivity : BaseActivity() {
 
     private fun validateLoginDetails(): Boolean {
         return when {
-            TextUtils.isEmpty(binding.etEmail.text.toString().trim { it <= ' ' }) -> {
+            binding.etEmail.isEmpty() -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
                 false
             }
-            TextUtils.isEmpty(binding.etPassword.text.toString().trim { it <= ' ' }) -> {
+            binding.etPassword.isEmpty()  -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_password), true)
                 false
             }
@@ -138,16 +142,14 @@ class LoginActivity : BaseActivity() {
                 }
         }
     }
-    fun loginSuccess()
+    private fun loginSuccess()
     {
         showErrorSnackBar(getString(R.string.successful_login), false)
-        Handler().postDelayed(
-                {
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    finish()
-                },
-                1000
-        )
+        lifecycleScope.launch(context = Dispatchers.Main) {
+            delay(1000)
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
+        }
     }
 
     private fun loginError(message:String)

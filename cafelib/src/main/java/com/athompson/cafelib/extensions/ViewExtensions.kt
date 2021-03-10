@@ -4,16 +4,25 @@ import android.content.Context
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import com.athompson.cafelib.extensions.ViewExtensions.show
 
 object ViewExtensions {
 
     fun MenuItem.show(){
-        this.setVisible(true)
+        this.isVisible = true
     }
 
     fun MenuItem.hide() {
-        this.setVisible(false)
+        this.isVisible = false
+    }
+
+    fun EditText.trimmed(): String {
+       return this.toString().trim { it <= ' ' }
+    }
+    fun EditText.isEmpty(): Boolean {
+        val tr = this.trimmed()
+        return tr.isEmpty()
     }
 
 
