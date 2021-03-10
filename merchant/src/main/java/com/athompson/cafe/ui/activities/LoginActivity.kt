@@ -2,7 +2,6 @@ package com.athompson.cafe.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
