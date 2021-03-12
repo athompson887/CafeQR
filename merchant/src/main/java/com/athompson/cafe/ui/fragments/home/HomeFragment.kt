@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.home
+package com.athompson.cafe.ui.fragments.home
 
 import android.content.Context
 import android.content.Intent
@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.action_menu_dashboard, menu)
+        menuInflater.inflate(R.menu.dashboard_menu, menu)
         super.onCreateOptionsMenu(menu, menuInflater)
     }
 

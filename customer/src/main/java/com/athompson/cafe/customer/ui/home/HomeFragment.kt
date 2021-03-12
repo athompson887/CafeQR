@@ -80,10 +80,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
 
-        binding.errorView.button.setOnClickListener {
+        binding.scanView.homeButton.setOnClickListener {
             homeViewModel.setMode(Enums.HomeScreenMode.SCAN)
         }
-        binding.errorView.homeButton.setOnClickListener {
+        binding.welcomeView.button.setOnClickListener {
             homeViewModel.setMode(Enums.HomeScreenMode.WELCOME)
         }
         binding.welcomeView.button.setOnClickListener {

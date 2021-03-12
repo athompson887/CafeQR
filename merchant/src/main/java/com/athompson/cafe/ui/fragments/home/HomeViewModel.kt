@@ -1,10 +1,9 @@
-package com.athompson.cafe.ui.home
+package com.athompson.cafe.ui.fragments.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.athompson.cafe.Enums
-import com.athompson.cafelib.shared.data.User
 import com.google.firebase.firestore.DocumentSnapshot
 
 class HomeViewModel : ViewModel() {

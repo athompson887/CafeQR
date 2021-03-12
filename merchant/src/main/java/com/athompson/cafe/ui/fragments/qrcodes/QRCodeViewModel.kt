@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.qrcodes
+package com.athompson.cafe.ui.fragments.qrcodes
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData

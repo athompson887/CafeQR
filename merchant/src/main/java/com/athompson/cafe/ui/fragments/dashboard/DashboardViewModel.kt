@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.dashboard
+package com.athompson.cafe.ui.fragments.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
