@@ -20,7 +20,7 @@ class FireStoreClassShared {
     fun getOrganisationList(fragment: Fragment) {
         // The collection name for PRODUCTS
         mFireStore.collection(ORGANISATIONS)
-         //  .whereEqualTo("id", "")
+            .whereEqualTo("uid", "2311a62b-e154-494e-a68c-ef573a25d181")
             .get() // Will get the documents snapshots.
             .addOnSuccessListener { document ->
 
@@ -32,10 +32,7 @@ class FireStoreClassShared {
 
                 // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
-
                     val org = i.toObject(Organisation::class.java)
-                    org?.organisationID = i.id
-
                     if (org != null) {
                         orgList.add(org)
                     }

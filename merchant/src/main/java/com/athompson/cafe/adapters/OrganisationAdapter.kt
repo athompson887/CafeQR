@@ -23,7 +23,7 @@ class OrganisationAdapter(
     fun dataChanged(data:ArrayList<Organisation>)
     {
         organisations = data
-        organisations.add(Organisation(Constants.ADD_ITEM_NAME,"","","","","","","",0))
+        organisations.add(Organisation(Constants.ADD_ITEM_NAME,"","","","","","","",0,""))
         notifyDataSetChanged()
     }
 

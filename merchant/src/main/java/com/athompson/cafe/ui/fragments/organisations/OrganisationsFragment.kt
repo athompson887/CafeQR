@@ -10,7 +10,6 @@ import com.athompson.cafe.R
 import com.athompson.cafe.adapters.OrganisationsListAdapter
 import com.athompson.cafe.databinding.FragmentOrganisationsBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafe.ui.activities.AddOrganisationActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
@@ -69,7 +68,7 @@ class OrganisationsFragment : BaseFragment() {
         showProgressDialog(R.string.please_wait.asString())
 
         // Call the function of Firestore class.
-        FireStoreClassShared().getOrganisationList(this@OrganisationsFragment)
+        FireStoreClass().getOrganisationList(this@OrganisationsFragment)
     }
 
     fun successfulOrganisationsList(productsList: ArrayList<Organisation>) {

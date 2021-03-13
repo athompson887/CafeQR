@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.athompson.cafe.Enums
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentHomeBinding
+import com.athompson.cafe.firestore.FireStoreClass
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
@@ -17,7 +18,6 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafelib.shared.SharedConstants
 import com.athompson.cafelib.shared.SharedConstants.DISPLAY_NAME_FIELD
@@ -96,7 +96,8 @@ class HomeFragment : Fragment() {
             }
         }
 
-        FireStoreClassShared().getOrganisationList(this@HomeFragment)
+
+        FireStoreClass().getOrganisationList(this@HomeFragment)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 

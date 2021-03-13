@@ -11,12 +11,23 @@ import androidx.core.content.ContextCompat
 import com.athompson.cafelib.extensions.ResourceExtensions.asColor
 import com.athompson.cafelib.shared.SharedConstants.ERROR_RETURN
 import java.lang.NumberFormatException
+import java.util.*
 
 object StringExtensions {
 
     fun String?.valid() : Boolean =
             this != null && !this.equals("null", true)
                     && this.trim().isNotEmpty()
+
+    fun String.uuid(): String {
+        try {
+            var ui = UUID.randomUUID().toString()
+            return ui
+        } catch (ex: Exception) {
+            print(ex)
+        }
+        return ""
+    }
 
     fun String?.convertDateString(): String? {
         val dateAndTime = this?.split(" ")

@@ -17,7 +17,6 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityUserProfileBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.models.User
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar

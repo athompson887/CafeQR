@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "567707216858",
+    "firebase_url": "https://cafe-a533e-default-rtdb.firebaseio.com",
     "project_id": "cafe-a533e",
     "storage_bucket": "cafe-a533e.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "567707216858-o1iq8r9lh3o9f2fh0uoauiot8igdslii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.athompson.cafe",
+            "certificate_hash": "36e10e7c5de00f93a8061f00ccf2e7ef8251298e"
+          }
+        },
         {
           "client_id": "567707216858-puggk71fqnp85vjdl0tu03l2uau79smq.apps.googleusercontent.com",
           "client_type": 3
@@ -42,6 +51,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "567707216858-mk7csa37s0lg1m3i9qs6kk37e8f35e4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.athompson.cafe.customer",
+            "certificate_hash": "36e10e7c5de00f93a8061f00ccf2e7ef8251298e"
+          }
+        },
         {
           "client_id": "567707216858-puggk71fqnp85vjdl0tu03l2uau79smq.apps.googleusercontent.com",
           "client_type": 3

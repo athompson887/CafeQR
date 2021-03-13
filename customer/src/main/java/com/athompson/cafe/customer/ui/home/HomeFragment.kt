@@ -105,7 +105,7 @@ class HomeFragment : Fragment() {
 
 
 
-    fun switchMode(mode: Enums.HomeScreenMode) {
+    private fun switchMode(mode: Enums.HomeScreenMode) {
         if (this::cameraProvider.isInitialized) {
             cameraProvider.unbindAll()
         }

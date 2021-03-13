@@ -6,10 +6,10 @@ import android.view.WindowManager
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityRegisterBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -123,7 +123,8 @@ class RegisterActivity : BaseActivity() {
                             firebaseUser.uid,
                             binding.etFirstName.trimmed(),
                             binding.etLastName.trimmed(),
-                           binding.etEmail.trimmed()
+                           binding.etEmail.trimmed(),
+                            "".uuid()
                         )
 
                         FireStoreClass().registerUser(this@RegisterActivity, user)

@@ -254,10 +254,7 @@ class FireStoreClass {
 
                 // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
-
                     val org = i.toObject(Organisation::class.java)
-                    org?.organisationID = i.id
-
                     if (org != null) {
                         orgList.add(org)
                     }

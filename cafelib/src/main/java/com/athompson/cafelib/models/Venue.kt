@@ -1,6 +1,7 @@
 package com.athompson.cafelib.models
 
 import android.os.Parcelable
+import com.athompson.cafelib.extensions.StringExtensions.uuid
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -12,7 +13,8 @@ data class Venue(
     val address2: String = "",
     val city: String = "",
     val email: String = "",
-    val telephone: Long = 0
+    val telephone: Long = 0,
+    val uid:String = ""
 ) : Parcelable
 {
     override fun toString(): String {

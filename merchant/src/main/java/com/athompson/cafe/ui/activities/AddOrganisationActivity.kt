@@ -15,12 +15,12 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddProductBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -170,6 +170,7 @@ class AddOrganisationActivity : BaseActivity(){
         // Get the logged in username from the SharedPreferences that we have stored at a time of login.
         val username = this.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE).getString(Constants.LOGGED_IN_USERNAME, "")!!
 
+        val uuid = "".uuid()
         // Here we get the text from editText and trim the space
         val organisation = Organisation(
             FireStoreClass().getCurrentUserID(),
@@ -181,7 +182,8 @@ class AddOrganisationActivity : BaseActivity(){
             et_city.trimmed(),
             et_email.trimmed(),
             et_phone.trimmed().toLong(),
-            mProductImageURL
+            mProductImageURL,
+            uuid
         )
         FireStoreClass().addOrganisation(this@AddOrganisationActivity, organisation)
     }

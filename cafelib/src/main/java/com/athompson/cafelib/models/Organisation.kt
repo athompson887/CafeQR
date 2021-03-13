@@ -1,6 +1,8 @@
 package com.athompson.cafelib.models
 
 import android.os.Parcelable
+import com.athompson.cafelib.extensions.StringExtensions.uuid
+import com.google.firebase.firestore.DocumentId
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -15,7 +17,7 @@ data class Organisation(
     val email: String = "",
     val telephone: Long = 0,
     val imageUrl: String = "",
-    var organisationID: String = ""
+    val uid:String = ""
 ) : Parcelable
 {
     override fun toString(): String {

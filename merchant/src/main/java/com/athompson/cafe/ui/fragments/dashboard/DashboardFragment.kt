@@ -14,7 +14,6 @@ import com.athompson.cafe.databinding.AddItemBinding
 import com.athompson.cafe.databinding.FragmentDashboardBinding
 import com.athompson.cafe.databinding.OrgListItemBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.models.Menu
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafelib.models.Venue
@@ -128,17 +127,6 @@ class DashboardFragment : BaseFragment() {
 
     }
 
-    private fun populate()
-    {
-        organisations.add(Organisation("","","MCDonalds","Fast Food","999 Letsby Avenue","Ratupadrainpipe","Walsall","a.t@t.com",1234567))
-        organisations.add(Organisation("","","Burger King","Fast Food","999 Letsby Avenue","Ratupadrainpipe","Walsall","a.t@t.com",1234567))
-        venues.add(Venue("","","MCDonalds","999 Letsby Avenue","Ratupadrainpipe","Walsall","a.t@t.com",1234567))
-        venues.add(Venue("","","Burger King","998 Letsby Avenue","Ratupadrainpipe","Cannock","b.t@t.com",787987987))
-        menus.add(Menu("","","Burger Sandwich","Big juicy sandwich"))
-        organisationAdapter.dataChanged(organisations)
-        venueAdapter.dataChanged(venues)
-        menuAdapter.dataChanged(menus)
-    }
 
 
     override fun onDestroyView() {
