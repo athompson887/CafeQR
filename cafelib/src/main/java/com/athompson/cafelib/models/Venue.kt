@@ -1,14 +1,13 @@
-package com.athompson.cafe.models
+package com.athompson.cafelib.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Organisation(
-    val userId: String = "",
+data class Venue(
     var organisationId: String = "",
+    var venueId: String = "",
     val name: String = "",
-    val type: String = "",
     val address1: String = "",
     val address2: String = "",
     val city: String = "",
@@ -17,9 +16,8 @@ data class Organisation(
 ) : Parcelable
 {
     override fun toString(): String {
-        println(userId)
+        println(organisationId)
         println(name)
-        println(type)
         println(address1)
         println(address2)
         println(city)

@@ -1,22 +1,30 @@
 package com.athompson.cafe.adapters
 
+import android.content.Context
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.Constants
 import com.athompson.cafe.Enums
-import com.athompson.cafe.models.Organisation
+import com.athompson.cafe.R
+import com.athompson.cafelib.models.Organisation
 import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
+import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.ViewExtensions.hide
+import com.athompson.cafelib.extensions.ViewExtensions.show
 
-class OrganisationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var organisations: ArrayList<Organisation> = ArrayList()
+class OrganisationAdapter(
+    private val context: Context,
+    private var organisations: ArrayList<Organisation>,
+    private val fragment: DashboardFragment
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var selectedIndex = 0
 
     fun dataChanged(data:ArrayList<Organisation>)
     {
-        organisations.clear()
-        organisations.addAll(data)
-        notifyDataSetChanged()
+        organisations = data
         organisations.add(Organisation(Constants.ADD_ITEM_NAME,"","","","","","","",0))
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -40,14 +48,25 @@ class OrganisationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val org = organisations[position]
         when (holder) {
             is DashboardFragment.ItemViewHolder -> {
-                holder.itemView.setOnClickListener { }
-                holder.binding.check.setOnClickListener { }
+                holder.itemView.setOnClickListener {
+                    selectedIndex = position
+                    notifyDataSetChanged()
+                }
+                if(position==selectedIndex) {
+                    fragment.setSelectedOrganisation(org)
+                    holder.binding.check.show()
+                }
+                else {
+                    holder.binding.check.hide()
+                }
+                GlideLoader(context).loadOrganisationPicture(org.imageUrl, holder.binding.image)
+                holder.binding.image
                 holder.binding.name.text = org.name
                 holder.binding.type.text = org.type
             }
             is DashboardFragment.AddItemViewHolder -> {
-                holder.itemView.setOnClickListener {
-                    //call activity to add organisation
+                holder.binding.add.setOnClickListener {
+                    fragment.findNavController().navigate(R.id.action_navigation_dashboard_to_organisationsFragment, null, null, null)
                 }
             }
         }

@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
-import com.athompson.cafe.models.Venue
-import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.models.Venue
 
 /**
  * A adapter class for dashboard items list.

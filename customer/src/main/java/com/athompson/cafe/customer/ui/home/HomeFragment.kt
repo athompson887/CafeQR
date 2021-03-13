@@ -27,6 +27,7 @@ import com.athompson.cafelib.extensions.FragmentExtensions.logDebug
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.helpers.Helper
 import com.athompson.cafelib.shared.CafeQrData
 import com.athompson.cafelib.shared.fromJson
@@ -72,8 +73,12 @@ class HomeFragment : Fragment() {
         analyzer = QRCodeImageAnalyzer()
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+
+
         return root
     }
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,6 +99,8 @@ class HomeFragment : Fragment() {
         }
 
         permissionsCheck()
+
+        FireStoreClassShared().getOrganisationList(this@HomeFragment)
     }
 
 

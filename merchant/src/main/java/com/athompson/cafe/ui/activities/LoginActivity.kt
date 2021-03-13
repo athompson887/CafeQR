@@ -2,7 +2,6 @@ package com.athompson.cafe.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
@@ -10,10 +9,13 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.models.User
+import com.athompson.cafelib.firestore.FireStoreClassShared
+import com.athompson.cafelib.models.User
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ContextExtensions.isOnline
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
+import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -65,7 +67,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun googleSignIn() {
-        showProgressDialog(resources.getString(R.string.please_wait))
+        showProgressDialog(R.string.please_wait.asString())
         val signInIntent: Intent? = mGoogleClient?.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -73,7 +75,7 @@ class LoginActivity : BaseActivity() {
 
     private fun initGoogleClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(R.string.default_web_client_id.asString())
                 .requestEmail()
                 .build()
 
@@ -113,11 +115,11 @@ class LoginActivity : BaseActivity() {
     private fun validateLoginDetails(): Boolean {
         return when {
             binding.etEmail.isEmpty() -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                showErrorSnackBar(R.string.err_msg_enter_email.asString(), true)
                 false
             }
             binding.etPassword.isEmpty()  -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_password), true)
+                showErrorSnackBar(R.string.err_msg_enter_password.asString(), true)
                 false
             }
             else -> {
@@ -130,10 +132,10 @@ class LoginActivity : BaseActivity() {
 
         if (validateLoginDetails()) {
 
-            showProgressDialog(resources.getString(R.string.please_wait))
+            showProgressDialog(R.string.please_wait.asString())
 
-            val email = binding.etEmail.text.toString().trim { it <= ' ' }
-            val password = binding.etPassword.text.toString().trim { it <= ' ' }
+            val email = binding.etEmail.trimmed()
+            val password = binding.etPassword.trimmed()
 
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -151,7 +153,7 @@ class LoginActivity : BaseActivity() {
     }
     private fun loginSuccess()
     {
-        showErrorSnackBar(getString(R.string.successful_login), false)
+        showErrorSnackBar(R.string.successful_login.asString(), false)
         lifecycleScope.launch(context = Dispatchers.Main) {
             delay(1000)
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))

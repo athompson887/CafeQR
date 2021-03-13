@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
-import com.athompson.cafe.models.Organisation
+import com.athompson.cafelib.models.Organisation
 import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
 
 /**

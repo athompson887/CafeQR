@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Window
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -12,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityDashboardBinding
 import com.athompson.cafe.ui.fragments.home.HomeFragment
+import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -31,12 +31,7 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         }
 
 
-        supportActionBar?.setBackgroundDrawable(
-            ContextCompat.getDrawable(
-                this@DashboardActivity,
-                R.drawable.app_gradient_color_background
-            )
-        )
+        supportActionBar?.setBackgroundDrawable(R.drawable.app_gradient_color_background.asDrawable())
 
         val navView: BottomNavigationView = binding.navView
 

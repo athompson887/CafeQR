@@ -2,11 +2,9 @@ package com.athompson.cafe.ui.fragments.dashboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.MenuAdapter
@@ -16,21 +14,27 @@ import com.athompson.cafe.databinding.AddItemBinding
 import com.athompson.cafe.databinding.FragmentDashboardBinding
 import com.athompson.cafe.databinding.OrgListItemBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.models.Menu
-import com.athompson.cafe.models.Organisation
-import com.athompson.cafe.models.Venue
+import com.athompson.cafelib.firestore.FireStoreClassShared
+import com.athompson.cafelib.models.Menu
+import com.athompson.cafelib.models.Organisation
+import com.athompson.cafelib.models.Venue
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
-import com.athompson.cafelib.extensions.ViewExtensions.remove
+import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
+import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import java.lang.Exception
 
 
 class DashboardFragment : BaseFragment() {
 
+    private var selectedOrganisation: Organisation? = null
     private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
-    private val organisationAdapter = OrganisationAdapter()
+
     private val venueAdapter = VenueAdapter()
     private val menuAdapter = MenuAdapter()
     private val binding get() = _binding!!
@@ -38,7 +42,8 @@ class DashboardFragment : BaseFragment() {
     private var organisations: ArrayList<Organisation> = ArrayList()
     private var venues: ArrayList<Venue> = ArrayList()
     private var menus: ArrayList<Menu> = ArrayList()
-    private var busyCount:Int = 0
+    private lateinit var organisationAdapter:OrganisationAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +61,15 @@ class DashboardFragment : BaseFragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner, {
             //textView.text = it
         })
+
+
         return root
+    }
+
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.dashboard_menu, menu)
+        super.onCreateOptionsMenu(menu, menuInflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -75,27 +88,23 @@ class DashboardFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
+        binding.noOrganisationsView.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_dashboard_to_organisationsFragment, null, null, null)
+        }
         setupRecycler()
-
     }
 
     override fun onResume() {
         super.onResume()
-        populate()
-       // getOrganisationsList()
+       // populate()
+        getOrganisationsList()
     }
 
-    private fun getOrganisationsList() {
-        // Show the progress dialog.
-        showProgressDialog(resources.getString(R.string.please_wait))
-        busyCount=0
-        FireStoreClass().getOrganisationList(this@DashboardFragment)
-        FireStoreClass().getVenueItemsList(this@DashboardFragment)
-        FireStoreClass().getMenusList(this@DashboardFragment)
-    }
+
 
     private fun setupRecycler()
     {
+        organisationAdapter = OrganisationAdapter(requireContext(),organisations,this)
         binding.recyclerOrganisations.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
         binding.recyclerOrganisations.itemAnimator = DefaultItemAnimator()
         binding.recyclerOrganisations.addItemDecoration(
@@ -132,65 +141,99 @@ class DashboardFragment : BaseFragment() {
     }
 
 
-
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    fun successfulOrganisationsList(organisationsList: ArrayList<Organisation>) {
-        hideProgressWhenComplete()
+    private fun getOrganisationsList() {
+        showProgressDialog(R.string.please_wait.asString())
+        FireStoreClass().getOrganisationList(this@DashboardFragment)
+    }
 
+    private fun getVenuesList() {
+        showProgressDialog(R.string.please_wait.asString())
+        FireStoreClass().getVenueItemsList(this@DashboardFragment)
+    }
+
+    private fun getMenusList() {
+        showProgressDialog(R.string.please_wait.toString())
+        FireStoreClass().getMenusList(this@DashboardFragment)
+    }
+    //handle failures
+    fun failureMenuList(e: Exception) {
+        showShortToast("Failed To get menus",e)
+        hideProgressDialog()
+        binding.recyclerMenus.hide()
+        binding.noMenusView.show()
+    }
+
+    fun failureVenueList(e: Exception) {
+        showShortToast("Failed To get venus",e)
+        getMenusList()
+        binding.recyclerVenues.hide()
+        binding.noVenuesView.show()
+    }
+
+    fun failureOrganisationList(e: Exception) {
+        showShortToast("Failed To get organisations",e)
+        getVenuesList()
+        binding.recyclerOrganisations.hide()
+        binding.noOrganisationsView.show()
+    }
+
+    //handle success
+    fun successfulOrganisationsList(organisationsList: ArrayList<Organisation>) {
+        getVenuesList()
         if (organisationsList.size > 0) {
             organisations.clear()
             organisations.addAll(organisationsList)
-            organisationAdapter.dataChanged(organisations)
             binding.recyclerOrganisations.show()
-            binding.noOrganisationsView.remove()
+            binding.noOrganisationsView.hide()
         } else {
-            binding.recyclerOrganisations.remove()
+            binding.recyclerOrganisations.hide()
             binding.noOrganisationsView.show()
         }
+        organisationAdapter.dataChanged(organisations)
     }
 
     fun successVenuesList(venuesList: java.util.ArrayList<Venue>) {
+        getMenusList()
         if (venuesList.size > 0) {
             venues.clear()
             venues.addAll(venuesList)
-            venueAdapter.dataChanged(venues)
             binding.recyclerVenues.show()
-            binding.noVenuesView.remove()
+            binding.noVenuesView.hide()
         } else {
-            binding.recyclerVenues.remove()
+            binding.recyclerVenues.hide()
             binding.noVenuesView.show()
         }
+        venueAdapter.dataChanged(venues)
     }
 
     fun successfulMenuList(menuList: ArrayList<Menu>) {
-        hideProgressWhenComplete()
-
+        hideProgressDialog()
         if (menuList.size > 0) {
             menus.clear()
             menus.addAll(menuList)
-            menuAdapter.dataChanged(menus)
             binding.recyclerMenus.show()
-            binding.noMenusView.remove()
+            binding.noMenusView.hide()
         } else {
-            binding.recyclerMenus.remove()
+            binding.recyclerMenus.hide()
             binding.noMenusView.show()
         }
+        menuAdapter.dataChanged(menus)
     }
 
-    private fun hideProgressWhenComplete()
-    {
-        busyCount -= 1
-        if(busyCount==0)
-            hideProgressDialog()
+    fun setSelectedOrganisation(org: Organisation) {
+        selectedOrganisation = org
+        val s = selectedOrganisation
+        if(s!=null) {
+            GlideLoader(requireContext()).loadOrganisationPicture(org.imageUrl, binding.image)
+            binding.name.text = s.name
+            binding.type.text = s.type
+        }
     }
-
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = OrgListItemBinding.bind(view)

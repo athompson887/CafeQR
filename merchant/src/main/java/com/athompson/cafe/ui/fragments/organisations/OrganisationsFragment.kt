@@ -10,11 +10,14 @@ import com.athompson.cafe.R
 import com.athompson.cafe.adapters.OrganisationsListAdapter
 import com.athompson.cafe.databinding.FragmentOrganisationsBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.models.Organisation
+import com.athompson.cafelib.firestore.FireStoreClassShared
+import com.athompson.cafelib.models.Organisation
 import com.athompson.cafe.ui.activities.AddOrganisationActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import java.lang.Exception
 
 
 class OrganisationsFragment : BaseFragment() {
@@ -30,7 +33,7 @@ class OrganisationsFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mRootView = inflater.inflate(R.layout.fragment_organisations, container, false)
         return mRootView
     }
@@ -63,18 +66,13 @@ class OrganisationsFragment : BaseFragment() {
 
     private fun getOrganisationsListFromFireStore() {
         // Show the progress dialog.
-        showProgressDialog(resources.getString(R.string.please_wait))
+        showProgressDialog(R.string.please_wait.asString())
 
         // Call the function of Firestore class.
-        FireStoreClass().getOrganisationList(this@OrganisationsFragment)
+        FireStoreClassShared().getOrganisationList(this@OrganisationsFragment)
     }
 
-    /**
-     * A function to get the successful product list from cloud firestore.
-     *
-     * @param productsList Will receive the product list from cloud firestore.
-     */
-    fun successProductsListFromFireStore(productsList: ArrayList<Organisation>) {
+    fun successfulOrganisationsList(productsList: ArrayList<Organisation>) {
 
         // Hide Progress dialog.
         hideProgressDialog()
@@ -116,48 +114,38 @@ class OrganisationsFragment : BaseFragment() {
         // END
     }
 
-    // TODO Step 2: Create a function to notify the success result of product deleted from cloud firestore.
-    // START
-    /**
-     * A function to notify the success result of product deleted from cloud firestore.
-     */
-    fun productDeleteSuccess() {
+
+    fun deleteOrganisationDeleteSuccess() {
 
         // Hide the progress dialog
         hideProgressDialog()
 
         Toast.makeText(
             requireActivity(),
-            resources.getString(R.string.product_delete_success_message),
+            R.string.organisation_delete_success_message.asString(),
             Toast.LENGTH_SHORT
         ).show()
 
         // Get the latest products list from cloud firestore.
         getOrganisationsListFromFireStore()
     }
-    // END
 
-    // TODO Step 5: Create a function to show the alert dialog for the confirmation of delete product from cloud firestore.
-    // START
-    /**
-     * A function to show the alert dialog for the confirmation of delete product from cloud firestore.
-     */
     private fun showAlertDialogToDeleteProduct(productID: String) {
 
         val builder = AlertDialog.Builder(requireActivity())
         //set title for alert dialog
-        builder.setTitle(resources.getString(R.string.delete_dialog_title))
+        builder.setTitle(R.string.delete_dialog_title.asString())
         //set message for alert dialog
-        builder.setMessage(resources.getString(R.string.delete_dialog_message))
+        builder.setMessage(R.string.delete_dialog_message_organisation)
         builder.setIcon(android.R.drawable.ic_dialog_alert)
 
         //performing positive action
-        builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, _ ->
+        builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
 
             // TODO Step 7: Call the function to delete the product from cloud firestore.
             // START
             // Show the progress dialog.
-            showProgressDialog(resources.getString(R.string.please_wait))
+            showProgressDialog(R.string.please_wait.asString())
 
             // Call the function of Firestore class.
             FireStoreClass().deleteOrganisation(this@OrganisationsFragment, productID)
@@ -167,7 +155,7 @@ class OrganisationsFragment : BaseFragment() {
         }
 
         //performing negative action
-        builder.setNegativeButton(resources.getString(R.string.no)) { dialogInterface, _ ->
+        builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
 
             dialogInterface.dismiss()
         }
@@ -176,5 +164,11 @@ class OrganisationsFragment : BaseFragment() {
         // Set other dialog properties
         alertDialog.setCancelable(false)
         alertDialog.show()
+    }
+
+
+
+    fun deleteOrganisationDeleteFailure(e: Exception) {
+
     }
 }

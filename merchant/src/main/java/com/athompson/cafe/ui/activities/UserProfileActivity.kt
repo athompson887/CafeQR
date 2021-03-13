@@ -17,9 +17,12 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityUserProfileBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.models.User
+import com.athompson.cafelib.firestore.FireStoreClassShared
+import com.athompson.cafelib.models.User
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
@@ -43,7 +46,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (mUserDetails.profileCompleted == 0) {
-            binding.tvTitle.text = resources.getString(R.string.title_complete_profile)
+            binding.tvTitle.text = R.string.title_complete_profile.asString()
             binding.etFirstName.isEnabled = false
             binding.etFirstName.setText(mUserDetails.firstName)
             binding.etLastName.isEnabled = false
@@ -52,7 +55,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             binding.etEmail.setText(mUserDetails.email)
         } else {
             setupActionBar()
-            binding.tvTitle.text = resources.getString(R.string.title_edit_profile)
+            binding.tvTitle.text = R.string.title_edit_profile.asString()
             GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, iv_user_photo)
             binding.etFirstName.setText(mUserDetails.firstName)
             binding.etLastName.setText(mUserDetails.lastName)
@@ -88,7 +91,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 //Displaying another toast if permission is not granted
                 Toast.makeText(
                     this,
-                    resources.getString(R.string.read_storage_permission_denied),
+                    R.string.read_storage_permission_denied.asString(),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -104,17 +107,20 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     try {
 
                         // The uri of selected image from phone storage.
-                        mSelectedImageFileUri = data.data!!
+                        mSelectedImageFileUri = data.data
 
-                        GlideLoader(this@UserProfileActivity).loadUserPicture(
-                            mSelectedImageFileUri!!,
-                            iv_user_photo
-                        )
+                        val url = mSelectedImageFileUri
+                        if (url != null) {
+                            GlideLoader(this@UserProfileActivity).loadUserPicture(
+                                url,
+                                iv_user_photo
+                            )
+                        }
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Toast.makeText(
                             this@UserProfileActivity,
-                            resources.getString(R.string.image_selection_failed),
+                            R.string.image_selection_failed.asString(),
                             Toast.LENGTH_SHORT
                         )
                             .show()
@@ -141,8 +147,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
     private fun validateUserProfileDetails(): Boolean {
         return when {
-            TextUtils.isEmpty(binding.etMobileNumber.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_mobile_number), true)
+            TextUtils.isEmpty(binding.etMobileNumber.trimmed()) -> {
+                showErrorSnackBar(R.string.err_msg_enter_mobile_number.asString(), true)
                 false
             }
             else -> {
@@ -155,18 +161,18 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         val userHashMap = HashMap<String, Any>()
 
-        val firstName = et_first_name.text.toString().trim { it <= ' ' }
+        val firstName = et_first_name.trimmed()
         if (firstName != mUserDetails.firstName) {
             userHashMap[Constants.FIRST_NAME] = firstName
         }
 
         // Get the LastName from editText and trim the space
-        val lastName = et_last_name.text.toString().trim { it <= ' ' }
+        val lastName = et_last_name.trimmed()
         if (lastName != mUserDetails.lastName) {
             userHashMap[Constants.LAST_NAME] = lastName
         }
 
-        val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
+        val mobileNumber = et_mobile_number.trimmed()
         val gender = if (rb_male.isChecked) {
             Constants.MALE
         } else {
@@ -223,7 +229,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     if (validateUserProfileDetails()) {
 
                         // Show the progress dialog.
-                        showProgressDialog(resources.getString(R.string.please_wait))
+                        showProgressDialog(R.string.please_wait.asString())
 
                         if (mSelectedImageFileUri != null) {
 
@@ -249,7 +255,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         Toast.makeText(
             this@UserProfileActivity,
-            resources.getString(R.string.msg_profile_update_success),
+            R.string.msg_profile_update_success,
             Toast.LENGTH_SHORT
         ).show()
 

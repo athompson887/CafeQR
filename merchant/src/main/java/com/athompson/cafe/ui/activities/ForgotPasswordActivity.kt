@@ -6,6 +6,8 @@ import android.widget.Toast
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityForgotPasswordBinding
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.google.firebase.auth.FirebaseAuth
 
@@ -25,11 +27,11 @@ class ForgotPasswordActivity : BaseActivity() {
             val email: String = binding.etEmail.trimmed()
 
             if (email.isEmpty()) {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                showErrorSnackBar(R.string.err_msg_enter_email.asString(), true)
             } else {
 
 
-                showProgressDialog(resources.getString(R.string.please_wait))
+                showProgressDialog(R.string.please_wait.asString())
 
                 FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                     .addOnCompleteListener { task ->
@@ -37,13 +39,7 @@ class ForgotPasswordActivity : BaseActivity() {
                         hideProgressDialog()
 
                         if (task.isSuccessful) {
-                            // Show the toast message and finish the forgot password activity to go back to the login screen.
-                            Toast.makeText(
-                                this@ForgotPasswordActivity,
-                                resources.getString(R.string.email_sent_success),
-                                Toast.LENGTH_LONG
-                            ).show()
-
+                             showShortToast(R.string.email_sent_success.asString())
                             finish()
                         } else {
                             showErrorSnackBar(task.exception?.message.toString(), true)

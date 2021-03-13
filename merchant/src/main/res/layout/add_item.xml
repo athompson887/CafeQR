@@ -7,7 +7,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/cardview_dark_background"
+    app:cardBackgroundColor="@color/colorLightGrey"
     app:cardCornerRadius="8dp"
     android:layout_width="wrap_content"
     tools:layout_height="match_parent"

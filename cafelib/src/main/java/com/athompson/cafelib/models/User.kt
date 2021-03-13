@@ -1,4 +1,4 @@
-package com.athompson.cafe.models
+package com.athompson.cafelib.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

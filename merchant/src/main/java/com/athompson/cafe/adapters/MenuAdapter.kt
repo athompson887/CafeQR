@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.Constants
 import com.athompson.cafe.Enums
-import com.athompson.cafe.models.Menu
+import com.athompson.cafelib.models.Menu
 import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
 
 class MenuAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

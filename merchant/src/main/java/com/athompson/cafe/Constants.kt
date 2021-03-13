@@ -7,10 +7,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
 object Constants {
-    const val USERS: String = "users"
-    const val ORGANISATIONS: String = "organisations"
-    const val VENUES: String = "venues"
-    const val MENUS: String = "menus"
+
     const val MENU_ITEMS: String = "menu_items"
 
     const val PREFERENCES: String = "CafeQrPreferences"

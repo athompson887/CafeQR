@@ -3,6 +3,7 @@ package com.athompson.cafe.ui.fragments.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,9 +13,13 @@ import com.athompson.cafe.databinding.FragmentHomeBinding
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import com.athompson.cafelib.firestore.FireStoreClassShared
+import com.athompson.cafelib.models.Organisation
+import com.athompson.cafelib.shared.SharedConstants
 import com.athompson.cafelib.shared.SharedConstants.DISPLAY_NAME_FIELD
 import com.athompson.cafelib.shared.SharedConstants.EMAIL_FIELD
 import com.athompson.cafelib.shared.SharedConstants.FIRST_NAME_FIELD
@@ -90,6 +95,8 @@ class HomeFragment : Fragment() {
                 homeViewModel.setMode(Enums.HomeScreenMode.WELCOME)
             }
         }
+
+        FireStoreClassShared().getOrganisationList(this@HomeFragment)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -100,9 +107,9 @@ class HomeFragment : Fragment() {
 
 
     private fun renderWelcomeScreen() {
-        this.toolBarTitle(getString(R.string.welcome))
-        this.toolBarSubTitle(getString(R.string.welcome_subtitle))
-        binding.title.text = getString(R.string.welcome)
+        this.toolBarTitle(R.string.welcome.asString())
+        this.toolBarSubTitle(R.string.welcome_subtitle.asString())
+        binding.title.text = R.string.welcome.asString()
 
         val currentUser = homeViewModel.userDocument
         val user = User(
@@ -165,7 +172,7 @@ class HomeFragment : Fragment() {
                     binding.progress.remove()
                 }
                 .addOnFailureListener {
-                    homeViewModel.setStatus(getString(R.string.failed_to_create_user))
+                    homeViewModel.setStatus(R.string.failed_to_create_user.asString())
                     binding.progress.remove()
                 }
     }

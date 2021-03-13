@@ -3,12 +3,14 @@ package com.athompson.cafe.ui.activities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
-import android.widget.Toast
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityRegisterBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.models.User
+import com.athompson.cafelib.firestore.FireStoreClassShared
+import com.athompson.cafelib.models.User
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.google.firebase.auth.FirebaseAuth
@@ -56,7 +58,7 @@ class RegisterActivity : BaseActivity() {
     private fun validateRegisterDetails(): Boolean {
         return when {
             binding.etFirstName.isEmpty() -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
+                showErrorSnackBar(R.string.err_msg_enter_first_name.asString(), true)
                 false
             }
 
@@ -66,18 +68,18 @@ class RegisterActivity : BaseActivity() {
             }
 
             binding.etEmail.isEmpty() -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                showErrorSnackBar(R.string.err_msg_enter_email.asString(), true)
                 false
             }
 
             binding.etPassword.isEmpty() -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_password), true)
+                showErrorSnackBar(R.string.err_msg_enter_password.asString(), true)
                 false
             }
 
             binding.etConfirmPassword.isEmpty() -> {
                 showErrorSnackBar(
-                    resources.getString(R.string.err_msg_enter_confirm_password),
+                    R.string.err_msg_enter_confirm_password.asString(),
                     true
                 )
                 false
@@ -85,14 +87,14 @@ class RegisterActivity : BaseActivity() {
 
             binding.etPassword.trimmed() != binding.etConfirmPassword.trimmed() -> {
                 showErrorSnackBar(
-                    resources.getString(R.string.err_msg_password_and_confirm_password_mismatch),
+                    R.string.err_msg_password_and_confirm_password_mismatch.asString(),
                     true
                 )
                 false
             }
             !binding.cbTermsAndCondition.isChecked -> {
                 showErrorSnackBar(
-                    resources.getString(R.string.err_msg_agree_terms_and_condition),
+                    R.string.err_msg_agree_terms_and_condition.asString(),
                     true
                 )
                 false
@@ -107,7 +109,7 @@ class RegisterActivity : BaseActivity() {
 
         if (validateRegisterDetails()) {
 
-            showProgressDialog(resources.getString(R.string.please_wait))
+            showProgressDialog(R.string.please_wait.asString())
 
             val email: String = binding.etEmail.trimmed()
             val password: String = binding.etPassword.trimmed()
@@ -131,12 +133,20 @@ class RegisterActivity : BaseActivity() {
                 }
         }
     }
-
+    fun signOut()
+    {
+        FirebaseAuth.getInstance().signOut()
+        finish()
+    }
 
     fun userRegistrationSuccess() {
         hideProgressDialog()
-        Toast.makeText(this@RegisterActivity, resources.getString(R.string.register_success), Toast.LENGTH_SHORT).show()
-        FirebaseAuth.getInstance().signOut()
-        finish()
+        showShortToast(R.string.register_success.asString())
+        signOut()
+    }
+
+    fun userRegistrationFailure() {
+        showShortToast(R.string.register_success.asString())
+        hideProgressDialog()
     }
 }

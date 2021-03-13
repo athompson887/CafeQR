@@ -12,4 +12,9 @@ object SharedConstants {
     const val LAST_NAME_FIELD = "lastName"
     const val DISPLAY_NAME_FIELD = "displayName"
     const val UID_FIELD = "uid"
+
+    const val ORGANISATIONS: String = "organisations"
+    const val VENUES: String = "venues"
+    const val MENUS: String = "menus"
+    const val USERS: String = "users"
 }

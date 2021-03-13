@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.Constants
 import com.athompson.cafe.Enums
-import com.athompson.cafe.models.Venue
+import com.athompson.cafelib.models.Venue
 import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
 
 class VenueAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -3,14 +3,11 @@ package com.athompson.cafe.ui.activities
 import android.app.Dialog
 import android.os.Handler
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.athompson.cafe.R
-import com.athompson.cafe.databinding.ActivityMainBinding
 import com.athompson.cafe.databinding.DialogProgressBinding
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textview.MaterialTextView
+import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -43,11 +40,7 @@ open class BaseActivity : AppCompatActivity() {
 
         this.doubleBackToExitPressedOnce = true
 
-        Toast.makeText(
-            this,
-            resources.getString(R.string.please_click_back_again_to_exit),
-            Toast.LENGTH_SHORT
-        ).show()
+        showShortToast(R.string.please_click_back_again_to_exit.asString())
 
         @Suppress("DEPRECATION")
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
