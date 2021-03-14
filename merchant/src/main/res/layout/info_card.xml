@@ -35,7 +35,18 @@
             tools:text="McDonalds" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/type"
+            android:id="@+id/tv_address1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image"
+            tools:text="Fast Food Restaurant" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_address2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

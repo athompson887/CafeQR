@@ -25,10 +25,8 @@ class GlideLoader(val context: Context) {
     }
 
 
-    /**
-     * A function to load image from Uri or URL for the product image.
-     */
-    fun loadOrganisationPicture(image: Any, imageView: ImageView) {
+
+    fun loadImagePicture(image: Any, imageView: ImageView) {
         try {
             // Load the user image in the ImageView.
             Glide

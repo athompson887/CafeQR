@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorOffWhite"
-    tools:context=".ui.fragments.organisations.OrganisationsFragment">
+    tools:context=".ui.fragments.venues.VenuesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_organisations"
+        android:id="@+id/rv_venues"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_no_organisations"
+        android:id="@+id/tv_no_venues"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

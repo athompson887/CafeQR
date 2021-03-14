@@ -23,6 +23,7 @@ import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
+import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerHorizontal
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import java.lang.Exception
@@ -104,7 +105,7 @@ class DashboardFragment : BaseFragment() {
     private fun setupRecycler()
     {
         organisationAdapter = OrganisationAdapter(requireContext(),organisations,this)
-        binding.recyclerOrganisations.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+        binding.recyclerOrganisations.setLayoutManagerHorizontal()
         binding.recyclerOrganisations.itemAnimator = DefaultItemAnimator()
         binding.recyclerOrganisations.addItemDecoration(
             DividerItemDecoration(
@@ -115,7 +116,7 @@ class DashboardFragment : BaseFragment() {
         binding.recyclerOrganisations.adapter = organisationAdapter
 
 
-        binding.recyclerVenues.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+        binding.recyclerVenues.setLayoutManagerHorizontal()
         binding.recyclerVenues.itemAnimator = DefaultItemAnimator()
         binding.recyclerVenues.addItemDecoration(
             DividerItemDecoration(
@@ -217,7 +218,7 @@ class DashboardFragment : BaseFragment() {
         selectedOrganisation = org
         val s = selectedOrganisation
         if(s!=null) {
-            GlideLoader(requireContext()).loadOrganisationPicture(org.imageUrl, binding.image)
+            GlideLoader(requireContext()).loadImagePicture(org.imageUrl, binding.image)
             binding.name.text = s.name
             binding.type.text = s.type
         }

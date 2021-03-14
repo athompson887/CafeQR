@@ -59,7 +59,7 @@ class OrganisationAdapter(
                 else {
                     holder.binding.check.hide()
                 }
-                GlideLoader(context).loadOrganisationPicture(org.imageUrl, holder.binding.image)
+                GlideLoader(context).loadImagePicture(org.imageUrl, holder.binding.image)
                 holder.binding.image
                 holder.binding.name.text = org.name
                 holder.binding.type.text = org.type

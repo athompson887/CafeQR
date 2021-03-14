@@ -32,8 +32,9 @@ import java.io.IOException
 class AddOrganisationActivity : BaseActivity(){
 
     private var mSelectedImageFileUri: Uri? = null
-    private var mProductImageURL: String = ""
+    private var mOrganisationImageURL: String = ""
     lateinit var binding:ActivityAddProductBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddProductBinding.inflate(LayoutInflater.from(this))
@@ -85,7 +86,7 @@ class AddOrganisationActivity : BaseActivity(){
             try {
                 // Load the product image in the ImageView.
                 mSelectedImageFileUri?.let {
-                    GlideLoader(this@AddOrganisationActivity).loadOrganisationPicture(it, iv_organisation_image)
+                    GlideLoader(this@AddOrganisationActivity).loadImagePicture(it, iv_organisation_image)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -98,7 +99,7 @@ class AddOrganisationActivity : BaseActivity(){
      */
     private fun setupActionBar() {
 
-        setSupportActionBar(toolbar_add_product_activity)
+        setSupportActionBar(binding.toolbarAddProductActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -106,7 +107,9 @@ class AddOrganisationActivity : BaseActivity(){
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
 
-        toolbar_add_product_activity.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarAddProductActivity.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
 
@@ -161,7 +164,7 @@ class AddOrganisationActivity : BaseActivity(){
 
     fun imageUploadSuccess(imageURL: String) {
 
-        mProductImageURL = imageURL
+        mOrganisationImageURL = imageURL
         uploadOrganisation()
     }
 
@@ -182,7 +185,7 @@ class AddOrganisationActivity : BaseActivity(){
             et_city.trimmed(),
             et_email.trimmed(),
             et_phone.trimmed().toLong(),
-            mProductImageURL,
+            mOrganisationImageURL,
             uuid
         )
         FireStoreClass().addOrganisation(this@AddOrganisationActivity, organisation)

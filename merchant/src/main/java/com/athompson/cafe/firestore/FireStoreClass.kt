@@ -14,6 +14,7 @@ import com.athompson.cafelib.models.Venue
 import com.athompson.cafe.ui.activities.*
 import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
 import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
+import com.athompson.cafe.ui.fragments.venues.VenuesFragment
 import com.athompson.cafelib.shared.SharedConstants.MENUS
 import com.athompson.cafelib.shared.SharedConstants.ORGANISATIONS
 import com.athompson.cafelib.shared.SharedConstants.USERS
@@ -334,6 +335,10 @@ class FireStoreClass {
             .addOnFailureListener { e ->
                 fragment.failureMenuList(e)
             }
+    }
+
+    fun deleteVenue(venuesFragment: VenuesFragment, venueID: String) {
+
     }
 
 }

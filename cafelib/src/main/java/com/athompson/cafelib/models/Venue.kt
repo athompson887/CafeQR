@@ -14,6 +14,7 @@ data class Venue(
     val city: String = "",
     val email: String = "",
     val telephone: Long = 0,
+    val imageUrl: String = "",
     val uid:String = ""
 ) : Parcelable
 {
