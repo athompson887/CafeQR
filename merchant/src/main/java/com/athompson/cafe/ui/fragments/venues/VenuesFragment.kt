@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.VenuesListAdapter
 import com.athompson.cafe.databinding.FragmentVenuesBinding
 import com.athompson.cafe.firestore.FireStoreClass
 import com.athompson.cafe.ui.activities.AddOrganisationActivity
+import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
@@ -51,8 +53,11 @@ class VenuesFragment : BaseFragment() {
         val id = item.itemId
 
         if (id == R.id.action_add_venue) {
-            startActivity(Intent(activity, AddOrganisationActivity::class.java))
+            startActivity(Intent(activity, AddVenuesActivity::class.java))
             return true
+        }
+        else if (id == android.R.id.home){
+            findNavController().navigateUp()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -64,7 +69,7 @@ class VenuesFragment : BaseFragment() {
 
     private fun getVenuesListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreClass().getOrganisationList(this@VenuesFragment)
+        FireStoreClass().getVenueItemsList(this@VenuesFragment)
     }
 
     fun successfulVenuesList(venuesList: ArrayList<Venue>) {
@@ -120,8 +125,11 @@ class VenuesFragment : BaseFragment() {
         getVenuesListFromFireStore()
     }
 
-
     fun deleteVenueDeleteFailure(e: Exception) {
+
+    }
+
+    fun failureVenueList(e: Exception) {
 
     }
 }

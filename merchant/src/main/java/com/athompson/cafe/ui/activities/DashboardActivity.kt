@@ -11,11 +11,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityDashboardBinding
 import com.athompson.cafe.ui.fragments.home.HomeFragment
+import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener {
+class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,OrganisationsFragment.OnFragmentInteractionListener {
 
     lateinit var binding: ActivityDashboardBinding
 
@@ -55,6 +56,14 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
     }
 
     override fun loggedOut() {
+
+    }
+
+    override fun hideNavBar() {
+
+    }
+
+    override fun showNavBar() {
 
     }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
+import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.models.Venue
 
 /**
@@ -47,14 +48,21 @@ open class VenueListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
 
-        if (holder is MyViewHolder) {
+        if (holder is OrganisationsListAdapter.OrgViewHolder) {
 
-        //    GlideLoader(context).loadProductPicture(
-          //     model.image,
-           //     holder.itemView.iv_dashboard_item_image
-         //   )
-         ////   holder.itemView.tv_dashboard_item_title.text = model.title
-        //    holder.itemView.tv_dashboard_item_price.text = "$${model.price}"
+            GlideLoader(context).loadImagePicture(model.imageUrl, holder.binding.image)
+
+            holder.binding.tvName.text = model.name
+            holder.binding.tvAddress1.text = model.address1
+            holder.binding.tvAddress2.text = model.address2
+            holder.binding.tvCity.text = model.city
+            holder.binding.tvEmail.text = model.email
+            holder.binding.tvTelephone.text = model.telephone.toString()
+
+            //     holder.itemView.ib_delete_product.setOnClickListener {
+
+            //       fragment.deleteOrganisation(model.product_id)
+            //  }
         }
     }
 

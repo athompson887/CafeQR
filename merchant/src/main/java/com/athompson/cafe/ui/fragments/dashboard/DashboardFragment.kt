@@ -14,6 +14,8 @@ import com.athompson.cafe.databinding.AddItemBinding
 import com.athompson.cafe.databinding.FragmentDashboardBinding
 import com.athompson.cafe.databinding.OrgListItemBinding
 import com.athompson.cafe.firestore.FireStoreClass
+import com.athompson.cafe.ui.activities.AddOrganisationActivity
+import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafelib.models.Menu
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafelib.models.Venue
@@ -25,17 +27,19 @@ import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerHorizontal
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedOrganisation
+import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedVenue
+import kotlinx.android.synthetic.main.add_item.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import java.lang.Exception
 
 
 class DashboardFragment : BaseFragment() {
 
-    private var selectedOrganisation: Organisation? = null
+
     private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
 
-    private val venueAdapter = VenueAdapter()
     private val menuAdapter = MenuAdapter()
     private val binding get() = _binding!!
 
@@ -43,7 +47,7 @@ class DashboardFragment : BaseFragment() {
     private var venues: ArrayList<Venue> = ArrayList()
     private var menus: ArrayList<Menu> = ArrayList()
     private lateinit var organisationAdapter:OrganisationAdapter
-
+    private lateinit var venueAdapter:VenueAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,15 +92,17 @@ class DashboardFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
-        binding.noOrganisationsView.setOnClickListener{
-            findNavController().navigate(R.id.action_navigation_dashboard_to_organisationsFragment, null, null, null)
+        binding.addOrg.setOnClickListener{
+            startActivity(Intent(activity, AddOrganisationActivity::class.java))
+        }
+        binding.addVenue.setOnClickListener{
+            startActivity(Intent(activity, AddVenuesActivity::class.java))
         }
         setupRecycler()
     }
 
     override fun onResume() {
         super.onResume()
-       // populate()
         getOrganisationsList()
     }
 
@@ -104,6 +110,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun setupRecycler()
     {
+        venueAdapter = VenueAdapter(requireContext(),venues,this)
         organisationAdapter = OrganisationAdapter(requireContext(),organisations,this)
         binding.recyclerOrganisations.setLayoutManagerHorizontal()
         binding.recyclerOrganisations.itemAnimator = DefaultItemAnimator()
@@ -221,6 +228,16 @@ class DashboardFragment : BaseFragment() {
             GlideLoader(requireContext()).loadImagePicture(org.imageUrl, binding.image)
             binding.name.text = s.name
             binding.type.text = s.type
+        }
+    }
+
+    fun setSelectedVenue(venue: Venue) {
+        selectedVenue = venue
+        val s = selectedVenue
+        if(s!=null) {
+            GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.image)
+            binding.name.text = s.name
+            binding.type.text = s.city
         }
     }
 

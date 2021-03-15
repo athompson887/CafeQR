@@ -17,6 +17,14 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_navigation_dashboard_to_venuesFragment"
+            app:destination="@id/venuesFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -33,5 +41,11 @@
     <fragment
         android:id="@+id/organisationsFragment"
         android:name="com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment"
-        android:label="OrganisationsFragment" />
+        android:label="Organisations" >
+    </fragment>
+    <fragment
+        android:id="@+id/venuesFragment"
+        android:name="com.athompson.cafe.ui.fragments.venues.VenuesFragment"
+        android:label="Venues" >
+    </fragment>
 </navigation>

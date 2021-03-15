@@ -5,4 +5,6 @@ import com.athompson.cafelib.shared.CafeQRApplication;
 public class MerchantApplication extends CafeQRApplication {
 
 
+
+
 }

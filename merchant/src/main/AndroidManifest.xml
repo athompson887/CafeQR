@@ -66,6 +66,12 @@
             tools:ignore="LockedOrientationActivity">
         </activity>
 
+        <activity android:name=".ui.activities.AddVenuesActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/app_name">

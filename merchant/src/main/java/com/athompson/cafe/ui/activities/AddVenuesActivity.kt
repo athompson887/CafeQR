@@ -12,10 +12,10 @@ import android.view.LayoutInflater
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
+import com.athompson.cafe.MerchantApplication
 import com.athompson.cafe.R
-import com.athompson.cafe.databinding.ActivityAddOrganisationBinding
+import com.athompson.cafe.databinding.ActivityAddVenueBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.models.Organisation
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
@@ -24,22 +24,25 @@ import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
+import com.athompson.cafelib.models.Venue
+import com.athompson.cafelib.shared.CafeQRApplication
+import kotlinx.android.synthetic.main.activity_register.*
 import java.io.IOException
 
-class AddOrganisationActivity : BaseActivity(){
+class AddVenuesActivity : BaseActivity(){
 
     private var mSelectedImageFileUri: Uri? = null
-    private var mOrganisationImageURL: String = ""
-    lateinit var binding:ActivityAddOrganisationBinding
+    private var mVenueImageURL: String = ""
+    lateinit var binding:ActivityAddVenueBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddOrganisationBinding.inflate(LayoutInflater.from(this))
+        binding = ActivityAddVenueBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
         setupActionBar()
-        binding.ivUpdateOrganisation.setOnClickListener{
+        binding.ivUpdateVenue.setOnClickListener{
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Constants.showImageChooser(this@AddOrganisationActivity)
+                Constants.showImageChooser(this@AddVenuesActivity)
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_STORAGE_PERMISSION_CODE)
             }
@@ -61,7 +64,7 @@ class AddOrganisationActivity : BaseActivity(){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Constants.showImageChooser(this@AddOrganisationActivity)
+                Constants.showImageChooser(this@AddVenuesActivity)
             } else {
                 showLongToast(R.string.read_storage_permission_denied.asString())
             }
@@ -76,14 +79,14 @@ class AddOrganisationActivity : BaseActivity(){
         ) {
 
             // Replace the add icon with edit icon once the image is selected.
-            binding.ivUpdateOrganisation.setImageDrawable(R.drawable.ic_vector_edit.asDrawable())
+            binding.ivUpdateVenue.setImageDrawable(R.drawable.ic_vector_edit.asDrawable())
 
             mSelectedImageFileUri = data.data
 
             try {
                 // Load the product image in the ImageView.
                 mSelectedImageFileUri?.let {
-                    GlideLoader(this@AddOrganisationActivity).loadImagePicture(it, binding.ivOrganisationImage)
+                    GlideLoader(this@AddVenuesActivity).loadImagePicture(it, binding.ivUpdateVenue)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -96,7 +99,7 @@ class AddOrganisationActivity : BaseActivity(){
      */
     private fun setupActionBar() {
 
-        setSupportActionBar(binding.toolbarAddProductActivity)
+        setSupportActionBar(binding.toolbarAddVenueActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -104,7 +107,7 @@ class AddOrganisationActivity : BaseActivity(){
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
 
-        binding.toolbarAddProductActivity.setNavigationOnClickListener {
+        binding.toolbarAddVenueActivity.setNavigationOnClickListener {
             onBackPressed()
         }
     }
@@ -118,12 +121,12 @@ class AddOrganisationActivity : BaseActivity(){
                 false
             }
 
-            TextUtils.isEmpty(binding.etOrganisationName.trimmed()) -> {
+            TextUtils.isEmpty(binding.etVenueName.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_organisation_name.asString(), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etOrganisationType.trimmed()) -> {
+            TextUtils.isEmpty(binding.etVenueType.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_organisation_type.asString(), true)
                 false
             }
@@ -139,11 +142,11 @@ class AddOrganisationActivity : BaseActivity(){
             }
 
             TextUtils.isEmpty(binding.etCity.trimmed()) -> {
-                showErrorSnackBar(R.string.err_msg_enter_address.asString(), true)
+                showErrorSnackBar(R.string.err_enter_city.asString(), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etEmail.trimmed()) -> {
+            TextUtils.isEmpty(et_email.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_email.asString(), true)
                 false
             }
@@ -156,47 +159,40 @@ class AddOrganisationActivity : BaseActivity(){
     private fun uploadOrganisationImage() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreClass().uploadImageToCloudStorage(this@AddOrganisationActivity, mSelectedImageFileUri)
+        FireStoreClass().uploadImageToCloudStorage(this@AddVenuesActivity, mSelectedImageFileUri)
     }
 
     fun imageUploadSuccess(imageURL: String) {
 
-        mOrganisationImageURL = imageURL
-        uploadOrganisation()
+        mVenueImageURL = imageURL
+        uploadVenue()
     }
 
-    private fun uploadOrganisation() {
-
-        // Get the logged in username from the SharedPreferences that we have stored at a time of login.
-        val username = this.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE).getString(Constants.LOGGED_IN_USERNAME, "")!!
-
-        val uuid = "".uuid()
-        // Here we get the text from editText and trim the space
-        val organisation = Organisation(
-            FireStoreClass().getCurrentUserID(),
-            username,
-            binding.etOrganisationName.trimmed(),
-            binding.etOrganisationType.trimmed(),
+    private fun uploadVenue() {
+        val venue = Venue(
+            CafeQRApplication.selectedOrganisation?.uid.toString(),
+            binding.etVenueName.trimmed(),
             binding.etAddresss1.trimmed(),
             binding.etAddresss2.trimmed(),
             binding.etCity.trimmed(),
             binding.etEmail.trimmed(),
             binding.etPhone.trimmed().toLong(),
-            mOrganisationImageURL,
-            uuid
+            mVenueImageURL,
+            "".uuid()
         )
-        FireStoreClass().addOrganisation(this@AddOrganisationActivity, organisation)
+
+        FireStoreClass().addVenue(this@AddVenuesActivity, venue)
     }
 
-    fun addOrganisationSuccess() {
+    fun addVenueSuccess() {
         hideProgressDialog()
-        showShortToast(R.string.add_org_success.asString())
+        showShortToast(R.string.add_venue_success.asString())
         finish()
     }
 
-    fun addOrganisationFailure() {
+    fun addVenueFailure() {
         hideProgressDialog()
-        showShortToast(R.string.add_org_failure.asString())
+        showShortToast(R.string.add_venue_failure.asString())
     }
 
     fun imageUploadFailure() {

@@ -189,6 +189,9 @@ class FireStoreClass {
                             is AddOrganisationActivity -> {
                                 activity.imageUploadSuccess(uri.toString())
                             }
+                            is AddVenuesActivity -> {
+                                activity.imageUploadSuccess(uri.toString())
+                            }
                             else -> {
 
                             }
@@ -200,6 +203,12 @@ class FireStoreClass {
                 when (activity) {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
+                    }
+                    is AddOrganisationActivity -> {
+                        activity.imageUploadFailure()
+                    }
+                    is AddVenuesActivity -> {
+                        activity.imageUploadFailure()
                     }
                 }
 
@@ -281,7 +290,7 @@ class FireStoreClass {
     }
 
 
-    fun getVenueItemsList(fragment: DashboardFragment) {
+    fun getVenueItemsList(fragment: Fragment) {
         // The collection name for PRODUCTS
         mFireStore.collection(VENUES)
             .get() // Will get the documents snapshots.
@@ -300,11 +309,25 @@ class FireStoreClass {
                     venuesList.add(venue)
                 }
 
-                // Pass the success result to the base fragment.
-                fragment.successVenuesList(venuesList)
+                when (fragment) {
+                    is DashboardFragment -> {
+                        fragment.successVenuesList(venuesList)
+                    }
+                    is VenuesFragment -> {
+                        fragment.successfulVenuesList(venuesList)
+                    }
+                }
             }
             .addOnFailureListener { e ->
-                fragment.failureVenueList(e)
+
+                when (fragment) {
+                    is DashboardFragment -> {
+                        fragment.failureVenueList(e)
+                    }
+                    is VenuesFragment -> {
+                        fragment.failureVenueList(e)
+                    }
+                }
             }
     }
 
@@ -338,7 +361,28 @@ class FireStoreClass {
     }
 
     fun deleteVenue(venuesFragment: VenuesFragment, venueID: String) {
-
+        mFireStore.collection(VENUES)
+            .document(venueID)
+            .delete()
+            .addOnSuccessListener {
+                venuesFragment.deleteVenueDeleteSuccess()
+            }
+            .addOnFailureListener { e ->
+                venuesFragment.hideProgressDialog()
+                venuesFragment.deleteVenueDeleteFailure(e)
+            }
     }
 
+    fun addVenue(addVenuesActivity: AddVenuesActivity, venue: Venue) {
+        mFireStore.collection(VENUES)
+            .document()
+            .set(venue, SetOptions.merge())
+            .addOnSuccessListener {
+                addVenuesActivity.addVenueSuccess()
+            }
+            .addOnFailureListener { e ->
+                addVenuesActivity.hideProgressDialog()
+                addVenuesActivity.addVenueFailure()
+            }
+    }
 }

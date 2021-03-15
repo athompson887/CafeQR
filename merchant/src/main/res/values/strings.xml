@@ -82,19 +82,25 @@
     <string name="no_organisations_added_yet">No Organisations Added Yet</string>
     <string name="no_venues_added_yet">No Venues Added Yet</string>
     <string name="action_add_org">Add Organisation</string>
-    <string name="title_add_org">Add Organisation</string>g>
+    <string name="title_add_org">Add Organisation</string>
+    <string name="action_add_venue">Add Venue</string>
+    <string name="title_add_venue">Add Venue</string>
     <string name="err_msg_select_organisation_image">Please select product image.</string>
     <string name="err_msg_enter_organisation_name">Please enter organisation name.</string>
     <string name="err_msg_enter_organisation_type">Please enter organisation type.</string>
     <string name="err_msg_enter_address">Please enter address.</string>
     <string name="add_org_success">Add organisation success</string>
     <string name="add_org_failure">Add organisation failure</string>
-    <string name="no_orgs_found">No organisations found!</string>
+    <string name="add_venue_success">Add organisation success</string>
+    <string name="add_venue_failure">Add venue failure</string>
+    <string name="no_venues_found">No venue found!</string>
     <string name="address">Address</string>
     <string name="city">City</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone number</string>
     <string name="organisation_type">organisation type</string>
     <string name="et_hint_organisation_name">Please enter the name of the organisation</string>
-
+    <string name="et_hint_venue_name">Please enter the name of the venue</string>
+    <string name="err_enter_city">Please enter city</string>
+    <string name="upload_image_failure">Image upload failure</string>
 </resources>

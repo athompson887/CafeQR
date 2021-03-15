@@ -1,9 +1,11 @@
 package com.athompson.cafe.ui.fragments.organisations
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.OrganisationsListAdapter
 import com.athompson.cafe.databinding.FragmentOrganisationsBinding
@@ -20,13 +22,16 @@ import com.athompson.cafelib.models.Organisation
 
 
 class OrganisationsFragment : BaseFragment() {
-
+    private var listener: OnFragmentInteractionListener? = null
     private lateinit var mRootView: View
     private lateinit var binding:FragmentOrganisationsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +41,8 @@ class OrganisationsFragment : BaseFragment() {
         mRootView = inflater.inflate(R.layout.fragment_organisations, container, false)
         return mRootView
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +61,11 @@ class OrganisationsFragment : BaseFragment() {
             startActivity(Intent(activity, AddOrganisationActivity::class.java))
             return true
         }
+        else if (id == android.R.id.home){
+            findNavController().navigateUp()
+        }
+
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -92,7 +104,6 @@ class OrganisationsFragment : BaseFragment() {
         showAlertDialogToDeleteOrganisation(orgID)
     }
 
-
     fun deleteOrganisationDeleteSuccess() {
 
         hideProgressDialog()
@@ -124,5 +135,25 @@ class OrganisationsFragment : BaseFragment() {
 
     fun deleteOrganisationDeleteFailure(e: Exception) {
 
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface OnFragmentInteractionListener{
+        fun hideNavBar()
+        fun showNavBar()
     }
 }

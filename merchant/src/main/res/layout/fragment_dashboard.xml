@@ -168,7 +168,6 @@
                 android:text="You need at least 1 organisation"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/colorPrimaryText"
-                app:layout_constraintBottom_toTopOf="@id/add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -181,14 +180,13 @@
                 android:textColor="@color/colorPrimaryText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/add"
+                android:id="@+id/addOrg"
                 style="@style/IconOnlyButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:icon="@drawable/ic_baseline_add_24"
                 app:iconTint="@color/colorPrimaryText"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -234,7 +232,6 @@
                 android:text="You need at least 1 venue"
                 android:textColor="@color/colorPrimaryText"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintBottom_toTopOf="@id/addVenue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -247,14 +244,13 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addVenue" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addVenue"
                 style="@style/IconOnlyButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:icon="@drawable/ic_baseline_add_24"
                 app:iconTint="@color/colorPrimaryText"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -300,7 +296,7 @@
                 android:layout_height="wrap_content"
                 android:text="You need at least 1 menu"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintBottom_toTopOf="@id/addMenu"
+                app:layout_constraintBottom_toTopOf="@id/noMenusView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -309,23 +305,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Click To Add"
+                android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addMenu" />
-
+                app:layout_constraintTop_toBottomOf="@id/noMenusView" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addMenu"
                 style="@style/IconOnlyButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:icon="@drawable/ic_baseline_add_24"
-                app:iconTint="@color/black"
+                app:iconTint="@color/colorPrimaryText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

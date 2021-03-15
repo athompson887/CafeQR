@@ -7,7 +7,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Venue(
     var organisationId: String = "",
-    var venueId: String = "",
     val name: String = "",
     val address1: String = "",
     val address2: String = "",
