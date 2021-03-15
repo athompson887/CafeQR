@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.MenuAdapter
-import com.athompson.cafe.databinding.FragmentOrganisationsBinding
+import com.athompson.cafe.databinding.FragmentMenuBinding
 import com.athompson.cafe.firestore.FireStoreClass
 import com.athompson.cafe.ui.activities.AddOrganisationActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
@@ -24,7 +24,7 @@ import com.athompson.cafelib.models.FoodMenuItem
 class MenuFragment : BaseFragment() {
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var mRootView: View
-    private lateinit var binding:FragmentOrganisationsBinding
+    private lateinit var binding:FragmentMenuBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -43,7 +43,7 @@ class MenuFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentOrganisationsBinding.bind(view)
+        binding = FragmentMenuBinding.bind(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -75,25 +75,7 @@ class MenuFragment : BaseFragment() {
     private fun getMenuItemsListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
 
-        FireStoreClass().getOrganisationList(this@MenuFragment)
-    }
-
-    fun successfulMenuItemsList(menuList: ArrayList<FoodMenuItem>) {
-
-        hideProgressDialog()
-
-        if (menuList.size > 0) {
-            binding.rvOrganisations.show()
-            binding.tvNoOrganisations.remove()
-
-            binding.rvOrganisations.setLayoutManagerVertical()
-            binding.rvOrganisations.showVerticalDividers()
-            binding.rvOrganisations.setHasFixedSize(true)
-            binding.rvOrganisations.adapter = MenuAdapter(requireActivity(), menuList, this@MenuFragment)
-        } else {
-            binding.rvOrganisations.remove()
-            binding.tvNoOrganisations.show()
-        }
+        FireStoreClass().getMenusList(this@MenuFragment)
     }
 
 
@@ -152,6 +134,23 @@ class MenuFragment : BaseFragment() {
         hideProgressDialog()
         showShortToast(R.string.menu_delete_success_message.asString())
         getMenuItemsListFromFireStore()
+    }
+
+    fun successfulMenuList(menuList: ArrayList<FoodMenuItem>) {
+        hideProgressDialog()
+
+        if (menuList.size > 0) {
+            binding.rvMenuItems.show()
+            binding.tvNoFoodItems.remove()
+
+            binding.rvMenuItems.setLayoutManagerVertical()
+            binding.rvMenuItems.showVerticalDividers()
+            binding.rvMenuItems.setHasFixedSize(true)
+            binding.rvMenuItems.adapter = MenuAdapter(requireActivity(), menuList, this@MenuFragment)
+        } else {
+            binding.rvMenuItems.remove()
+            binding.tvNoFoodItems.show()
+        }
     }
 
 

@@ -12,6 +12,7 @@ import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
 import com.athompson.cafe.ui.fragments.menu.MenuFragment
 import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
 import com.athompson.cafe.ui.fragments.venues.VenuesFragment
+import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.models.Venue
@@ -340,13 +341,13 @@ class FireStoreClass {
                 Log.e(fragment.javaClass.simpleName, document.documents.toString())
 
                 // Here we have created a new instance for Products ArrayList.
-                val menuList: ArrayList<Menu> = ArrayList()
+                val menuList: ArrayList<FoodMenuItem> = ArrayList()
 
                 // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
 
-                    val menu = i.toObject(Menu::class.java)
-                    menu?.organisationId = i.id
+                    val menu = i.toObject(FoodMenuItem::class.java)
+                    menu?.uid = i.id
                     if (menu != null) {
                         menuList.add(menu)
                     }
@@ -399,16 +400,16 @@ class FireStoreClass {
             }
     }
 
-    fun addVMenuItem(addVenuesActivity: AddVenuesActivity, menu: Menu) {
+    fun addMenuItem(addVenuesActivity: AddVenuesActivity, menu: FoodMenuItem) {
         mFireStore.collection(MENUS)
             .document()
             .set(menu, SetOptions.merge())
             .addOnSuccessListener {
-              //  addVenuesActivity.addVenueSuccess()
+              //  addMenuItemActivity.addMenuItemSuccess()
             }
             .addOnFailureListener { e ->
-               // addVenuesActivity.hideProgressDialog()
-                addVenuesActivity.addVenueFailure()
+               // addMenuItemActivity.hideProgressDialog()
+                //addMenuItemActivity.addMenuItemFailure()
             }
     }
 }

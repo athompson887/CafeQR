@@ -64,6 +64,7 @@
     <string name="error_registering_user">Error while registering the user.</string>
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_organisations">Organisations</string>
+    <string name="title_menu">Menu</string>
     <string name="title_venues">Venues</string>
     <string name="please_click_back_again_to_exit">Please click back again to exit.</string>
     <string name="action_settings">Settings</string>

@@ -61,12 +61,4 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
     override fun loggedOut() {
 
     }
-
-    override fun hideNavBar() {
-
-    }
-
-    override fun showNavBar() {
-
-    }
 }

@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorOffWhite"
-    tools:context=".ui.fragments.organisations.OrganisationsFragment">
+    tools:context=".ui.fragments.menu.MenuFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_organisations"
+        android:id="@+id/rv_menu_items"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -24,7 +24,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/no_organisations_added_yet"
+        android:text="@string/no_food_added_yet"
         android:textAlignment="center"
         android:textSize="@dimen/no_data_found_textSize"
         app:layout_constraintBottom_toBottomOf="parent"

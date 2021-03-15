@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:background="@color/colorOffWhite"
     tools:context=".ui.fragments.venues.VenuesFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_type"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="McDonalds" />
+        tools:text="Burger" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_type"
@@ -39,68 +39,32 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_address1"
+        app:layout_constraintBottom_toTopOf="@+id/tv_description"
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
-        tools:layout_editor_absoluteX="0dp"
-        tools:text="Fast Food" />
+        tools:text="Main" />
 
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_address1"
+        android:id="@+id/tv_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_address2"
+        app:layout_constraintBottom_toTopOf="@+id/tv_price"
         app:layout_constraintTop_toBottomOf="@+id/tv_type"
-        tools:layout_editor_absoluteX="0dp"
-        tools:text="Address 1" />
+        tools:text="Juicy burger" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_address2"
+        android:id="@+id/tv_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_city"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address1"
-        tools:layout_editor_absoluteX="0dp"
-        tools:text="Address 2" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_city"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_email"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address2"
-        tools:layout_editor_absoluteX="0dp"
-        tools:text="Walsall" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_telephone"
-        app:layout_constraintTop_toBottomOf="@+id/tv_city"
-        tools:text="help@mcds.com" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_telephone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email"
+        android:layout_marginBottom="8dp"
         app:layout_constraintStart_toEndOf="@id/image"
-        tools:text="01902 863329" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_description"
+        tools:text="£5.88" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
