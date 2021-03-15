@@ -1,28 +1,33 @@
 package com.athompson.cafe.adapters
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.Constants
 import com.athompson.cafe.Enums
-import com.athompson.cafelib.models.Menu
 import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
+import com.athompson.cafe.ui.fragments.menu.MenuFragment
+import com.athompson.cafelib.models.FoodMenuItem
 
-class MenuAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class MenuAdapter(
+    private val context: Context,
+    private var menus: ArrayList<FoodMenuItem>,
+    private val fragment: MenuFragment
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var menus: ArrayList<Menu> = ArrayList()
 
-    fun dataChanged(data:ArrayList<Menu>)
+    fun dataChanged(data:ArrayList<FoodMenuItem>)
     {
         menus.clear()
         menus.addAll(data)
         notifyDataSetChanged()
-        menus.add(Menu(Constants.ADD_ITEM_NAME,"",""))
+        menus.add(FoodMenuItem(Constants.ADD_ITEM_NAME,"",""))
     }
 
     override fun getItemViewType(position: Int): Int {
         val it = menus.get(index = position)
 
-        return if (it.organisationId== Constants.ADD_ITEM_NAME) {
+        return if (it.uid== Constants.ADD_ITEM_NAME) {
             Enums.ITEM_VIEW_TYPE_ADD
         } else
             Enums.ITEM_VIEW_TYPE_ITEM

@@ -7,14 +7,14 @@ import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.athompson.cafe.Constants
-import com.athompson.cafelib.models.Menu
+import com.athompson.cafe.ui.activities.*
+import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
+import com.athompson.cafe.ui.fragments.menu.MenuFragment
+import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
+import com.athompson.cafe.ui.fragments.venues.VenuesFragment
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.models.Venue
-import com.athompson.cafe.ui.activities.*
-import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
-import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
-import com.athompson.cafe.ui.fragments.venues.VenuesFragment
 import com.athompson.cafelib.shared.SharedConstants.MENUS
 import com.athompson.cafelib.shared.SharedConstants.ORGANISATIONS
 import com.athompson.cafelib.shared.SharedConstants.USERS
@@ -92,7 +92,7 @@ class FireStoreClass {
                 if (user != null) {
                     editor.putString(
                         Constants.LOGGED_IN_USERNAME,
-                        "${user?.firstName} ${user.lastName}"
+                        "${user.firstName} ${user.lastName}"
                     )
                 }
                 editor.apply()
@@ -331,7 +331,7 @@ class FireStoreClass {
             }
     }
 
-    fun getMenusList(fragment: DashboardFragment) {
+    fun getMenusList(fragment: MenuFragment) {
         // The collection name for PRODUCTS
         mFireStore.collection(MENUS)
             .get() // Will get the documents snapshots.
@@ -382,6 +382,32 @@ class FireStoreClass {
             }
             .addOnFailureListener { e ->
                 addVenuesActivity.hideProgressDialog()
+                addVenuesActivity.addVenueFailure()
+            }
+    }
+
+    fun deleteMenuItem(menuFragment: MenuFragment, menuItemID: String) {
+        mFireStore.collection(MENUS)
+            .document(menuItemID)
+            .delete()
+            .addOnSuccessListener {
+                menuFragment.deleteMenuDeleteSuccess()
+            }
+            .addOnFailureListener { e ->
+                menuFragment.hideProgressDialog()
+                menuFragment.deleteMenuDeleteFailure(e)
+            }
+    }
+
+    fun addVMenuItem(addVenuesActivity: AddVenuesActivity, menu: Menu) {
+        mFireStore.collection(MENUS)
+            .document()
+            .set(menu, SetOptions.merge())
+            .addOnSuccessListener {
+              //  addVenuesActivity.addVenueSuccess()
+            }
+            .addOnFailureListener { e ->
+               // addVenuesActivity.hideProgressDialog()
                 addVenuesActivity.addVenueFailure()
             }
     }

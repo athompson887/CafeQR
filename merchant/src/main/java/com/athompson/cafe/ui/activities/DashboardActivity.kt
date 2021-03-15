@@ -11,12 +11,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityDashboardBinding
 import com.athompson.cafe.ui.fragments.home.HomeFragment
+import com.athompson.cafe.ui.fragments.menu.MenuFragment
 import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,OrganisationsFragment.OnFragmentInteractionListener {
+class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,
+    OrganisationsFragment.OnFragmentInteractionListener,MenuFragment.OnFragmentInteractionListener {
 
     lateinit var binding: ActivityDashboardBinding
 
@@ -41,8 +43,9 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_dashboard,
-                R.id.navigation_home,
-                R.id.navigation_notifications
+                R.id.navigation_organisations,
+                R.id.navigation_venues,
+                R.id.navigation_codes
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

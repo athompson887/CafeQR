@@ -73,13 +73,16 @@
     <string name="btn_lbl_logout">Logout</string>
     <string name="title_edit_profile">EDIT PROFILE</string>
     <string name="organisation_delete_success_message">Your organisation is deleted successfully.</string>
+    <string name="menu_delete_success_message">Your menu item is deleted successfully.</string>
     <string name="venue_delete_success_message">Your organisation is deleted successfully.</string>
     <string name="delete_dialog_title">Delete</string>
     <string name="delete_dialog_message_organisation">Are you sure you want to delete this organisation?</string>
+    <string name="delete_dialog_message_menu_item">Are you sure you want to delete this menu item?</string>
     <string name="delete_dialog_message_venue">Are you sure you want to delete this venue?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_organisations_added_yet">No Organisations Added Yet</string>
+    <string name="no_food_added_yet">No Food Items Added Yet</string>
     <string name="no_venues_added_yet">No Venues Added Yet</string>
     <string name="action_add_org">Add Organisation</string>
     <string name="title_add_org">Add Organisation</string>
@@ -103,4 +106,5 @@
     <string name="et_hint_venue_name">Please enter the name of the venue</string>
     <string name="err_enter_city">Please enter city</string>
     <string name="upload_image_failure">Image upload failure</string>
+    <string name="click_to_add">Click To Add</string>
 </resources>

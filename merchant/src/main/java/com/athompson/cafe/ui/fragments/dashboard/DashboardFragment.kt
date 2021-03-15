@@ -4,10 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.athompson.cafe.R
-import com.athompson.cafe.adapters.MenuAdapter
 import com.athompson.cafe.adapters.OrganisationAdapter
 import com.athompson.cafe.adapters.VenueAdapter
 import com.athompson.cafe.databinding.AddItemBinding
@@ -16,9 +14,6 @@ import com.athompson.cafe.databinding.OrgListItemBinding
 import com.athompson.cafe.firestore.FireStoreClass
 import com.athompson.cafe.ui.activities.AddOrganisationActivity
 import com.athompson.cafe.ui.activities.AddVenuesActivity
-import com.athompson.cafelib.models.Menu
-import com.athompson.cafelib.models.Organisation
-import com.athompson.cafelib.models.Venue
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
@@ -27,11 +22,12 @@ import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerHorizontal
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import com.athompson.cafelib.models.Organisation
+import com.athompson.cafelib.models.Venue
 import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedOrganisation
 import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedVenue
 import kotlinx.android.synthetic.main.add_item.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-import java.lang.Exception
 
 
 class DashboardFragment : BaseFragment() {
@@ -39,13 +35,10 @@ class DashboardFragment : BaseFragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
-
-    private val menuAdapter = MenuAdapter()
     private val binding get() = _binding!!
 
     private var organisations: ArrayList<Organisation> = ArrayList()
     private var venues: ArrayList<Venue> = ArrayList()
-    private var menus: ArrayList<Menu> = ArrayList()
     private lateinit var organisationAdapter:OrganisationAdapter
     private lateinit var venueAdapter:VenueAdapter
 
@@ -71,7 +64,7 @@ class DashboardFragment : BaseFragment() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: android.view.Menu, menuInflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.dashboard_menu, menu)
         super.onCreateOptionsMenu(menu, menuInflater)
     }
@@ -97,6 +90,9 @@ class DashboardFragment : BaseFragment() {
         }
         binding.addVenue.setOnClickListener{
             startActivity(Intent(activity, AddVenuesActivity::class.java))
+        }
+        binding.printCodes.setOnClickListener{
+            showShortToast("clicked")
         }
         setupRecycler()
     }
@@ -135,8 +131,6 @@ class DashboardFragment : BaseFragment() {
 
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -152,23 +146,11 @@ class DashboardFragment : BaseFragment() {
         FireStoreClass().getVenueItemsList(this@DashboardFragment)
     }
 
-    private fun getMenusList() {
-        showProgressDialog(R.string.please_wait.toString())
-        FireStoreClass().getMenusList(this@DashboardFragment)
-    }
-    //handle failures
-    fun failureMenuList(e: Exception) {
-        showShortToast("Failed To get menus",e)
-        hideProgressDialog()
-        binding.recyclerMenus.hide()
-        binding.noMenusView.show()
-    }
-
     fun failureVenueList(e: Exception) {
         showShortToast("Failed To get venus",e)
-        getMenusList()
         binding.recyclerVenues.hide()
         binding.noVenuesView.show()
+        hideProgressDialog()
     }
 
     fun failureOrganisationList(e: Exception) {
@@ -194,7 +176,6 @@ class DashboardFragment : BaseFragment() {
     }
 
     fun successVenuesList(venuesList: java.util.ArrayList<Venue>) {
-        getMenusList()
         if (venuesList.size > 0) {
             venues.clear()
             venues.addAll(venuesList)
@@ -205,21 +186,9 @@ class DashboardFragment : BaseFragment() {
             binding.noVenuesView.show()
         }
         venueAdapter.dataChanged(venues)
+        hideProgressDialog()
     }
 
-    fun successfulMenuList(menuList: ArrayList<Menu>) {
-        hideProgressDialog()
-        if (menuList.size > 0) {
-            menus.clear()
-            menus.addAll(menuList)
-            binding.recyclerMenus.show()
-            binding.noMenusView.hide()
-        } else {
-            binding.recyclerMenus.hide()
-            binding.noMenusView.show()
-        }
-        menuAdapter.dataChanged(menus)
-    }
 
     fun setSelectedOrganisation(org: Organisation) {
         selectedOrganisation = org

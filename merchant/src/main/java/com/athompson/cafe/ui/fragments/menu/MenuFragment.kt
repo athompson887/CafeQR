@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.fragments.organisations
+package com.athompson.cafe.ui.fragments.menu
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.athompson.cafe.R
-import com.athompson.cafe.adapters.OrganisationsListAdapter
+import com.athompson.cafe.adapters.MenuAdapter
 import com.athompson.cafe.databinding.FragmentOrganisationsBinding
 import com.athompson.cafe.firestore.FireStoreClass
 import com.athompson.cafe.ui.activities.AddOrganisationActivity
@@ -18,10 +18,10 @@ import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
-import com.athompson.cafelib.models.Organisation
+import com.athompson.cafelib.models.FoodMenuItem
 
 
-class OrganisationsFragment : BaseFragment() {
+class MenuFragment : BaseFragment() {
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var mRootView: View
     private lateinit var binding:FragmentOrganisationsBinding
@@ -30,15 +30,12 @@ class OrganisationsFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mRootView = inflater.inflate(R.layout.fragment_organisations, container, false)
+        mRootView = inflater.inflate(R.layout.fragment_menu, container, false)
         return mRootView
     }
 
@@ -50,14 +47,14 @@ class OrganisationsFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.add_organisation_menu, menu)
+        inflater.inflate(R.menu.add_food_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if (id == R.id.action_add_organisation) {
+        if (id == R.id.action_add_food_item) {
             startActivity(Intent(activity, AddOrganisationActivity::class.java))
             return true
         }
@@ -72,27 +69,27 @@ class OrganisationsFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        getOrganisationsListFromFireStore()
+        getMenuItemsListFromFireStore()
     }
 
-    private fun getOrganisationsListFromFireStore() {
+    private fun getMenuItemsListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
 
-        FireStoreClass().getOrganisationList(this@OrganisationsFragment)
+        FireStoreClass().getOrganisationList(this@MenuFragment)
     }
 
-    fun successfulOrganisationsList(productsList: ArrayList<Organisation>) {
+    fun successfulMenuItemsList(menuList: ArrayList<FoodMenuItem>) {
 
         hideProgressDialog()
 
-        if (productsList.size > 0) {
+        if (menuList.size > 0) {
             binding.rvOrganisations.show()
             binding.tvNoOrganisations.remove()
 
             binding.rvOrganisations.setLayoutManagerVertical()
             binding.rvOrganisations.showVerticalDividers()
             binding.rvOrganisations.setHasFixedSize(true)
-            binding.rvOrganisations.adapter = OrganisationsListAdapter(requireActivity(), productsList, this@OrganisationsFragment)
+            binding.rvOrganisations.adapter = MenuAdapter(requireActivity(), menuList, this@MenuFragment)
         } else {
             binding.rvOrganisations.remove()
             binding.tvNoOrganisations.show()
@@ -100,26 +97,16 @@ class OrganisationsFragment : BaseFragment() {
     }
 
 
-    fun deleteOrganisation(orgID: String) {
-        showAlertDialogToDeleteOrganisation(orgID)
-    }
 
-    fun deleteOrganisationDeleteSuccess() {
-
-        hideProgressDialog()
-        showShortToast(R.string.organisation_delete_success_message.asString())
-        getOrganisationsListFromFireStore()
-    }
-
-    private fun showAlertDialogToDeleteOrganisation(productID: String) {
+    private fun showAlertDialogToDeleteMenuItem(productID: String) {
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(R.string.delete_dialog_title.asString())
-        builder.setMessage(R.string.delete_dialog_message_organisation)
+        builder.setMessage(R.string.delete_dialog_message_menu_item)
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreClass().deleteOrganisation(this@OrganisationsFragment, productID)
+            FireStoreClass().deleteMenuItem(this@MenuFragment, productID)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
@@ -131,11 +118,6 @@ class OrganisationsFragment : BaseFragment() {
         alertDialog.show()
     }
 
-
-
-    fun deleteOrganisationDeleteFailure(e: Exception) {
-
-    }
 
 
     override fun onAttach(context: Context) {
@@ -151,6 +133,27 @@ class OrganisationsFragment : BaseFragment() {
         super.onDetach()
         listener = null
     }
+
+    fun deleteMenuItem(orgID: String) {
+        showAlertDialogToDeleteMenuItem(orgID)
+    }
+
+    fun failureMenuList(e: Exception) {
+
+    }
+
+    fun deleteMenuDeleteFailure(e: Exception) {
+        hideProgressDialog()
+        showShortToast(R.string.menu_delete_success_message.asString())
+    }
+
+
+    fun deleteMenuDeleteSuccess() {
+        hideProgressDialog()
+        showShortToast(R.string.menu_delete_success_message.asString())
+        getMenuItemsListFromFireStore()
+    }
+
 
     interface OnFragmentInteractionListener{
     }
