@@ -10,7 +10,7 @@ import com.athompson.cafe.R
 import com.athompson.cafe.adapters.MenuAdapter
 import com.athompson.cafe.databinding.FragmentMenuBinding
 import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.ui.activities.AddOrganisationActivity
+import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
@@ -55,7 +55,7 @@ class MenuFragment : BaseFragment() {
         val id = item.itemId
 
         if (id == R.id.action_add_food_item) {
-            startActivity(Intent(activity, AddOrganisationActivity::class.java))
+            startActivity(Intent(activity, AddMenuItemActivity::class.java))
             return true
         }
         else if (id == android.R.id.home){
@@ -75,7 +75,7 @@ class MenuFragment : BaseFragment() {
     private fun getMenuItemsListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
 
-        FireStoreClass().getMenusList(this@MenuFragment)
+        FireStoreClass().getMenuItemsList(this@MenuFragment)
     }
 
 

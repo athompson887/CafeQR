@@ -16,6 +16,7 @@ import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.models.Organisation
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.models.Venue
+import com.athompson.cafelib.shared.CafeQRApplication
 import com.athompson.cafelib.shared.SharedConstants.MENUS
 import com.athompson.cafelib.shared.SharedConstants.ORGANISATIONS
 import com.athompson.cafelib.shared.SharedConstants.USERS
@@ -251,19 +252,12 @@ class FireStoreClass {
 
 
     fun getOrganisationList(fragment: Fragment) {
-        // The collection name for PRODUCTS
         mFireStore.collection(ORGANISATIONS)
             .whereEqualTo("userId", getCurrentUserID())
-            .get() // Will get the documents snapshots.
+            .get()
             .addOnSuccessListener { document ->
-
-                // Here we get the list of boards in the form of documents.
                 Log.e("Organisations List", document.documents.toString())
-
-                // Here we have created a new instance for Products ArrayList.
                 val orgList: ArrayList<Organisation> = ArrayList()
-
-                // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
                     val org = i.toObject(Organisation::class.java)
                     if (org != null) {
@@ -281,7 +275,6 @@ class FireStoreClass {
                 }
             }
             .addOnFailureListener { e ->
-                // Hide the progress dialog if there is any error based on the base class instance.
                 when (fragment) {
                     is DashboardFragment -> {
                         fragment.failureOrganisationList(e)
@@ -292,17 +285,14 @@ class FireStoreClass {
 
 
     fun getVenueItemsList(fragment: Fragment) {
-        // The collection name for PRODUCTS
+
         mFireStore.collection(VENUES)
-            .get() // Will get the documents snapshots.
+            .whereEqualTo("organisationId", CafeQRApplication.selectedOrganisation?.uid)
+            .get()
             .addOnSuccessListener { document ->
 
                 Log.e(fragment.javaClass.simpleName, document.documents.toString())
-
-                // Here we have created a new instance for Products ArrayList.
                 val venuesList: ArrayList<Venue> = ArrayList()
-
-                // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
 
                     val venue = i.toObject(Venue::class.java)!!
@@ -332,18 +322,13 @@ class FireStoreClass {
             }
     }
 
-    fun getMenusList(fragment: MenuFragment) {
-        // The collection name for PRODUCTS
+    fun getMenuItemsList(fragment: MenuFragment) {
         mFireStore.collection(MENUS)
-            .get() // Will get the documents snapshots.
+            .whereEqualTo("uid", CafeQRApplication.selectedVenue?.uid)
+            .get()
             .addOnSuccessListener { document ->
-
                 Log.e(fragment.javaClass.simpleName, document.documents.toString())
-
-                // Here we have created a new instance for Products ArrayList.
                 val menuList: ArrayList<FoodMenuItem> = ArrayList()
-
-                // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
 
                     val menu = i.toObject(FoodMenuItem::class.java)
@@ -352,8 +337,6 @@ class FireStoreClass {
                         menuList.add(menu)
                     }
                 }
-
-                // Pass the success result to the base fragment.
                 fragment.successfulMenuList(menuList)
             }
             .addOnFailureListener { e ->
@@ -400,16 +383,16 @@ class FireStoreClass {
             }
     }
 
-    fun addMenuItem(addVenuesActivity: AddVenuesActivity, menu: FoodMenuItem) {
+    fun addMenuItem(addMenuItemActivity: AddMenuItemActivity, menu: FoodMenuItem) {
         mFireStore.collection(MENUS)
             .document()
             .set(menu, SetOptions.merge())
             .addOnSuccessListener {
-              //  addMenuItemActivity.addMenuItemSuccess()
+                addMenuItemActivity.addMenuItemSuccess()
             }
             .addOnFailureListener { e ->
-               // addMenuItemActivity.hideProgressDialog()
-                //addMenuItemActivity.addMenuItemFailure()
+                addMenuItemActivity.hideProgressDialog()
+                addMenuItemActivity.addMenuItemFailure()
             }
     }
 }

@@ -155,22 +155,23 @@ class DashboardFragment : BaseFragment() {
 
     fun failureOrganisationList(e: Exception) {
         showShortToast("Failed To get organisations",e)
-        getVenuesList()
         binding.recyclerOrganisations.hide()
         binding.noOrganisationsView.show()
+        hideProgressDialog()
     }
 
     //handle success
     fun successfulOrganisationsList(organisationsList: ArrayList<Organisation>) {
-        getVenuesList()
         if (organisationsList.size > 0) {
             organisations.clear()
             organisations.addAll(organisationsList)
+            setSelectedOrganisation(organisations[0])
             binding.recyclerOrganisations.show()
             binding.noOrganisationsView.hide()
         } else {
             binding.recyclerOrganisations.hide()
             binding.noOrganisationsView.show()
+            hideProgressDialog()
         }
         organisationAdapter.dataChanged(organisations)
     }
@@ -179,6 +180,7 @@ class DashboardFragment : BaseFragment() {
         if (venuesList.size > 0) {
             venues.clear()
             venues.addAll(venuesList)
+            setSelectedVenue(venues[0])
             binding.recyclerVenues.show()
             binding.noVenuesView.hide()
         } else {
@@ -195,18 +197,19 @@ class DashboardFragment : BaseFragment() {
         val s = selectedOrganisation
         if(s!=null) {
             GlideLoader(requireContext()).loadImagePicture(org.imageUrl, binding.image)
-            binding.name.text = s.name
-            binding.type.text = s.type
+            binding.orgName.text = s.name
+            binding.orgType.text = s.type
         }
+        getVenuesList()
     }
 
     fun setSelectedVenue(venue: Venue) {
         selectedVenue = venue
         val s = selectedVenue
         if(s!=null) {
-            GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.image)
-            binding.name.text = s.name
-            binding.type.text = s.city
+            GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.venueImage)
+            binding.venueTown.text = s.name
+            binding.venueShortAddress.text = s.city
         }
     }
 

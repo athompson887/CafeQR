@@ -87,6 +87,7 @@
     <string name="no_venues_added_yet">No Venues Added Yet</string>
     <string name="action_add_org">Add Organisation</string>
     <string name="title_add_org">Add Organisation</string>
+    <string name="title_add_menu_item">Add Menu Item</string>
     <string name="action_add_venue">Add Venue</string>
     <string name="title_add_venue">Add Venue</string>
     <string name="err_msg_select_organisation_image">Please select product image.</string>
@@ -97,6 +98,8 @@
     <string name="add_org_failure">Add organisation failure</string>
     <string name="add_venue_success">Add organisation success</string>
     <string name="add_venue_failure">Add venue failure</string>
+    <string name="add_menu_item_success">Add menu item success</string>
+    <string name="add_menu_item_failure">Add menu item failure</string>
     <string name="no_venues_found">No venue found!</string>
     <string name="address">Address</string>
     <string name="city">City</string>

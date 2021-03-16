@@ -50,7 +50,7 @@ class VenueAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val org = venues[position]
+        val venue = venues[position]
         when (holder) {
             is DashboardFragment.ItemViewHolder -> {
                 holder.itemView.setOnClickListener {
@@ -58,16 +58,16 @@ class VenueAdapter(
                     notifyDataSetChanged()
                 }
                 if(position==selectedIndex) {
-                    fragment.setSelectedVenue(org)
+                    fragment.setSelectedVenue(venue)
                     holder.binding.check.show()
                 }
                 else {
                     holder.binding.check.hide()
                 }
-                GlideLoader(context).loadImagePicture(org.imageUrl, holder.binding.image)
+                GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
                 holder.binding.image
-                holder.binding.name.text = org.name
-                holder.binding.type.text = org.city
+                holder.binding.name.text = venue.name
+                holder.binding.type.text = venue.city
             }
             is DashboardFragment.AddItemViewHolder -> {
                 holder.binding.add.setOnClickListener {

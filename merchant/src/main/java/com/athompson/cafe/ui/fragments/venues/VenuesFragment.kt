@@ -121,7 +121,7 @@ class VenuesFragment : BaseFragment() {
     fun deleteVenueDeleteSuccess() {
 
         hideProgressDialog()
-        showShortToast(R.string.venue_delete_success_message.asString())
+        showShortToast(R.string.venue_delete_success_message)
         getVenuesListFromFireStore()
     }
 

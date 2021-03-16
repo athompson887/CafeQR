@@ -51,7 +51,7 @@
                         app:srcCompat="@drawable/cafeqricon_customer" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/name"
+                        android:id="@+id/orgName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -62,7 +62,7 @@
                         tools:text="McDonalds" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/type"
+                        android:id="@+id/orgType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -96,7 +96,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/VenueImage"
+                        android:id="@+id/venue_image"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -108,13 +108,13 @@
                         app:srcCompat="@drawable/cafeqricon_customer" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/VenueTown"
+                        android:id="@+id/venue_town"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="@color/colorPrimaryText"
-                        app:layout_constraintBottom_toTopOf="@id/VenueImage"
+                        app:layout_constraintBottom_toTopOf="@id/venue_image"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Great Wyrley" />
 
@@ -126,7 +126,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/colorPrimaryText"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/VenueImage"
+                        app:layout_constraintTop_toBottomOf="@+id/venue_image"
                         tools:text="Station Street" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
