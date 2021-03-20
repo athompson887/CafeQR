@@ -8,8 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.VenuesListAdapter
 import com.athompson.cafe.databinding.FragmentVenuesBinding
-import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafe.ui.activities.AddOrganisationActivity
+import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
@@ -69,7 +68,7 @@ class VenuesFragment : BaseFragment() {
 
     private fun getVenuesListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreClass().getVenueItemsList(this@VenuesFragment)
+        FireStoreVenue().getVenueItemsList(::successfulVenuesList,::failureVenueList)
     }
 
     fun successfulVenuesList(venuesList: ArrayList<Venue>) {
@@ -78,25 +77,27 @@ class VenuesFragment : BaseFragment() {
 
         if (venuesList.size > 0) {
             binding.rvVenues.show()
-            binding.tvNoVenues.remove()
+           binding.tvNoVenues.remove()
 
             binding.rvVenues.setLayoutManagerVertical()
             binding.rvVenues.setHasFixedSize(true)
             binding.rvVenues.setLayoutManagerVertical()
             binding.rvVenues.showVerticalDividers()
-            binding.rvVenues.adapter = VenuesListAdapter(requireActivity(), venuesList, this@VenuesFragment)
+            binding.rvVenues.adapter = VenuesListAdapter(requireActivity(), venuesList)
         } else {
             binding.rvVenues.remove()
             binding.tvNoVenues.show()
         }
     }
 
+    fun failureVenueList(e: Exception) {
+        hideProgressDialog()
+    }
+
 
     fun deleteVenue(venueID: String) {
         showAlertDialogToDeleteVenue(venueID)
     }
-
-
 
     private fun showAlertDialogToDeleteVenue(venueID: String) {
 
@@ -106,7 +107,7 @@ class VenuesFragment : BaseFragment() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreClass().deleteVenue(this@VenuesFragment, venueID)
+            FireStoreVenue().deleteVenue(this@VenuesFragment, venueID)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
@@ -126,10 +127,6 @@ class VenuesFragment : BaseFragment() {
     }
 
     fun deleteVenueDeleteFailure(e: Exception) {
-
-    }
-
-    fun failureVenueList(e: Exception) {
 
     }
 }

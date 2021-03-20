@@ -59,7 +59,7 @@
             tools:ignore="LockedOrientationActivity">
         </activity>
 
-        <activity android:name=".ui.activities.AddOrganisationActivity"
+        <activity android:name=".ui.activities.AddMenuActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"

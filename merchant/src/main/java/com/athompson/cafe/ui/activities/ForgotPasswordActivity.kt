@@ -2,7 +2,6 @@ package com.athompson.cafe.ui.activities
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityForgotPasswordBinding
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar

@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image"
+            android:id="@+id/selectedImage"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,14 +29,14 @@
             app:srcCompat="@drawable/cafeqricon_customer" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/name"
+            android:id="@+id/selectedVenueName"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/image"
+            app:layout_constraintBottom_toTopOf="@id/selectedImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="McDonalds" />
@@ -48,7 +48,7 @@
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/selectedImage"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Fast Food Restaurant" />
 

@@ -2,7 +2,6 @@ package com.athompson.cafe.ui.activities
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,21 +11,23 @@ import android.view.LayoutInflater
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
-import com.athompson.cafe.MerchantApplication
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddVenueBinding
-import com.athompson.cafe.firestore.FireStoreClass
+import com.athompson.cafe.firestore.FireStoreImage
+import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
-import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.Venue
 import com.athompson.cafelib.shared.CafeQRApplication
+import kotlinx.android.synthetic.main.activity_add_venue.view.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.info_card.*
+import kotlinx.android.synthetic.main.simple_venue_item.*
 import java.io.IOException
 
 class AddVenuesActivity : BaseActivity(){
@@ -116,40 +117,21 @@ class AddVenuesActivity : BaseActivity(){
     private fun validateOrganisationDetails(): Boolean {
         return when {
 
-            mSelectedImageFileUri == null -> {
-                showErrorSnackBar(R.string.err_msg_select_organisation_image.asString(), true)
-                false
-            }
-
             TextUtils.isEmpty(binding.etVenueName.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_organisation_name.asString(), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etVenueType.trimmed()) -> {
+            TextUtils.isEmpty(binding.etLocation.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_organisation_type.asString(), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etAddresss1.trimmed()) -> {
+            TextUtils.isEmpty(binding.etDescription.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_address.asString(), true)
                 false
             }
 
-            TextUtils.isEmpty(binding.etAddresss2.trimmed()) -> {
-                showErrorSnackBar(R.string.err_msg_enter_address.asString(), true)
-                false
-            }
-
-            TextUtils.isEmpty(binding.etCity.trimmed()) -> {
-                showErrorSnackBar(R.string.err_enter_city.asString(), true)
-                false
-            }
-
-            TextUtils.isEmpty(et_email.trimmed()) -> {
-                showErrorSnackBar(R.string.err_msg_enter_email.asString(), true)
-                false
-            }
             else -> {
                 true
             }
@@ -159,29 +141,32 @@ class AddVenuesActivity : BaseActivity(){
     private fun uploadOrganisationImage() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreClass().uploadImageToCloudStorage(this@AddVenuesActivity, mSelectedImageFileUri)
+        FireStoreImage().uploadImageToCloudStorage(this@AddVenuesActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
     }
 
-    fun imageUploadSuccess(imageURL: String) {
+    private fun imageUploadSuccess(imageURL: String) {
 
         mVenueImageURL = imageURL
         uploadVenue()
     }
 
+    private fun imageUploadFailure(exception: Exception) {
+        hideProgressDialog()
+        showShortToast(R.string.upload_image_failure.asString())
+    }
+
     private fun uploadVenue() {
         val venue = Venue(
-            CafeQRApplication.selectedOrganisation?.uid.toString(),
-            binding.etVenueName.trimmed(),
-            binding.etAddresss1.trimmed(),
-            binding.etAddresss2.trimmed(),
-            binding.etCity.trimmed(),
-            binding.etEmail.trimmed(),
-            binding.etPhone.trimmed().toLong(),
-            mVenueImageURL,
-            "".uuid()
+            name = binding.etVenueName.trimmed(),
+            location =  binding.etLocation.trimmed(),
+            description =  binding.etDescription.trimmed(),
+         //   binding.etEmail.trimmed(),
+       //     binding.etPhone.trimmed().toLong(),
+        //    mVenueImageURL,
+        //    "".uuid()
         )
 
-        FireStoreClass().addVenue(this@AddVenuesActivity, venue)
+        FireStoreVenue().addVenue(this@AddVenuesActivity, venue)
     }
 
     fun addVenueSuccess() {
@@ -195,8 +180,5 @@ class AddVenuesActivity : BaseActivity(){
         showShortToast(R.string.add_venue_failure.asString())
     }
 
-    fun imageUploadFailure() {
-        hideProgressDialog()
-        showShortToast(R.string.upload_image_failure.asString())
-    }
+
 }

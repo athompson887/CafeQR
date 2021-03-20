@@ -3,7 +3,7 @@ package com.athompson.cafelib.firestore
 
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.athompson.cafelib.models.Organisation
+import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.shared.SharedConstants.ORGANISATIONS
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -28,11 +28,11 @@ class FireStoreClassShared {
                 Log.e("Organisations List", document.documents.toString())
 
                 // Here we have created a new instance for Products ArrayList.
-                val orgList: ArrayList<Organisation> = ArrayList()
+                val orgList: ArrayList<CafeQrMenu> = ArrayList()
 
                 // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
-                    val org = i.toObject(Organisation::class.java)
+                    val org = i.toObject(CafeQrMenu::class.java)
                     if (org != null) {
                         orgList.add(org)
                     }

@@ -9,41 +9,20 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.athompson.cafe.ui.fragments.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
-        <action
-            android:id="@+id/action_navigation_dashboard_to_organisationsFragment"
-            app:destination="@id/navigation_organisations"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-
-        <action
-            android:id="@+id/action_navigation_dashboard_to_venuesFragment"
-            app:destination="@id/navigation_venues"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_food_menu"
-        android:name="com.athompson.cafe.ui.fragments.menu.MenuFragment"
-        android:label="@string/title_menu"
-        tools:layout="@layout/fragment_menu" />
-
-    <fragment
-        android:id="@+id/navigation_organisations"
-        android:name="com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment"
-        android:label="@string/title_organisations"
-        tools:layout="@layout/fragment_organisations" />
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_venues"
         android:name="com.athompson.cafe.ui.fragments.venues.VenuesFragment"
         android:label="@string/title_venues"
         tools:layout="@layout/fragment_venues" />
+
+
+    <fragment
+        android:id="@+id/navigation_food_menu"
+        android:name="com.athompson.cafe.ui.fragments.menu.MenuFragment"
+        android:label="@string/title_menu"
+        tools:layout="@layout/fragment_menu" />
 
     <fragment
         android:id="@+id/navigation_codes"

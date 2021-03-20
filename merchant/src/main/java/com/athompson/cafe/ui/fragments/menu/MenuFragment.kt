@@ -7,9 +7,9 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.athompson.cafe.R
-import com.athompson.cafe.adapters.MenuAdapter
 import com.athompson.cafe.databinding.FragmentMenuBinding
-import com.athompson.cafe.firestore.FireStoreClass
+import com.athompson.cafe.firestore.FireStoreMenu
+import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
@@ -75,8 +75,30 @@ class MenuFragment : BaseFragment() {
     private fun getMenuItemsListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
 
-        FireStoreClass().getMenuItemsList(this@MenuFragment)
+        FireStoreMenuItem().getMenuItems(::successfulMenuList,::failureMenuList)
     }
+
+    fun failureMenuList(e: Exception) {
+        hideProgressDialog()
+    }
+
+    fun successfulMenuList(menuList: ArrayList<FoodMenuItem>) {
+        hideProgressDialog()
+
+        if (menuList.size > 0) {
+            binding.rvMenuItems.show()
+            binding.tvNoFoodItems.remove()
+
+            binding.rvMenuItems.setLayoutManagerVertical()
+            binding.rvMenuItems.showVerticalDividers()
+            binding.rvMenuItems.setHasFixedSize(true)
+            //     binding.rvMenuItems.adapter = SimpleMenuAdapter(requireActivity(), menuList)
+        } else {
+            binding.rvMenuItems.remove()
+            binding.tvNoFoodItems.show()
+        }
+    }
+
 
 
 
@@ -88,7 +110,7 @@ class MenuFragment : BaseFragment() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreClass().deleteMenuItem(this@MenuFragment, productID)
+            FireStoreMenu().deleteCafeQrMenu(this@MenuFragment, productID)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
@@ -120,9 +142,7 @@ class MenuFragment : BaseFragment() {
         showAlertDialogToDeleteMenuItem(orgID)
     }
 
-    fun failureMenuList(e: Exception) {
 
-    }
 
     fun deleteMenuDeleteFailure(e: Exception) {
         hideProgressDialog()
@@ -136,22 +156,6 @@ class MenuFragment : BaseFragment() {
         getMenuItemsListFromFireStore()
     }
 
-    fun successfulMenuList(menuList: ArrayList<FoodMenuItem>) {
-        hideProgressDialog()
-
-        if (menuList.size > 0) {
-            binding.rvMenuItems.show()
-            binding.tvNoFoodItems.remove()
-
-            binding.rvMenuItems.setLayoutManagerVertical()
-            binding.rvMenuItems.showVerticalDividers()
-            binding.rvMenuItems.setHasFixedSize(true)
-            binding.rvMenuItems.adapter = MenuAdapter(requireActivity(), menuList, this@MenuFragment)
-        } else {
-            binding.rvMenuItems.remove()
-            binding.tvNoFoodItems.show()
-        }
-    }
 
 
     interface OnFragmentInteractionListener{

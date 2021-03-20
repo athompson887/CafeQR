@@ -13,7 +13,8 @@ import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddMenuItemBinding
-import com.athompson.cafe.firestore.FireStoreClass
+import com.athompson.cafe.firestore.FireStoreImage
+import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
@@ -146,14 +147,21 @@ class AddMenuItemActivity : BaseActivity(){
     private fun uploadOrganisationImage() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreClass().uploadImageToCloudStorage(this@AddMenuItemActivity, mSelectedImageFileUri)
+        FireStoreImage().uploadImageToCloudStorage(this@AddMenuItemActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
     }
 
-    fun imageUploadSuccess(imageURL: String) {
-
+    private fun imageUploadSuccess(imageURL: String) {
+        hideProgressDialog()
         mFoodImageURL = imageURL
         uploadMenuItem()
     }
+
+    private fun imageUploadFailure(exception: Exception) {
+
+        showShortToast(R.string.upload_image_failure.asString())
+        hideProgressDialog()
+    }
+
 
     private fun uploadMenuItem() {
 
@@ -164,17 +172,12 @@ class AddMenuItemActivity : BaseActivity(){
             binding.etMenuItemDescription.trimmed(),
             mFoodImageURL,
             binding.etPrice.trimmed().toDouble(),
-            CafeQRApplication.selectedOrganisation?.uid.safe(),
+            CafeQRApplication.selectedCafeQrMenu?.uid.safe(),
             CafeQRApplication.selectedVenue?.uid.safe(),
             "".uuid()
         )
 
-        FireStoreClass().addMenuItem(this@AddMenuItemActivity, food)
-    }
-
-    fun imageUploadFailure() {
-        hideProgressDialog()
-        showShortToast(R.string.upload_image_failure.asString())
+        FireStoreMenu().addCafeQrMenuItem(this@AddMenuItemActivity, food)
     }
 
     fun addMenuItemSuccess() {

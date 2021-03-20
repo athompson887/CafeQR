@@ -7,10 +7,10 @@ import android.view.View
 import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivitySettingsBinding
-import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.models.User
+import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -75,7 +75,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun getUserDetails() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreClass().getUserDetails(this@SettingsActivity)
+        FireStoreUser().getUserDetails(this@SettingsActivity)
     }
 
     fun userDetailsSuccess(user: User) {

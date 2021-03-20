@@ -8,13 +8,13 @@ import androidx.lifecycle.lifecycleScope
 import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
-import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.models.User
+import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ContextExtensions.isOnline
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
+import com.athompson.cafelib.models.User
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -142,7 +142,7 @@ class LoginActivity : BaseActivity() {
 
 
                     if (task.isSuccessful) {
-                        FireStoreClass().getUserDetails(this@LoginActivity)
+                        FireStoreUser().getUserDetails(this@LoginActivity)
                     } else {
                         hideProgressDialog()
                         loginError(task.exception?.message.toString())

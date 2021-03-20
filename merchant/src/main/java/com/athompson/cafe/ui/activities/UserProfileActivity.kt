@@ -16,12 +16,12 @@ import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityUserProfileBinding
-import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.models.User
+import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
+import com.athompson.cafelib.models.User
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
@@ -195,7 +195,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         }
 
         // call the registerUser function of FireStore class to make an entry in the database.
-        FireStoreClass().updateUserProfileData(
+        FireStoreUser().updateUserProfileData(
             this@UserProfileActivity,
             userHashMap
         )
@@ -232,7 +232,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
                         if (mSelectedImageFileUri != null) {
 
-                            FireStoreClass().uploadImageToCloudStorage(
+                            FireStoreUser().uploadImageToCloudStorage(
                                 this@UserProfileActivity,
                                 mSelectedImageFileUri
                             )

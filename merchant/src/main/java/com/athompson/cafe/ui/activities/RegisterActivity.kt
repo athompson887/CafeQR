@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityRegisterBinding
-import com.athompson.cafe.firestore.FireStoreClass
-import com.athompson.cafelib.models.User
+import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
+import com.athompson.cafelib.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -127,7 +127,7 @@ class RegisterActivity : BaseActivity() {
                             "".uuid()
                         )
 
-                        FireStoreClass().registerUser(this@RegisterActivity, user)
+                        FireStoreUser().registerUser(this@RegisterActivity, user)
                     } else {
                         showErrorSnackBar(task.exception?.message.toString(), true)
                     }

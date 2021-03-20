@@ -16,13 +16,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="32sp"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@id/image"
+        app:layout_constraintBottom_toTopOf="@id/selectedImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image"
+        android:id="@+id/selectedImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

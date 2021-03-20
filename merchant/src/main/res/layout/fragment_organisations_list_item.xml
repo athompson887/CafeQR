@@ -8,7 +8,7 @@
     tools:context=".ui.fragments.venues.VenuesFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image"
+        android:id="@+id/selectedImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
@@ -26,7 +26,7 @@
         android:textAlignment="center"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
         app:layout_constraintBottom_toTopOf="@+id/tv_type"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -38,34 +38,34 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_address1"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
+        app:layout_constraintBottom_toTopOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
         tools:layout_editor_absoluteX="0dp"
         tools:text="Fast Food" />
 
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_address1"
+        android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintBottom_toTopOf="@+id/tv_address2"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
+        app:layout_constraintBottom_toTopOf="@+id/tv_location"
         app:layout_constraintTop_toBottomOf="@+id/tv_type"
         tools:layout_editor_absoluteX="0dp"
         tools:text="Address 1" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_address2"
+        android:id="@+id/tv_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
         app:layout_constraintBottom_toTopOf="@+id/tv_city"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address1"
+        app:layout_constraintTop_toBottomOf="@+id/description"
         tools:layout_editor_absoluteX="0dp"
         tools:text="Address 2" />
 
@@ -75,9 +75,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
         app:layout_constraintBottom_toTopOf="@+id/tv_email"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_location"
         tools:layout_editor_absoluteX="0dp"
         tools:text="Walsall" />
 
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
         app:layout_constraintBottom_toTopOf="@+id/tv_telephone"
         app:layout_constraintTop_toBottomOf="@+id/tv_city"
         tools:text="help@mcds.com" />
@@ -101,6 +101,6 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email"
-        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/selectedImage"
         tools:text="01902 863329" />
 </androidx.constraintlayout.widget.ConstraintLayout>

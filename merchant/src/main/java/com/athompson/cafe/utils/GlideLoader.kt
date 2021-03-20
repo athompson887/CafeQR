@@ -1,7 +1,6 @@
 package com.athompson.cafe.utils
 
 import android.content.Context
-import android.net.Uri
 import android.widget.ImageView
 import com.athompson.cafe.R
 import com.bumptech.glide.Glide

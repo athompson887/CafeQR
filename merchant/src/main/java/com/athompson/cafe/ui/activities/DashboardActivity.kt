@@ -12,13 +12,12 @@ import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityDashboardBinding
 import com.athompson.cafe.ui.fragments.home.HomeFragment
 import com.athompson.cafe.ui.fragments.menu.MenuFragment
-import com.athompson.cafe.ui.fragments.organisations.OrganisationsFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,
-    OrganisationsFragment.OnFragmentInteractionListener,MenuFragment.OnFragmentInteractionListener {
+  MenuFragment.OnFragmentInteractionListener {
 
     lateinit var binding: ActivityDashboardBinding
 
@@ -26,12 +25,14 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         super.onCreate(savedInstanceState)
         window.requestFeature(Window.FEATURE_ACTION_BAR)
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
-        binding = ActivityDashboardBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding.root)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
         }
+
+        binding = ActivityDashboardBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
+
+
 
 
         supportActionBar?.setBackgroundDrawable(R.drawable.app_gradient_color_background.asDrawable())
@@ -43,8 +44,8 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_dashboard,
-                R.id.navigation_organisations,
                 R.id.navigation_venues,
+                R.id.navigation_food_menu,
                 R.id.navigation_codes
             )
         )

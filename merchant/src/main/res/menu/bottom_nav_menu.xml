@@ -7,11 +7,6 @@
         android:title="@string/title_dashboard" />
 
     <item
-        android:id="@+id/navigation_organisations"
-        android:icon="@drawable/ic_organisation"
-        android:title="Organisations" />
-
-    <item
         android:id="@+id/navigation_venues"
         android:icon="@drawable/ic_venue"
         android:title="Venues" />

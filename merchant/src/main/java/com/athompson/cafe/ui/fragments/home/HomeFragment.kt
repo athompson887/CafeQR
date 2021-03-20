@@ -3,14 +3,12 @@ package com.athompson.cafe.ui.fragments.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.athompson.cafe.Enums
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentHomeBinding
-import com.athompson.cafe.firestore.FireStoreClass
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
@@ -18,8 +16,6 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
-import com.athompson.cafelib.models.Organisation
-import com.athompson.cafelib.shared.SharedConstants
 import com.athompson.cafelib.shared.SharedConstants.DISPLAY_NAME_FIELD
 import com.athompson.cafelib.shared.SharedConstants.EMAIL_FIELD
 import com.athompson.cafelib.shared.SharedConstants.FIRST_NAME_FIELD
@@ -97,7 +93,7 @@ class HomeFragment : Fragment() {
         }
 
 
-        FireStoreClass().getOrganisationList(this@HomeFragment)
+      //  FireStoreClass().getOrganisationList(this@HomeFragment)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -122,10 +118,10 @@ class HomeFragment : Fragment() {
         binding.title.text = getString(R.string.hi_full_name, user.firstName.safe(), user.lastName.safe())
 
         val uri = firebaseAuth?.currentUser?.photoUrl
-        if (uri.toString().isEmpty())
-            binding.image.setImageResource(R.drawable.welcome)
-        else
-            binding.image.setImageURI(uri)
+     //   if (uri.toString().isEmpty())
+        //    binding.image.setImageResource(R.drawable.welcome)
+    //    else
+    //        binding.image.setImageURI(uri)
 
     }
 
