@@ -4,7 +4,7 @@
 
     <stroke
         android:width="@dimen/user_image_background_stroke"
-        android:color="@color/colorSecondaryText" />
+        android:color="?attr/colorOnPrimary"/>
 
     <corners android:radius="@dimen/user_image_background_corner_radius" />
 </shape>

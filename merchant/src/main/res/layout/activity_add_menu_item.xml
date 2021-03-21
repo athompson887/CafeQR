@@ -12,7 +12,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/app_gradient_color_background"
         app:title="Add Menu Item"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="?attr/colorSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -44,7 +44,7 @@
                     android:id="@+id/iv_menu_item_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorImageViewBackground"
+                    android:background="?attr/colorSurface"
                     android:src="@drawable/menu_image"
                     android:contentDescription="@string/content_description"
                     android:scaleType="fitXY" />
@@ -68,7 +68,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Name of food"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/fl_menu_item_image">
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +92,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Food type for example 'Starter'"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_menu_item_name">
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,7 +116,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Description of food"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_menu_item_type">
@@ -127,7 +127,7 @@
                     android:layout_height="200dp"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,7 +140,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Price"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_menu_item_description">
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -25,8 +25,6 @@ import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.Venue
 import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedCafeQrMenu
 import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedVenue
-import kotlinx.android.synthetic.main.add_item.view.*
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 
 class DashboardFragment : BaseFragment() {

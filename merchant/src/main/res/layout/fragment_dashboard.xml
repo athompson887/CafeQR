@@ -20,7 +20,7 @@
             android:padding="8dp"
             android:text="Selected Venue"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <com.google.android.material.card.MaterialCardView
@@ -29,7 +29,7 @@
             android:layout_height="200dp"
             android:layout_margin="8dp"
             android:elevation="8dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
@@ -58,7 +58,7 @@
                     android:gravity="center_horizontal"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Great Wyrley" />
@@ -70,7 +70,7 @@
                     android:layout_marginStart="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
                     app:layout_constraintTop_toBottomOf="@id/selectedVenueName"
                     tools:text="Cannock" />
@@ -81,7 +81,7 @@
                     android:layout_marginStart="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
                     app:layout_constraintTop_toBottomOf="@id/selectedVenueTown"
                     tools:text="Evening Menu" />
@@ -92,7 +92,7 @@
                     android:layout_marginStart="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
                     app:layout_constraintTop_toBottomOf="@id/selectedMenuName"
                     tools:text="A selection of foods to enjoy" />
@@ -108,7 +108,7 @@
             android:fontFamily="@font/nunitosans_extrabold"
             android:text="All Venues"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/venueCard" />
 
@@ -120,7 +120,7 @@
             android:layout_marginEnd="8dp"
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_baseline_add_circle_outline_24"
-            app:iconTint="@color/white"
+            app:iconTint="?attr/colorOnPrimary"
             app:layout_constraintBaseline_toBaselineOf="@id/txt_all_venues"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -140,7 +140,7 @@
                 android:layout_margin="8dp"
                 android:elevation="8dp"
                 android:visibility="visible"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp">
 
                 <FrameLayout
@@ -151,7 +151,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
-                        android:background="@color/white"
+                        android:background="?attr/colorSurface"
                         android:orientation="vertical"
                         android:paddingBottom="8dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -168,8 +168,8 @@
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
                 android:elevation="8dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="@color/white"
+                android:visibility="visible"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -184,7 +184,7 @@
                         android:fontFamily="@font/nunitosans_bold"
                         android:text="Add your venue"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@color/colorPrimaryText"
+                       android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -195,7 +195,7 @@
                         android:fontFamily="@font/nunitosans_regular"
                         android:text="To use CafeQr you need at least one venue.  A venue is a shop or resteraunt."
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@color/colorPrimaryText"
+                       android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -206,7 +206,7 @@
                         android:fontFamily="@font/nunitosans_regular"
                         android:text="You can have multiple venues!"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@color/colorPrimaryText"
+                       android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/description1" />
 
@@ -232,7 +232,7 @@
             android:fontFamily="@font/nunitosans_extrabold"
             android:text="All Menus"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/venuesWrapper" />
 
@@ -244,7 +244,7 @@
             android:layout_marginEnd="8dp"
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_baseline_add_circle_outline_24"
-            app:iconTint="@color/white"
+            app:iconTint="?attr/colorSurface"
             app:layout_constraintBaseline_toBaselineOf="@id/txt_all_menus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -264,7 +264,7 @@
                 android:layout_margin="8dp"
                 android:elevation="8dp"
                 android:visibility="gone"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp">
 
                 <FrameLayout
@@ -275,7 +275,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
-                        android:background="@color/white"
+                        android:background="?attr/colorSurface"
                         android:orientation="vertical"
                         android:paddingBottom="8dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -293,7 +293,7 @@
                 android:layout_margin="8dp"
                 android:elevation="8dp"
                 android:visibility="visible"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -308,7 +308,7 @@
                         android:fontFamily="@font/nunitosans_bold"
                         android:text="You do not have any Menus!"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@color/colorPrimaryText"
+                       android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -319,7 +319,7 @@
                         android:fontFamily="@font/nunitosans_regular"
                         android:text="You need at least one menu to show your items"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@color/colorPrimaryText"
+                       android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/menu_title" />
 
@@ -330,7 +330,7 @@
                         android:fontFamily="@font/nunitosans_regular"
                         android:text="You can have a menu for each venue or share the same menu across all of your venues!"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@color/colorPrimaryText"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/menu_description1" />
 

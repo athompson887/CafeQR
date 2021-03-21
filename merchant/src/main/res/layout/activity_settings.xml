@@ -40,7 +40,7 @@
                     android:paddingStart="@dimen/toolbar_title_paddingStart"
                     android:paddingEnd="0dp"
                     android:text="@string/title_settings"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/toolbar_title_text_size"
                     android:textStyle="bold" />
 
@@ -78,13 +78,12 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="16dp"
             android:background="@drawable/item_grey_border_background"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:paddingStart="@dimen/settings_edit_label_marginStartEnd"
             android:paddingTop="@dimen/settings_edit_label_marginTopBottom"
             android:paddingEnd="@dimen/settings_edit_label_marginStartEnd"
             android:paddingBottom="@dimen/settings_edit_label_marginTopBottom"
             android:text="@string/lbl_edit"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/settings_edit_label_textSize" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -94,7 +93,7 @@
             android:layout_below="@id/fl_user_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/settings_name_marginTop"
-            android:textColor="@color/colorDarkGrey"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/settings_name_textSize"
             tools:text="Andrew Thompson" />
 
@@ -105,7 +104,7 @@
             android:layout_below="@id/tv_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/settings_info_marginTop"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/settings_info_textSize"
             tools:text="Male" />
 
@@ -116,7 +115,7 @@
             android:layout_below="@id/tv_gender"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/settings_info_marginTop"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/settings_info_textSize"
             tools:text="a.thompson887@btinternet.com" />
 
@@ -127,7 +126,7 @@
             android:layout_below="@id/tv_email"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/settings_info_marginTop"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/settings_info_textSize"
             tools:text="07535122449" />
 
@@ -148,7 +147,7 @@
                 android:layout_margin="@dimen/settings_lbl_addresses_margin"
                 android:layout_weight="1"
                 android:text="@string/lbl_addresses"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/settings_lbl_addresses_textSize" />
 
             <ImageView

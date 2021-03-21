@@ -13,7 +13,7 @@
         android:background="@drawable/app_gradient_color_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:title="Add Menu"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </androidx.appcompat.widget.Toolbar>
@@ -44,7 +44,7 @@
                     android:id="@+id/menu_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorImageViewBackground"
+                    android:src="@drawable/cafe_image"
                     android:contentDescription="@string/content_description"
                     android:scaleType="fitXY" />
 
@@ -54,7 +54,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
                     android:contentDescription="@string/content_description"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:padding="@dimen/add_update_product_icon_padding"
                     android:src="@drawable/ic_vector_add_photo" />
             </FrameLayout>
@@ -68,7 +67,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Please enter a name for your menu"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/menu_image_wrapper">
@@ -79,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +91,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Please give a description of your menu"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_menu_name">
@@ -103,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,7 +117,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_background"
-                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:paddingTop="@dimen/btn_padding"
                 android:paddingBottom="@dimen/btn_padding"

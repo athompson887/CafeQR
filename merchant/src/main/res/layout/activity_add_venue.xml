@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/app_gradient_color_background"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="?attr/colorSurface"
         app:title="Add Venue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
                     android:id="@+id/iv_venue_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorImageViewBackground"
+                    android:background="?attr/colorSurface"
                     android:src="@drawable/cafe_image"
                     android:contentDescription="@string/content_description"
                     android:scaleType="fitXY" />
@@ -68,7 +68,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/et_hint_venue_name"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/fl_venue_image">
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +92,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="Enter the venue location"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_menu_name">
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +117,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:hint="Give a description of the venue"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/btn_submit"
@@ -129,7 +129,7 @@
                     android:layout_height="match_parent"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
+                   android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
