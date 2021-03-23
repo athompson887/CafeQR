@@ -11,7 +11,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 /** Graphic instance for rendering Barcode position and content information in an overlay view.  */
-class BarcodeGraphic constructor(overlay: GraphicOverlay?, private val barcode: Barcode?) :
+class BarcodeGraphic constructor(overlay: GraphicOverlay, private val barcode: Barcode?) :
     GraphicOverlay.Graphic(overlay) {
     private val rectPaint: Paint = Paint()
     private val barcodePaint: Paint
@@ -32,7 +32,7 @@ class BarcodeGraphic constructor(overlay: GraphicOverlay?, private val barcode: 
     /**
      * Draws the barcode block annotations for position, size, and raw value on the supplied canvas.
      */
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas?) {
         checkNotNull(barcode) { "Attempting to draw a null barcode." }
         // Draws the bounding box around the BarcodeBlock.
         val rect = RectF(barcode.boundingBox)
@@ -43,12 +43,12 @@ class BarcodeGraphic constructor(overlay: GraphicOverlay?, private val barcode: 
         rect.right = max(x0, x1)
         rect.top = translateY(rect.top)
         rect.bottom = translateY(rect.bottom)
-        canvas.drawRect(rect, rectPaint)
+        canvas?.drawRect(rect, rectPaint)
         // Draws other object info.
         val lineHeight =
             TEXT_SIZE + 2 * STROKE_WIDTH
         val textWidth = barcodePaint.measureText(barcode.rawValue)
-        canvas.drawRect(
+        canvas?.drawRect(
             rect.left - STROKE_WIDTH,
             rect.top - lineHeight,
             rect.left + textWidth + 2 * STROKE_WIDTH,
@@ -56,7 +56,7 @@ class BarcodeGraphic constructor(overlay: GraphicOverlay?, private val barcode: 
             labelPaint
         )
         // Renders the barcode at the bottom of the box.
-        canvas.drawText(
+        canvas?.drawText(
             barcode.rawValue!!,
             rect.left,
             rect.top - STROKE_WIDTH,

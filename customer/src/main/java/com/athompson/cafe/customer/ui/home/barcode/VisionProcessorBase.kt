@@ -165,11 +165,11 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
             numRuns++
             frameProcessedInOneSecondInterval++
             totalFrameMs += currentFrameLatencyMs
-            maxFrameMs = Math.max(currentFrameLatencyMs, maxFrameMs)
-            minFrameMs = Math.min(currentFrameLatencyMs, minFrameMs)
+            maxFrameMs = currentFrameLatencyMs.coerceAtLeast(maxFrameMs)
+            minFrameMs = currentFrameLatencyMs.coerceAtMost(minFrameMs)
             totalDetectorMs += currentDetectorLatencyMs
-            maxDetectorMs = Math.max(currentDetectorLatencyMs, maxDetectorMs)
-            minDetectorMs = Math.min(currentDetectorLatencyMs, minDetectorMs)
+            maxDetectorMs = currentDetectorLatencyMs.coerceAtLeast(maxDetectorMs)
+            minDetectorMs = currentDetectorLatencyMs.coerceAtMost(minDetectorMs)
 
             // Only log inference info once per second. When frameProcessedInOneSecondInterval is
             // equal to 1, it means this is the first frame processed during the current second.

@@ -25,7 +25,6 @@ import com.athompson.cafe.customer.Enums
 import com.athompson.cafe.customer.R
 import com.athompson.cafe.customer.databinding.FragmentHomeBinding
 import com.athompson.cafe.customer.ui.home.barcode.BarcodeGraphic
-import com.athompson.cafe.customer.ui.home.barcode.FrameMetadata
 import com.athompson.cafe.customer.ui.home.barcode.GraphicOverlay
 import com.athompson.cafe.customer.ui.home.barcode.VisionProcessorBase
 import com.athompson.cafelib.extensions.FragmentExtensions.logDebug
@@ -45,7 +44,6 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.home_scan_layout.*
-import java.nio.ByteBuffer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
