@@ -19,6 +19,7 @@ import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
+import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.models.CafeQrMenu
@@ -55,8 +56,6 @@ class DashboardFragment : BaseFragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner, {
             //textView.text = it
         })
-
-
         return root
     }
 
@@ -138,17 +137,9 @@ class DashboardFragment : BaseFragment() {
         _binding = null
     }
 
-
     private fun getVenuesList() {
         showProgressDialog(R.string.please_wait.asString())
         FireStoreVenue().getVenueItemsList(::successVenuesList, ::failureVenueList)
-    }
-
-    private fun failureVenueList(e: Exception) {
-        showShortToast("Failed To get venus",e)
-        binding.recyclerVenues.hide()
-        binding.noVenuesView.show()
-        hideProgressDialog()
     }
 
     private fun successVenuesList(venuesList: java.util.ArrayList<Venue>) {
@@ -156,14 +147,28 @@ class DashboardFragment : BaseFragment() {
             venues.clear()
             venues.addAll(venuesList)
             setSelectedVenue(venues[0])
-            binding.venuesView.show()
-            binding.noVenuesView.hide()
+            showVenue()
         } else {
-            binding.venuesView.hide()
-            binding.noVenuesView.show()
+            showNoVenue()
         }
         getMenusList()
         simpleVenueAdapter.dataChanged(venues)
+        hideProgressDialog()
+    }
+
+    private fun showNoVenue() {
+        binding.venuesView.remove()
+        binding.noVenuesView.show()
+    }
+
+    private fun showVenue() {
+        binding.venuesView.show()
+        binding.noVenuesView.remove()
+    }
+
+    private fun failureVenueList(e: Exception) {
+        showShortToast("Failed To get venus",e)
+        showNoVenue()
         hideProgressDialog()
     }
 
@@ -177,18 +182,27 @@ class DashboardFragment : BaseFragment() {
             cafeQrMenus.clear()
             cafeQrMenus.addAll(menuList)
             setSelectedMenu(cafeQrMenus[0])
-            binding.menusView.show()
-            binding.noMenusView.hide()
+            showMenu()
         } else {
-            binding.menusView.hide()
-            binding.noMenusView.show()
+            showNoMenu()
         }
         simpleMenuAdapter.dataChanged(cafeQrMenus)
         hideProgressDialog()
     }
-
     private fun failureCafeQrMenuList(e: Exception) {
         hideProgressDialog()
+        binding.menusView.remove()
+        binding.noMenusView.show()
+    }
+    private fun showMenu()
+    {
+        binding.menusView.show()
+        binding.noMenusView.remove()
+    }
+    private fun showNoMenu()
+    {
+        binding.menusView.remove()
+        binding.noMenusView.show()
     }
 
     private fun setSelectedMenu(cqrMeny: CafeQrMenu) {

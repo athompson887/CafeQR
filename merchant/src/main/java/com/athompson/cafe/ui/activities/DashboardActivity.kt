@@ -26,16 +26,11 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         window.requestFeature(Window.FEATURE_ACTION_BAR)
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
+            window.setDecorFitsSystemWindows(true)
         }
 
         binding = ActivityDashboardBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
-
-
-
-
-        supportActionBar?.setBackgroundDrawable(R.drawable.app_gradient_color_background.asDrawable())
 
         val navView: BottomNavigationView = binding.navView
 

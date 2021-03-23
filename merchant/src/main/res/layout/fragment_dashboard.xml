@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryVariant"
     tools:context=".ui.fragments.dashboard.DashboardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:padding="8dp"
             android:text="Selected Venue"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorSurface"
+            android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <com.google.android.material.card.MaterialCardView
@@ -132,14 +132,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_all_venues">
 
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/venuesView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_margin="8dp"
                 android:elevation="8dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp">
 
@@ -232,7 +231,7 @@
             android:fontFamily="@font/nunitosans_extrabold"
             android:text="All Menus"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorSurface"
+            android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/venuesWrapper" />
 
