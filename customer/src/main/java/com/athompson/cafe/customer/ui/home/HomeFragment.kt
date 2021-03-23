@@ -24,6 +24,7 @@ import com.athompson.cafe.customer.Enums
 import com.athompson.cafe.customer.R
 import com.athompson.cafe.customer.databinding.FragmentHomeBinding
 import com.athompson.cafelib.extensions.FragmentExtensions.logDebug
+import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
@@ -33,9 +34,11 @@ import com.athompson.cafelib.shared.CafeQrData
 import com.athompson.cafelib.shared.fromJson
 import com.athompson.cafelib.shared.valid
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import kotlinx.android.synthetic.main.home_scan_layout.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -51,6 +54,10 @@ class HomeFragment : Fragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var analyzer: QRCodeImageAnalyzer
+    private var cameraSelector: CameraSelector? = null
+    private var analysisUseCase: ImageAnalysis? = null
+    private var lensFacing = CameraSelector.LENS_FACING_BACK
+    private var needUpdateGraphicOverlayImageSourceInfo = false
 
 
     override fun onCreateView(
@@ -130,11 +137,49 @@ class HomeFragment : Fragment() {
             }
         }
     }
+    @SuppressLint("UnsafeExperimentalUsageError")
+    private fun bindAnalysisUseCase() {
+
+        val imageProcessor = BarcodeScannerProcessor(requireContext())
+        val builder = ImageAnalysis.Builder()
+        val targetResolution = Size(800,800)
+        builder.setTargetResolution(targetResolution)
+        analysisUseCase = builder.build()
+        needUpdateGraphicOverlayImageSourceInfo = true
+        analysisUseCase?.setAnalyzer(
+            ContextCompat.getMainExecutor(requireContext()),
+            { imageProxy: ImageProxy ->
+                if (needUpdateGraphicOverlayImageSourceInfo) {
+                    val isImageFlipped =
+                        lensFacing == CameraSelector.LENS_FACING_FRONT
+                    val rotationDegrees =
+                        imageProxy.imageInfo.rotationDegrees
+                    if (rotationDegrees == 0 || rotationDegrees == 180) {
+                        graphicOverlay?.setImageSourceInfo(
+                            imageProxy.width, imageProxy.height, isImageFlipped
+                        )
+                    } else {
+                        graphicOverlay?.setImageSourceInfo(
+                            imageProxy.height, imageProxy.width, isImageFlipped
+                        )
+                    }
+                    needUpdateGraphicOverlayImageSourceInfo = false
+                }
+                try {
+                    imageProcessor.processImageProxy(imageProxy, graphicOverlay)
+                } catch (e: MlKitException) {
+                    showShortToast(e.localizedMessage.safe())
+                }
+            }
+        )
+        cameraProvider.bindToLifecycle(viewLifecycleOwner, cameraSelector!!, analysisUseCase)
+    }
 
     private fun prepareScanner() {
         cameraProviderFuture.addListener({
             cameraProvider = cameraProviderFuture.get()
             bindPreview(cameraProvider)
+            bindAnalysisUseCase()
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
@@ -143,7 +188,7 @@ class HomeFragment : Fragment() {
         cameraProvider.unbindAll()
         val preview: Preview = Preview.Builder()
                 .build()
-        val cameraSelector: CameraSelector = CameraSelector.Builder()
+        cameraSelector = CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build()
         preview.setSurfaceProvider(binding.scanView.previewView.surfaceProvider)
@@ -154,13 +199,16 @@ class HomeFragment : Fragment() {
                 .build()
         imageAnalysis.setAnalyzer(cameraExecutor, analyzer)
 
+
         cameraProvider.bindToLifecycle(
                 this as LifecycleOwner,
-                cameraSelector,
+                cameraSelector!!,
                 imageAnalysis,
                 preview
         )
     }
+
+
     fun showCafe(data: CafeQrData)
     {
         logDebug(data.toString())
@@ -202,15 +250,12 @@ class HomeFragment : Fragment() {
                         }
                         else
                         {
-                            homeViewModel.setMode(Enums.HomeScreenMode.ERROR)
+                         //   homeViewModel.setMode(Enums.HomeScreenMode.ERROR)
                         }
                     }
                 }
             }
         }
-
-
-
     }
     private fun permissionsCheck()
     {
@@ -250,8 +295,7 @@ class HomeFragment : Fragment() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+        grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 prepareScanner()
@@ -264,5 +308,4 @@ class HomeFragment : Fragment() {
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
-
 }
