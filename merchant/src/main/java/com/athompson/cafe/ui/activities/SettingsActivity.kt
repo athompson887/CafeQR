@@ -12,7 +12,6 @@ import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.models.User
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_settings.*
 
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
@@ -26,7 +25,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         setContentView(binding.root)
         setupActionBar()
         binding.tvEdit.setOnClickListener(this@SettingsActivity)
-        btn_logout.setOnClickListener(this@SettingsActivity)
+        binding.btnLogout.setOnClickListener(this@SettingsActivity)
     }
 
     override fun onResume() {
@@ -60,7 +59,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
     private fun setupActionBar() {
 
-        setSupportActionBar(toolbar_settings_activity)
+        setSupportActionBar(binding.toolbarSettingsActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -68,7 +67,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
 
-        toolbar_settings_activity.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarSettingsActivity.setNavigationOnClickListener { onBackPressed() }
     }
 
 
@@ -84,11 +83,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
         hideProgressDialog()
 
-        GlideLoader(this@SettingsActivity).loadUserPicture(user.image, iv_user_photo)
+        GlideLoader(this@SettingsActivity).loadUserPicture(user.image, binding.ivUserPhoto)
 
-        tv_name.text = "${user.firstName} ${user.lastName}"
-        tv_gender.text = user.gender
-        tv_email.text = user.email
-        tv_mobile_number.text = "${user.mobile}"
+        binding.tvName.text = "${user.firstName} ${user.lastName}"
+        binding.tvGender.text = user.gender
+        binding.tvEmail.text = user.email
+        binding.tvMobileNumber.text = "${user.mobile}"
     }
 }

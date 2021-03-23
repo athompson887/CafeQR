@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimaryVariant">#8BC34A</color>
     <color name="colorPrimary">#689F38</color>
-    <color name="colorOnPrimary">#DCEDC8</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorSurface">#DCEDC8</color>
     <color name="colorSecondaryVariant">#2C1F1A</color>
     <color name="colorSecondary">#795548</color>

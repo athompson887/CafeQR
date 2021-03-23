@@ -57,23 +57,26 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:gravity="center_horizontal"
+                    android:lines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:fontFamily="@font/nunitosans_regular"
-                   android:textColor="?attr/colorOnSurface"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Great Wyrley" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Andrew's Cafe" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/selectedVenueTown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:lines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:fontFamily="@font/nunitosans_regular"
-                   android:textColor="?attr/colorOnSurface"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/selectedVenueName"
                     tools:text="Cannock" />
                 <com.google.android.material.textview.MaterialTextView
@@ -81,24 +84,32 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:lines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:fontFamily="@font/nunitosans_regular"
-                   android:textColor="?attr/colorOnSurface"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/selectedVenueTown"
                     tools:text="Evening Menu" />
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/selectedMenDescription"
+                <ScrollView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginStart="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:fontFamily="@font/nunitosans_regular"
-                   android:textColor="?attr/colorOnSurface"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintStart_toEndOf="@id/selectedImage"
                     app:layout_constraintTop_toBottomOf="@id/selectedMenuName"
-                    tools:text="A selection of foods to enjoy" />
-
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/selectedMenDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="With your permission we and our partners may use precise geolocation data and identification through device scanning. You may click to consent to our and our partners’ processing as described above. Alternatively you may access more detailed information and change your preferences before consenting or to refuse consenting. Please note that some processing of your personal data may not require your consent, but you have a right to object to such processing. Your preferences will apply to this website only. You can change your preferences at any time by returning to this site or visit our privacy polic" />
+                </ScrollView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -112,7 +123,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/venueCard" />
+            app:layout_constraintTop_toTopOf="@id/addVenueButton"
+            app:layout_constraintBottom_toBottomOf="@id/addVenueButton" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addVenueButton"
@@ -120,11 +132,11 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_baseline_add_circle_outline_24"
             app:iconTint="?attr/colorOnPrimary"
-            app:layout_constraintBaseline_toBaselineOf="@id/txt_all_venues"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/venueCard"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <FrameLayout
@@ -132,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_all_venues">
+            app:layout_constraintTop_toBottomOf="@id/addVenueButton">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/venuesView"
@@ -235,7 +247,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/venuesWrapper" />
+            app:layout_constraintBottom_toBottomOf="@id/addMenuButton"
+            app:layout_constraintTop_toTopOf="@id/addMenuButton" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addMenuButton"
@@ -246,14 +259,14 @@
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_baseline_add_circle_outline_24"
             app:iconTint="?attr/colorSurface"
-            app:layout_constraintBaseline_toBaselineOf="@id/txt_all_menus"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/venuesWrapper"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <FrameLayout
             android:id="@+id/menus_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_all_menus">
 

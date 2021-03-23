@@ -26,7 +26,6 @@ import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.CafeQrMenu
-import kotlinx.android.synthetic.main.info_card.*
 import java.io.IOException
 
 class AddMenuActivity : BaseActivity(){

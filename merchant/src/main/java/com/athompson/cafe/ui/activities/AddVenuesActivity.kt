@@ -24,10 +24,6 @@ import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.Venue
-import kotlinx.android.synthetic.main.activity_add_venue.view.*
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.info_card.*
-import kotlinx.android.synthetic.main.simple_venue_item.*
 import java.io.IOException
 
 class AddVenuesActivity : BaseActivity(){

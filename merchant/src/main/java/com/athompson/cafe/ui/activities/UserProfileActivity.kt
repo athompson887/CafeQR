@@ -22,7 +22,6 @@ import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.User
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
 
@@ -55,7 +54,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         } else {
             setupActionBar()
             binding.tvTitle.text = R.string.title_edit_profile.asString()
-            GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, iv_user_photo)
+            GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, binding.ivUserPhoto)
             binding.etFirstName.setText(mUserDetails.firstName)
             binding.etLastName.setText(mUserDetails.lastName)
             binding.etEmail.isEnabled = false
@@ -112,7 +111,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         if (url != null) {
                             GlideLoader(this@UserProfileActivity).loadUserPicture(
                                 url,
-                                iv_user_photo
+                                binding.ivUserPhoto
                             )
                         }
                     } catch (e: IOException) {
@@ -133,7 +132,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
     private fun setupActionBar() {
 
-        setSupportActionBar(toolbar_user_profile_activity)
+        setSupportActionBar(binding.toolbarUserProfileActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -141,7 +140,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
 
-        toolbar_user_profile_activity.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarUserProfileActivity.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun validateUserProfileDetails(): Boolean {
@@ -160,19 +159,19 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         val userHashMap = HashMap<String, Any>()
 
-        val firstName = et_first_name.trimmed()
+        val firstName = binding.etFirstName.trimmed()
         if (firstName != mUserDetails.firstName) {
             userHashMap[Constants.FIRST_NAME] = firstName
         }
 
         // Get the LastName from editText and trim the space
-        val lastName = et_last_name.trimmed()
+        val lastName = binding.etLastName.trimmed()
         if (lastName != mUserDetails.lastName) {
             userHashMap[Constants.LAST_NAME] = lastName
         }
 
-        val mobileNumber = et_mobile_number.trimmed()
-        val gender = if (rb_male.isChecked) {
+        val mobileNumber = binding.etMobileNumber.trimmed()
+        val gender = if (binding.rbMale.isChecked) {
             Constants.MALE
         } else {
             Constants.FEMALE
