@@ -80,7 +80,7 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
 
     // -----------------Code for processing live preview frame from Camera1 API-----------------------
     @Synchronized
-    override fun processByteBuffer(
+    fun processByteBuffer(
         data: ByteBuffer?,
         frameMetadata: FrameMetadata?,
         graphicOverlay: GraphicOverlay
@@ -133,7 +133,7 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
     // -----------------Code for processing live preview frame from CameraX API-----------------------
     @RequiresApi(VERSION_CODES.KITKAT)
     @ExperimentalGetImage
-    override fun processImageProxy(image: ImageProxy, graphicOverlay: GraphicOverlay) {
+    fun processImageProxy(image: ImageProxy, graphicOverlay: GraphicOverlay) {
         val frameStartMs = SystemClock.elapsedRealtime()
         if (isShutdown) {
             return

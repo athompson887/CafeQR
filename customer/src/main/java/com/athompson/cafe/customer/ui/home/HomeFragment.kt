@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -245,10 +244,6 @@ class HomeFragment : Fragment() {
 
         override fun onFailure(e: Exception) {
             Log.e("MANUAL_TESTING_LOG", "Barcode detection failed $e")
-        }
-
-        override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay?) {
-
         }
     }
     private fun permissionsCheck()
