@@ -1,4 +1,4 @@
-package com.athompson.cafe.customer.ui.home
+package com.athompson.cafe.customer.ui.home.barcode
 
 
 import android.app.ActivityManager
@@ -29,7 +29,6 @@ import java.util.TimerTask
 abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
 
     companion object {
-        const val MANUAL_TESTING_LOG = "LogTagForTest"
         private const val TAG = "VisionProcessorBase"
     }
 
@@ -78,17 +77,6 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
         )
     }
 
-    // -----------------Code for processing single still image----------------------------------------
-    override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay) {
-        val frameStartMs = SystemClock.elapsedRealtime()
-        requestDetectInImage(
-            InputImage.fromBitmap(bitmap!!, 0),
-            graphicOverlay, /* originalCameraImage= */
-            null, /* shouldShowFps= */
-            false,
-            frameStartMs
-        )
-    }
 
     // -----------------Code for processing live preview frame from Camera1 API-----------------------
     @Synchronized
@@ -150,10 +138,7 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
         if (isShutdown) {
             return
         }
-        var bitmap: Bitmap? = null
-      //  if (!PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) {
-            bitmap = BitmapUtils.getBitmap(image)
-       // }
+        val bitmap: Bitmap? = BitmapUtils.getBitmap(image)
         requestDetectInImage(
             InputImage.fromMediaImage(image.image!!, image.imageInfo.rotationDegrees),
             graphicOverlay, /* originalCameraImage= */
@@ -161,9 +146,6 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
             true,
             frameStartMs
         )
-            // When the image is from CameraX analysis use case, must call image.close() on received
-            // images when finished using them. Otherwise, new images may not be received or the camera
-            // may stall.
             .addOnCompleteListener { image.close() }
     }
 

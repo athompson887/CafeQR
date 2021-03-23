@@ -1,4 +1,4 @@
-package com.athompson.cafe.customer.ui.home;
+package com.athompson.cafe.customer.ui.home.barcode;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
+
 import com.google.android.gms.common.images.Size;
 import java.io.IOException;
 import java.nio.ByteBuffer;

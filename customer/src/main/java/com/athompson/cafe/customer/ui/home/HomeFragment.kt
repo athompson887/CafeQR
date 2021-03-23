@@ -2,9 +2,12 @@ package com.athompson.cafe.customer.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
@@ -18,24 +21,27 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.athompson.cafe.customer.Enums
 import com.athompson.cafe.customer.R
 import com.athompson.cafe.customer.databinding.FragmentHomeBinding
+import com.athompson.cafe.customer.ui.home.barcode.BarcodeGraphic
+import com.athompson.cafe.customer.ui.home.barcode.GraphicOverlay
+import com.athompson.cafe.customer.ui.home.barcode.VisionProcessorBase
 import com.athompson.cafelib.extensions.FragmentExtensions.logDebug
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.firestore.FireStoreClassShared
-import com.athompson.cafelib.helpers.Helper
 import com.athompson.cafelib.shared.CafeQrData
 import com.athompson.cafelib.shared.fromJson
 import com.athompson.cafelib.shared.valid
+import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.home_scan_layout.*
@@ -45,19 +51,21 @@ import java.util.concurrent.Executors
 
 class HomeFragment : Fragment() {
 
-    private val REQUEST_CODE_PERMISSIONS = 10
-    private val SCANNER_CAMERA_PERMISSIONS = 10001
-    private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var analyzer: QRCodeImageAnalyzer
     private var cameraSelector: CameraSelector? = null
     private var analysisUseCase: ImageAnalysis? = null
     private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var needUpdateGraphicOverlayImageSourceInfo = false
+
+    companion object{
+        const val REQUEST_CODE_PERMISSIONS = 10
+        const val SCANNER_CAMERA_PERMISSIONS = 10001
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+    }
 
 
     override fun onCreateView(
@@ -77,7 +85,7 @@ class HomeFragment : Fragment() {
             switchMode(mode = it)
         })
 
-        analyzer = QRCodeImageAnalyzer()
+       // analyzer = QRCodeImageAnalyzer()
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
@@ -138,7 +146,7 @@ class HomeFragment : Fragment() {
         }
     }
     @SuppressLint("UnsafeExperimentalUsageError")
-    private fun bindAnalysisUseCase() {
+    private fun bindBarcodeAnalyser() {
 
         val imageProcessor = BarcodeScannerProcessor(requireContext())
         val builder = ImageAnalysis.Builder()
@@ -179,7 +187,7 @@ class HomeFragment : Fragment() {
         cameraProviderFuture.addListener({
             cameraProvider = cameraProviderFuture.get()
             bindPreview(cameraProvider)
-            bindAnalysisUseCase()
+            bindBarcodeAnalyser()
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
@@ -192,20 +200,6 @@ class HomeFragment : Fragment() {
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build()
         preview.setSurfaceProvider(binding.scanView.previewView.surfaceProvider)
-
-        val imageAnalysis = ImageAnalysis.Builder()
-                .setTargetResolution(Size(Helper.displayHeightPixels(), Helper.displayWidthPixels()))
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
-        imageAnalysis.setAnalyzer(cameraExecutor, analyzer)
-
-
-        cameraProvider.bindToLifecycle(
-                this as LifecycleOwner,
-                cameraSelector!!,
-                imageAnalysis,
-                preview
-        )
     }
 
 
@@ -215,32 +209,26 @@ class HomeFragment : Fragment() {
         homeViewModel.setMode(Enums.HomeScreenMode.SUCCESS)
     }
 
+    inner class BarcodeScannerProcessor(context: Context) : VisionProcessorBase<List<Barcode>>(context) {
 
-    inner class QRCodeImageAnalyzer : ImageAnalysis.Analyzer {
+        private val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient()
 
-        override fun analyze(imageProxy: ImageProxy) {
-            scanBarcode(imageProxy)
+        override fun stop() {
+            super.stop()
+            barcodeScanner.close()
         }
 
-        @SuppressLint("UnsafeExperimentalUsageError")
-        private fun scanBarcode(imageProxy: ImageProxy) {
-            imageProxy.image?.let { image ->
-                val inputImage = InputImage.fromMediaImage(image, imageProxy.imageInfo.rotationDegrees)
-                val scanner = BarcodeScanning.getClient()
-                scanner.process(inputImage)
-                        .addOnCompleteListener {
-                            imageProxy.close()
-                            if (it.isSuccessful) {
-                                readBarcodeData(it.result as List<Barcode>)
-                            } else {
-                                it.exception?.printStackTrace()
-                            }
-                        }
+        override fun detectInImage(image: InputImage): Task<List<Barcode>> {
+            return barcodeScanner.process(image)
+        }
+
+        override fun onSuccess(results: List<Barcode>, graphicOverlay: GraphicOverlay) {
+            if (results.isEmpty()) {
+                Log.v("MANUAL_TESTING_LOG", "No barcode has been detected")
             }
-        }
-
-        private fun readBarcodeData(barcodes: List<Barcode>) {
-            for (barcode in barcodes) {
+            for (i in results.indices) {
+                val barcode = results[i]
+                graphicOverlay.add(BarcodeGraphic(graphicOverlay, barcode))
                 when (barcode.valueType) {
                     Barcode.TYPE_TEXT -> {
                         val rawValue = barcode.rawValue
@@ -248,13 +236,17 @@ class HomeFragment : Fragment() {
                         if (cafeData?.valid() == true) {
                             showCafe(cafeData)
                         }
-                        else
-                        {
-                         //   homeViewModel.setMode(Enums.HomeScreenMode.ERROR)
-                        }
                     }
                 }
             }
+        }
+
+        override fun onFailure(e: Exception) {
+            Log.e("MANUAL_TESTING_LOG", "Barcode detection failed $e")
+        }
+
+        override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay?) {
+
         }
     }
     private fun permissionsCheck()

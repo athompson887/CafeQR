@@ -1,4 +1,4 @@
-package com.athompson.cafe.customer.ui.home;
+package com.athompson.cafe.customer.ui.home.barcode;
 
 /** Describing a frame info. */
 public class FrameMetadata {

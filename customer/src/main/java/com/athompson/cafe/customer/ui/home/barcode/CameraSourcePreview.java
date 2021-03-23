@@ -1,4 +1,4 @@
-package com.athompson.cafe.customer.ui.home;
+package com.athompson.cafe.customer.ui.home.barcode;
 
 import android.content.Context;
 import android.content.res.Configuration;
