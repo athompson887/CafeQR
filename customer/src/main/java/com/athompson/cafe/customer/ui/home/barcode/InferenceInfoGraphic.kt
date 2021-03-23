@@ -1,64 +1,55 @@
-package com.athompson.cafe.customer.ui.home.barcode;
+package com.athompson.cafe.customer.ui.home.barcode
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import androidx.annotation.Nullable;
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import com.athompson.cafe.customer.ui.home.barcode.GraphicOverlay.Graphic
 
-/** Graphic instance for rendering inference info (latency, FPS, resolution) in an overlay view. */
-public class InferenceInfoGraphic extends GraphicOverlay.Graphic {
+/** Graphic instance for rendering inference info (latency, FPS, resolution) in an overlay view.  */
+class InferenceInfoGraphic(
+    private val overlay: GraphicOverlay,
+    private val frameLatency: Long,
+    private val detectorLatency: Long,
+    // Only valid when a stream of input images is being processed. Null for single image mode.
+    private val framesPerSecond: Int?
+) : Graphic(overlay) {
+    private val textPaint: Paint = Paint()
 
-  private static final int TEXT_COLOR = Color.WHITE;
-  private static final float TEXT_SIZE = 60.0f;
+    @Synchronized
+    override fun draw(canvas: Canvas) {
+        val x = TEXT_SIZE * 0.5f
+        val y = TEXT_SIZE * 1.5f
+        canvas.drawText(
+            "InputImage size: " + overlay.imageHeight + "x" + overlay.imageWidth,
+            x,
+            y,
+            textPaint
+        )
 
-  private final Paint textPaint;
-  private final GraphicOverlay overlay;
-  private final long frameLatency;
-  private final long detectorLatency;
-
-  // Only valid when a stream of input images is being processed. Null for single image mode.
-  @Nullable private final Integer framesPerSecond;
-
-  public InferenceInfoGraphic(
-      GraphicOverlay overlay,
-      long frameLatency,
-      long detectorLatency,
-      @Nullable Integer framesPerSecond) {
-    super(overlay);
-    this.overlay = overlay;
-    this.frameLatency = frameLatency;
-    this.detectorLatency = detectorLatency;
-    this.framesPerSecond = framesPerSecond;
-    textPaint = new Paint();
-    textPaint.setColor(TEXT_COLOR);
-    textPaint.setTextSize(TEXT_SIZE);
-    postInvalidate();
-  }
-
-  @Override
-  public synchronized void draw(Canvas canvas) {
-    float x = TEXT_SIZE * 0.5f;
-    float y = TEXT_SIZE * 1.5f;
-
-    canvas.drawText(
-        "InputImage size: " + overlay.getImageHeight() + "x" + overlay.getImageWidth(),
-        x,
-        y,
-        textPaint);
-
-    // Draw FPS (if valid) and inference latency
-    if (framesPerSecond != null) {
-      canvas.drawText(
-          "FPS: " + framesPerSecond + ", Frame latency: " + frameLatency + " ms",
-          x,
-          y + TEXT_SIZE,
-          textPaint);
-      canvas.drawText(
-          "Detector latency: " + detectorLatency + " ms", x, y + TEXT_SIZE * 2, textPaint);
-    } else {
-      canvas.drawText("Frame latency: " + frameLatency + " ms", x, y + TEXT_SIZE, textPaint);
-      canvas.drawText(
-          "Detector latency: " + detectorLatency + " ms", x, y + TEXT_SIZE * 2, textPaint);
+        // Draw FPS (if valid) and inference latency
+        if (framesPerSecond != null) {
+            canvas.drawText(
+                "FPS: $framesPerSecond, Frame latency: $frameLatency ms",
+                x,
+                y + TEXT_SIZE,
+                textPaint
+            )
+        } else {
+            canvas.drawText("Frame latency: $frameLatency ms", x, y + TEXT_SIZE, textPaint)
+        }
+        canvas.drawText(
+            "Detector latency: $detectorLatency ms", x, y + TEXT_SIZE * 2, textPaint
+        )
     }
-  }
+
+    companion object {
+        private const val TEXT_COLOR = Color.WHITE
+        private const val TEXT_SIZE = 60.0f
+    }
+
+    init {
+        textPaint.color = TEXT_COLOR
+        textPaint.textSize = TEXT_SIZE
+        postInvalidate()
+    }
 }
