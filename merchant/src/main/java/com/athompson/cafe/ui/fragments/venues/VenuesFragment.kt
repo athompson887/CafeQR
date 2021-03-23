@@ -41,6 +41,7 @@ class VenuesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVenuesBinding.bind(view)
+        getVenuesListFromFireStore()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,10 +62,6 @@ class VenuesFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onResume() {
-        super.onResume()
-        getVenuesListFromFireStore()
-    }
 
     private fun getVenuesListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
@@ -90,7 +87,7 @@ class VenuesFragment : BaseFragment() {
         }
     }
 
-    fun failureVenueList(e: Exception) {
+    private fun failureVenueList(e: Exception) {
         hideProgressDialog()
     }
 

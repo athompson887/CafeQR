@@ -30,7 +30,7 @@ open class VenuesListAdapter(
         val venue = list[position]
 
         if (holder is VenueViewHolder) {
-            GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
+        //    GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
             holder.binding.tvName.text = venue.name
             holder.binding.description.text = venue.description
             holder.binding.tvLocation.text = venue.location

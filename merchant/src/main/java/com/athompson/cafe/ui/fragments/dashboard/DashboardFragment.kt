@@ -16,6 +16,7 @@ import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
@@ -39,6 +40,7 @@ class DashboardFragment : BaseFragment() {
     private var venues: ArrayList<Venue> = ArrayList()
     private lateinit var simpleMenuAdapter:SimpleMenuAdapter
     private lateinit var simpleVenueAdapter:SimpleVenueAdapter
+    var called = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,13 +98,9 @@ class DashboardFragment : BaseFragment() {
 
 
         setupRecycler()
+        if(!called)
+          getVenuesList()
     }
-
-    override fun onResume() {
-        super.onResume()
-        getVenuesList()
-    }
-
 
 
     private fun setupRecycler()
@@ -138,6 +136,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun getVenuesList() {
+        called = true
         showProgressDialog(R.string.please_wait.asString())
         FireStoreVenue().getVenueItemsList(::successVenuesList, ::failureVenueList)
     }
@@ -191,8 +190,7 @@ class DashboardFragment : BaseFragment() {
     }
     private fun failureCafeQrMenuList(e: Exception) {
         hideProgressDialog()
-        binding.menusView.remove()
-        binding.noMenusView.show()
+        showNoMenu()
     }
     private fun showMenu()
     {
@@ -212,14 +210,17 @@ class DashboardFragment : BaseFragment() {
             binding.selectedMenuName.text = s.name
             binding.selectedMenDescription.text = s.description
         }
-        getVenuesList()
+
     }
 
     private fun setSelectedVenue(venue: Venue) {
-        selectedVenue = venue
+       selectedVenue = venue
         val s = selectedVenue
         if(s!=null) {
-            GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.selectedImage)
+            if(venue.imageUrl.isEmpty())
+                binding.selectedImage.setImageDrawable(R.drawable.cafe_image.asDrawable())
+            else
+                GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.selectedImage)
             binding.selectedVenueName.text = s.name
             binding.selectedVenueTown.text = s.description
         }

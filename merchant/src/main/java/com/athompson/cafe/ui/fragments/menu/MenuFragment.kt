@@ -39,11 +39,10 @@ class MenuFragment : BaseFragment() {
         return mRootView
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMenuBinding.bind(view)
+        getMenuItemsListFromFireStore()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -64,12 +63,6 @@ class MenuFragment : BaseFragment() {
 
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        getMenuItemsListFromFireStore()
     }
 
     private fun getMenuItemsListFromFireStore() {

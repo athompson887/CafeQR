@@ -1,14 +1,11 @@
 package com.athompson.cafe.firestore
 
-import android.util.Log
-import com.athompson.cafe.ui.activities.AddVenuesActivity
-import com.athompson.cafe.ui.fragments.dashboard.DashboardFragment
 import com.athompson.cafe.ui.fragments.venues.VenuesFragment
 import com.athompson.cafelib.models.Venue
-import com.athompson.cafelib.shared.CafeQRApplication
 import com.athompson.cafelib.shared.SharedConstants.VENUES
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
 
@@ -22,7 +19,7 @@ class FireStoreVenue {
     ) {
 
         mFireStore.collection(VENUES)
-            .whereEqualTo("organisationId", CafeQRApplication.selectedCafeQrMenu?.uid)
+      //      .whereEqualTo("organisationId", CafeQRApplication.selectedCafeQrMenu?.uid)
             .get()
             .addOnSuccessListener { document ->
 
@@ -56,16 +53,15 @@ class FireStoreVenue {
             }
     }
 
-    fun addVenue(addVenuesActivity: AddVenuesActivity, venue: Venue) {
+    fun addVenue(success: KFunction0<Unit>, failure: KFunction1<Exception, Unit>, venue: Venue) {
         mFireStore.collection(VENUES)
             .document()
             .set(venue, SetOptions.merge())
             .addOnSuccessListener {
-                addVenuesActivity.addVenueSuccess()
+                success()
             }
             .addOnFailureListener { e ->
-                addVenuesActivity.hideProgressDialog()
-                addVenuesActivity.addVenueFailure()
+                failure(e)
             }
     }
 }

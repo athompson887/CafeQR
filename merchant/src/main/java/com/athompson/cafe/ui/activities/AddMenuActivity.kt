@@ -15,6 +15,7 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddMenuBinding
 import com.athompson.cafe.firestore.FireStoreImage
+import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
@@ -25,6 +26,7 @@ import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.CafeQrMenu
+import kotlinx.android.synthetic.main.info_card.*
 import java.io.IOException
 
 class AddMenuActivity : BaseActivity(){
@@ -48,8 +50,8 @@ class AddMenuActivity : BaseActivity(){
 
         // Assign the click event to submit button.
         binding.btnSubmit.setOnClickListener{
-            if (validateOrganisationDetails()) {
-                uploadOrganisationImage()
+            if (validate()) {
+                upload()
             }
         }
     }
@@ -109,7 +111,7 @@ class AddMenuActivity : BaseActivity(){
     }
 
 
-    private fun validateOrganisationDetails(): Boolean {
+    private fun validate(): Boolean {
         return when {
 
             TextUtils.isEmpty(binding.etMenuName.trimmed()) -> {
@@ -127,10 +129,13 @@ class AddMenuActivity : BaseActivity(){
         }
     }
 
-    private fun uploadOrganisationImage() {
+    private fun upload() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
+        if(mSelectedImageFileUri!=null)
+            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
+        else
+            uploadCafeQrMenu()
     }
 
     private fun imageUploadSuccess(imageURL: String) {
@@ -140,32 +145,29 @@ class AddMenuActivity : BaseActivity(){
 
     private fun imageUploadFailure(exception:Exception) {
         hideProgressDialog()
+        uploadCafeQrMenu()
         showShortToast(R.string.upload_image_failure.asString())
     }
 
     private fun uploadCafeQrMenu() {
 
-        // Get the logged in username from the SharedPreferences that we have stored at a time of login.
-        val username = this.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE).getString(Constants.LOGGED_IN_USERNAME, "")!!
-
-        val uuid = "".uuid()
-        // Here we get the text from editText and trim the space
         val menu = CafeQrMenu(
-            FireStoreUser().getCurrentUserID(),
-            username,
-            binding.etMenuName.trimmed(),
-            binding.etDescription.trimmed(),
-       //     binding.etAddresss1.trimmed(),
-       //     binding.etAddresss2.trimmed(),
-        //    binding.etCity.trimmed(),
-        //    binding.etEmail.trimmed(),
-        //    binding.etPhone.trimmed().toLong(),
-        //    mOrganisationImageURL,
-       //     uuid
+            name = binding.etMenuName.trimmed(),
+            description =  binding.etDescription.trimmed(),
+            uid = "".uuid(),
+            imageUrl = mSelectedImageFileUri.toString()
         )
-
+        FireStoreMenu().addCafeQrMenu(::addMenuSuccess,::addMenuFailure, menu)
     }
 
+    private fun addMenuSuccess() {
+        hideProgressDialog()
+        showShortToast(R.string.add_menu_success.asString())
+        finish()
+    }
 
-
+    private fun addMenuFailure(e:Exception) {
+        hideProgressDialog()
+        showShortToast(R.string.add_menu_failure.asString())
+    }
 }

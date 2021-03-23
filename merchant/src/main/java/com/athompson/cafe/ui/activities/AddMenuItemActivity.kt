@@ -14,7 +14,7 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddMenuItemBinding
 import com.athompson.cafe.firestore.FireStoreImage
-import com.athompson.cafe.firestore.FireStoreMenu
+import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
@@ -177,15 +177,15 @@ class AddMenuItemActivity : BaseActivity(){
             "".uuid()
         )
 
-        FireStoreMenu().addCafeQrMenuItem(this@AddMenuItemActivity, food)
+        FireStoreMenuItem().addMenuItem(::addMenuItemSuccess,::addMenuItemFailure, food)
     }
 
-    fun addMenuItemSuccess() {
+    private fun addMenuItemSuccess() {
         hideProgressDialog()
         showShortToast(R.string.add_menu_item_success.asString())
         finish()
     }
-    fun addMenuItemFailure() {
+    private fun addMenuItemFailure(e:Exception) {
         hideProgressDialog()
         showShortToast(R.string.add_menu_item_failure.asString())
     }

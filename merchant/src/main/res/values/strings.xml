@@ -96,8 +96,10 @@
     <string name="err_msg_enter_address">Please enter address.</string>
     <string name="add_org_success">Add organisation success</string>
     <string name="add_org_failure">Add organisation failure</string>
-    <string name="add_venue_success">Add organisation success</string>
+    <string name="add_venue_success">Add venue success</string>
     <string name="add_venue_failure">Add venue failure</string>
+    <string name="add_menu_success">Add menu success</string>
+    <string name="add_menu_failure">Add menu failure</string>
     <string name="add_menu_item_success">Add menu item success</string>
     <string name="add_menu_item_failure">Add menu item failure</string>
     <string name="no_venues_found">No venue found!</string>

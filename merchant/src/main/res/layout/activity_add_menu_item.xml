@@ -171,7 +171,7 @@
                 android:paddingTop="@dimen/btn_padding"
                 android:paddingBottom="@dimen/btn_padding"
                 android:text="@string/btn_lbl_submit"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorOnPrimary"
                 android:textSize="@dimen/btn_textSize"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

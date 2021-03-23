@@ -7,29 +7,16 @@
     android:background="?attr/colorOnPrimary"
     tools:context=".ui.activities.LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fl_header_image"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/auth_header_image_height"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/selectedImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintDimensionRatio="1:1"
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:srcCompat="@drawable/login" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/cafe_image" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_title"
@@ -41,7 +28,7 @@
         android:textSize="@dimen/title_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fl_header_image" />
+        app:layout_constraintTop_toBottomOf="@id/image" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_email"
@@ -115,12 +102,11 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_background"
-        android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:paddingTop="@dimen/btn_padding"
         android:paddingBottom="@dimen/btn_padding"
         android:text="@string/btn_lbl_login"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="@dimen/btn_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

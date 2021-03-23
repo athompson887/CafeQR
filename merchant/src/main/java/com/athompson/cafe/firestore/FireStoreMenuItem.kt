@@ -1,12 +1,12 @@
 package com.athompson.cafe.firestore
 
-import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.menu.MenuFragment
 import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.shared.CafeQRApplication
 import com.athompson.cafelib.shared.SharedConstants.MENUS
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
 
@@ -53,16 +53,15 @@ class FireStoreMenuItem {
             }
     }
 
-    fun addMenuItem(addMenuItemActivity: AddMenuItemActivity, menu: FoodMenuItem) {
+    fun addMenuItem(success: KFunction0<Unit>, failure: (Exception) -> Unit, menu: FoodMenuItem) {
         mFireStore.collection(MENUS)
             .document()
             .set(menu, SetOptions.merge())
             .addOnSuccessListener {
-                addMenuItemActivity.addMenuItemSuccess()
+                success()
             }
             .addOnFailureListener { e ->
-                addMenuItemActivity.hideProgressDialog()
-                addMenuItemActivity.addMenuItemFailure()
+                failure(e)
             }
     }
 }

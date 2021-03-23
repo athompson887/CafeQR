@@ -17,7 +17,7 @@ class SimpleVenueAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(context).inflate(
-                R.layout.simple_menu_item,
+                R.layout.simple_venue_item,
                 parent,
                 false
             )

@@ -19,11 +19,11 @@ import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.Venue
-import com.athompson.cafelib.shared.CafeQRApplication
 import kotlinx.android.synthetic.main.activity_add_venue.view.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.info_card.*
@@ -95,9 +95,7 @@ class AddVenuesActivity : BaseActivity(){
         }
     }
 
-    /**
-     * A function for actionBar Setup.
-     */
+
     private fun setupActionBar() {
 
         setSupportActionBar(binding.toolbarAddVenueActivity)
@@ -160,25 +158,21 @@ class AddVenuesActivity : BaseActivity(){
             name = binding.etVenueName.trimmed(),
             location =  binding.etLocation.trimmed(),
             description =  binding.etDescription.trimmed(),
-         //   binding.etEmail.trimmed(),
-       //     binding.etPhone.trimmed().toLong(),
-        //    mVenueImageURL,
-        //    "".uuid()
+            imageUrl =    mVenueImageURL,
+            uid = "".uuid()
         )
 
-        FireStoreVenue().addVenue(this@AddVenuesActivity, venue)
+        FireStoreVenue().addVenue(::addVenueSuccess,::addVenueFailure, venue)
     }
 
-    fun addVenueSuccess() {
+    private fun addVenueSuccess() {
         hideProgressDialog()
         showShortToast(R.string.add_venue_success.asString())
         finish()
     }
 
-    fun addVenueFailure() {
+    private fun addVenueFailure(e:Exception) {
         hideProgressDialog()
         showShortToast(R.string.add_venue_failure.asString())
     }
-
-
 }
