@@ -68,7 +68,7 @@ class VenuesFragment : BaseFragment() {
         FireStoreVenue().getVenueItemsList(::successfulVenuesList,::failureVenueList)
     }
 
-    fun successfulVenuesList(venuesList: ArrayList<Venue>) {
+    private fun successfulVenuesList(venuesList: ArrayList<Venue>) {
 
         hideProgressDialog()
 

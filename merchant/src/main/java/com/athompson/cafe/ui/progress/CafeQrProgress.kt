@@ -9,15 +9,16 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.view.LayoutInflater
 import com.athompson.cafe.R
+import com.athompson.cafe.databinding.ProgressDialogViewBinding
 import com.athompson.cafelib.extensions.ColorExtensions.colorToHexString
 import com.athompson.cafelib.extensions.ContextExtensions.getColorFromAttr
-import kotlinx.android.synthetic.main.progress_dialog_view.view.*
 
 class CafeQrProgress {
 
     lateinit var dialog: CustomDialog
-
+    lateinit var binding: ProgressDialogViewBinding
     fun show(context: Context): Dialog {
         return show(context, null)
     }
@@ -27,18 +28,15 @@ class CafeQrProgress {
     }
 
     fun show(context: Context, title: CharSequence?): Dialog {
-        val inflater = (context as Activity).layoutInflater
-        val view = inflater.inflate(R.layout.progress_dialog_view, null)
+        binding = ProgressDialogViewBinding.inflate(LayoutInflater.from(context))
         if (title != null) {
-            view.cp_title.text = title
+            binding.cpTitle.text = title
         }
-        view.cp_cardview.setCardBackgroundColor(Color.parseColor("#70000000"))
-        setColorFilter(view.cp_pbar.indeterminateDrawable, context.getColorFromAttr( R.attr.colorPrimary))
-
-        view.cp_title.setTextColor(context.getColorFromAttr( R.attr.colorOnPrimary))
-
+        binding.cpCardview.setCardBackgroundColor(Color.parseColor("#70000000"))
+        setColorFilter(binding.cpPbar.indeterminateDrawable, context.getColorFromAttr( R.attr.colorPrimary))
+        binding.cpTitle.setTextColor(context.getColorFromAttr( R.attr.colorOnPrimary))
         dialog = CustomDialog(context)
-        dialog.setContentView(view)
+        dialog.setContentView(binding.root)
         dialog.show()
         return dialog
     }
