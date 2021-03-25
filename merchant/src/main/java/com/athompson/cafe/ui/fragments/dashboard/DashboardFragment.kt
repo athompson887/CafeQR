@@ -5,43 +5,35 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
+import androidx.viewpager2.widget.ViewPager2
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuAdapter
-import com.athompson.cafe.adapters.SimpleVenueAdapter
+import com.athompson.cafe.adapters.VenuesViewPagerAdapter
 import com.athompson.cafe.databinding.FragmentDashboardBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddMenuActivity
-import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
-import com.athompson.cafe.utils.GlideLoader
-import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
-import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.Venue
-import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedCafeQrMenu
-import com.athompson.cafelib.shared.CafeQRApplication.Companion.selectedVenue
 
 
 class DashboardFragment : BaseFragment() {
 
 
     private lateinit var dashboardViewModel: DashboardViewModel
-    private var _binding: FragmentDashboardBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentDashboardBinding
     private var cafeQrMenus: ArrayList<CafeQrMenu> = ArrayList()
     private var venues: ArrayList<Venue> = ArrayList()
     private lateinit var simpleMenuAdapter:SimpleMenuAdapter
-    private lateinit var simpleVenueAdapter:SimpleVenueAdapter
-    var called = false
-
+    private lateinit var venuesViewPagerAdapter: VenuesViewPagerAdapter
+    private var called = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -70,9 +62,7 @@ class DashboardFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-
             R.id.action_settings -> {
-
                 startActivity(Intent(activity, SettingsActivity::class.java))
                 return true
             }
@@ -82,40 +72,38 @@ class DashboardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentDashboardBinding.bind(view)
+        binding = FragmentDashboardBinding.bind(view)
         binding.addMenu.setOnClickListener{
             startActivity(Intent(activity, AddMenuActivity::class.java))
         }
         binding.addMenuButton.setOnClickListener{
             startActivity(Intent(activity, AddMenuActivity::class.java))
         }
-        binding.addVenue.setOnClickListener{
-            startActivity(Intent(activity, AddVenuesActivity::class.java))
-        }
-        binding.addVenueButton.setOnClickListener{
-            startActivity(Intent(activity, AddVenuesActivity::class.java))
-        }
+    //    binding.addVenue.setOnClickListener{
+     //       startActivity(Intent(activity, AddVenuesActivity::class.java))
+     //   }
+     //   binding.addVenueButton.setOnClickListener{
+     //       startActivity(Intent(activity, AddVenuesActivity::class.java))
+       // }
 
 
         setupRecycler()
-        if(!called)
-          getVenuesList()
+        if(!called) {
+            called = true
+            getVenuesList()
+        }
     }
 
 
     private fun setupRecycler()
     {
-        simpleVenueAdapter = SimpleVenueAdapter(requireContext(),venues)
+        venuesViewPagerAdapter = VenuesViewPagerAdapter(requireContext(),venues,cafeQrMenus)
         simpleMenuAdapter = SimpleMenuAdapter(requireContext(),cafeQrMenus)
-        binding.recyclerVenues.setLayoutManagerVertical()
-        binding.recyclerVenues.itemAnimator = DefaultItemAnimator()
-        binding.recyclerVenues.addItemDecoration(
-            DividerItemDecoration(
-                activity,
-                DividerItemDecoration.HORIZONTAL
-            )
-        )
-        binding.recyclerVenues.adapter = simpleVenueAdapter
+
+        binding.viewPager.adapter = venuesViewPagerAdapter
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            // override desired callback functions
+        })
 
 
         binding.recyclerMenus.setLayoutManagerVertical()
@@ -130,45 +118,36 @@ class DashboardFragment : BaseFragment() {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
     private fun getVenuesList() {
-        called = true
         showProgressDialog(R.string.please_wait.asString())
         FireStoreVenue().getVenueItemsList(::successVenuesList, ::failureVenueList)
     }
 
     private fun successVenuesList(venuesList: java.util.ArrayList<Venue>) {
-        if (venuesList.size > 0) {
+        if (venuesList.isNullOrEmpty()) {
+            noVenue()
+        }
+        else
+        {
             venues.clear()
             venues.addAll(venuesList)
-            setSelectedVenue(venues[0])
-            showVenue()
-        } else {
-            showNoVenue()
         }
         getMenusList()
-        simpleVenueAdapter.dataChanged(venues)
         hideProgressDialog()
     }
 
-    private fun showNoVenue() {
-        binding.venuesView.remove()
-        binding.noVenuesView.show()
-    }
-
-    private fun showVenue() {
-        binding.venuesView.show()
-        binding.noVenuesView.remove()
+    private fun noVenue()
+    {
+        venues.clear()
+        venues.add(Venue("fake_venue","","","",""))
+        venuesViewPagerAdapter.dataChanged()
+        hideProgressDialog()
     }
 
     private fun failureVenueList(e: Exception) {
         showShortToast("Failed To get venus",e)
-        showNoVenue()
-        hideProgressDialog()
+        noVenue()
     }
 
     private fun getMenusList() {
@@ -180,8 +159,8 @@ class DashboardFragment : BaseFragment() {
         if (menuList.size > 0) {
             cafeQrMenus.clear()
             cafeQrMenus.addAll(menuList)
-            setSelectedMenu(cafeQrMenus[0])
             showMenu()
+            venuesViewPagerAdapter.dataChanged()
         } else {
             showNoMenu()
         }
@@ -201,28 +180,5 @@ class DashboardFragment : BaseFragment() {
     {
         binding.menusView.remove()
         binding.noMenusView.show()
-    }
-
-    private fun setSelectedMenu(cqrMeny: CafeQrMenu) {
-        selectedCafeQrMenu = cqrMeny
-        val s = selectedCafeQrMenu
-        if(s!=null) {
-            binding.selectedMenuName.text = s.name
-            binding.selectedMenDescription.text = s.description
-        }
-
-    }
-
-    private fun setSelectedVenue(venue: Venue) {
-       selectedVenue = venue
-        val s = selectedVenue
-        if(s!=null) {
-            if(venue.imageUrl.isEmpty())
-                binding.selectedImage.setImageDrawable(R.drawable.cafe_image.asDrawable())
-            else
-                GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.selectedImage)
-            binding.selectedVenueName.text = s.name
-            binding.selectedVenueTown.text = s.description
-        }
     }
 }

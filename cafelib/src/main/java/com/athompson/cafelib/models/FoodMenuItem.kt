@@ -10,8 +10,6 @@ data class FoodMenuItem(
     val description: String = "",
     val imageUrl: String = "",
     val price:Double = 0.0,
-    val oid:String = "",
-    val vid:String = "",
     var uid:String = ""
 ) : Parcelable
 {

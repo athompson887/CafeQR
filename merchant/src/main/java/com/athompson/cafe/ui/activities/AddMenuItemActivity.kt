@@ -19,13 +19,11 @@ import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
-import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.FoodMenuItem
-import com.athompson.cafelib.shared.CafeQRApplication
 import java.io.IOException
 
 class AddMenuItemActivity : BaseActivity(){
@@ -172,8 +170,6 @@ class AddMenuItemActivity : BaseActivity(){
             binding.etMenuItemDescription.trimmed(),
             mFoodImageURL,
             binding.etPrice.trimmed().toDouble(),
-            CafeQRApplication.selectedCafeQrMenu?.uid.safe(),
-            CafeQRApplication.selectedVenue?.uid.safe(),
             "".uuid()
         )
 

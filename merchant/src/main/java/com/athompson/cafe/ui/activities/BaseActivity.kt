@@ -1,12 +1,8 @@
 package com.athompson.cafe.ui.activities
 
-import android.app.Dialog
 import android.os.Handler
-import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.athompson.cafe.R
-import com.athompson.cafe.databinding.DialogProgressBinding
 import com.athompson.cafe.ui.progress.CafeQrProgress
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast

@@ -43,7 +43,6 @@ import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.android.synthetic.main.home_scan_layout.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -162,18 +161,18 @@ class HomeFragment : Fragment() {
                     val rotationDegrees =
                         imageProxy.imageInfo.rotationDegrees
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        graphicOverlay?.setImageSourceInfo(
+                        binding.scanView.graphicOverlay?.setImageSourceInfo(
                             imageProxy.width, imageProxy.height, isImageFlipped
                         )
                     } else {
-                        graphicOverlay?.setImageSourceInfo(
+                        binding.scanView.graphicOverlay?.setImageSourceInfo(
                             imageProxy.height, imageProxy.width, isImageFlipped
                         )
                     }
                     needUpdateGraphicOverlayImageSourceInfo = false
                 }
                 try {
-                    imageProcessor.processImageProxy(imageProxy, graphicOverlay)
+                    imageProcessor.processImageProxy(imageProxy, binding.scanView.graphicOverlay)
                 } catch (e: MlKitException) {
                     showShortToast(e.localizedMessage.safe())
                 }

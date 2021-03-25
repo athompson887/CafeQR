@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/selectedImage"
+            android:id="@+id/selectedVenueImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -48,7 +48,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectedImage"
+            app:layout_constraintTop_toBottomOf="@id/selectedVenueImage"
             tools:text="Hi Andrew Thompson" />
 
         <ProgressBar

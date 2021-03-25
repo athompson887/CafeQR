@@ -38,13 +38,22 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/add_venues_menu.xml" value="0.4666666666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/bottom_nav_menu.xml" value="0.40677083333333336" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/dashboard_menu.xml" value="0.40677083333333336" />
+        <entry key="customer/src/main/res/layout/fragment_home.xml" value="0.19464882943143813" />
+        <entry key="customer/src/main/res/layout/home_scan_layout.xml" value="0.2519480519480519" />
         <entry key="merchant/src/main/res/layout/activity_login.xml" value="0.2222972972972973" />
         <entry key="merchant/src/main/res/layout/activity_main.xml" value="0.2222972972972973" />
         <entry key="merchant/src/main/res/layout/activity_register.xml" value="0.12569444444444444" />
+        <entry key="merchant/src/main/res/layout/dashboard_page.xml" value="1.0" />
         <entry key="merchant/src/main/res/layout/dialog_progress.xml" value="0.2222972972972973" />
+        <entry key="merchant/src/main/res/layout/fragment_dashboard.xml" value="0.2820175438596491" />
+        <entry key="merchant/src/main/res/layout/fragment_dashboard_old.xml" value="0.264527027027027" />
         <entry key="merchant/src/main/res/layout/fragment_menu.xml" value="0.2222972972972973" />
         <entry key="merchant/src/main/res/layout/fragment_menu_list_item.xml" value="0.2222972972972973" />
         <entry key="merchant/src/main/res/layout/fragment_venues.xml" value="0.2222972972972973" />
+        <entry key="merchant/src/main/res/layout/progress_dialog_view.xml" value="0.2596491228070175" />
+        <entry key="merchant/src/main/res/layout/simple_food_item.xml" value="0.5" />
+        <entry key="merchant/src/main/res/layout/venue_display_card.xml" value="0.2593073593073593" />
+        <entry key="merchant/src/main/res/layout/venues_display_card.xml" value="0.2885964912280702" />
       </map>
     </option>
   </component>
