@@ -12,8 +12,6 @@ import kotlin.reflect.KFunction1
 
 class FireStoreImage {
 
-    private val mFireStore = FirebaseFirestore.getInstance()
-
     fun uploadImageToCloudStorage(
         activity: Activity,
         imageFileURI: Uri?,

@@ -12,6 +12,11 @@
         android:title="Venues" />
 
     <item
+        android:id="@+id/navigation_menus"
+        android:icon="@drawable/ic_food_menu"
+        android:title="Venues" />
+
+    <item
         android:id="@+id/navigation_food_menu"
         android:icon="@drawable/ic_food_menu"
         android:title="Menu" />

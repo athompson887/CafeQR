@@ -1,7 +1,5 @@
 package com.athompson.cafe.firestore
 
-
-import com.athompson.cafe.ui.fragments.menu.MenuFragment
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.shared.SharedConstants.MENUS
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,12 +12,11 @@ class FireStoreMenu {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getMenuList(
+    fun getMenus(
         success: KFunction1<ArrayList<CafeQrMenu>, Unit>,
         failure: (Exception) -> Unit
     ) {
         mFireStore.collection(MENUS)
-          //  .whereEqualTo("uid", CafeQRApplication.selectedVenue?.uid)
             .get()
             .addOnSuccessListener { document ->
                 val menuList: ArrayList<CafeQrMenu> = ArrayList()
@@ -39,16 +36,16 @@ class FireStoreMenu {
     }
 
 
-    fun deleteCafeQrMenu(menuFragment: MenuFragment, menuItemID: String) {
+    fun deleteCafeQrMenu(   success: KFunction0<Unit>,
+                            failure: (Exception) -> Unit, menuItemID: String) {
         mFireStore.collection(MENUS)
             .document(menuItemID)
             .delete()
             .addOnSuccessListener {
-                menuFragment.deleteMenuDeleteSuccess()
+                success()
             }
             .addOnFailureListener { e ->
-                menuFragment.hideProgressDialog()
-                menuFragment.deleteMenuDeleteFailure(e)
+                failure(e)
             }
     }
 

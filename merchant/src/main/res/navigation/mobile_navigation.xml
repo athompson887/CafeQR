@@ -15,18 +15,37 @@
         android:id="@+id/navigation_venues"
         android:name="com.athompson.cafe.ui.fragments.venues.VenuesFragment"
         android:label="@string/title_venues"
-        tools:layout="@layout/fragment_venues" />
-
+        tools:layout="@layout/fragment_venues" >
+        <action
+            android:id="@+id/action_navigation_venues_to_venueDetailFragment"
+            app:destination="@id/venueDetailFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_food_menu"
+        android:id="@+id/venueDetailFragment"
+        android:name="com.athompson.cafe.ui.fragments.venues.VenueDetailFragment"
+        tools:layout="@layout/fragment_venues_details"
+        android:label="VenueDetailFragment">
+        <argument
+            android:name="selectedVenue"
+            app:argType="com.athompson.cafelib.models.Venue" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_menus"
         android:name="com.athompson.cafe.ui.fragments.menu.MenuFragment"
         android:label="@string/title_menu"
         tools:layout="@layout/fragment_menu" />
+    <fragment
+        android:id="@+id/navigation_food_menu"
+        android:name="com.athompson.cafe.ui.fragments.menuitem.MenuItemFragment"
+        android:label="@string/title_menu"
+        tools:layout="@layout/fragment_menu_items" />
 
     <fragment
         android:id="@+id/navigation_codes"
         android:name="com.athompson.cafe.ui.fragments.qrcodes.QRCodeFragment"
         android:label="QR Codes"
         tools:layout="@layout/fragment_qrcode" />
+
 </navigation>

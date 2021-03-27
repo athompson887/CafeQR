@@ -13,13 +13,12 @@ class FireStoreVenue {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getVenueItemsList(
+    fun getVenues(
         success: KFunction1<ArrayList<Venue>, Unit>,
         failure: (Exception) -> Unit
     ) {
 
         mFireStore.collection(VENUES)
-      //      .whereEqualTo("organisationId", CafeQRApplication.selectedCafeQrMenu?.uid)
             .get()
             .addOnSuccessListener { document ->
 
@@ -40,16 +39,16 @@ class FireStoreVenue {
     }
 
 
-    fun deleteVenue(venuesFragment: VenuesFragment, venueID: String) {
+    fun deleteVenue(   success: KFunction0<Unit>,
+                       failure: (Exception) -> Unit, venueID: String) {
         mFireStore.collection(VENUES)
             .document(venueID)
             .delete()
             .addOnSuccessListener {
-                venuesFragment.deleteVenueDeleteSuccess()
+                success()
             }
             .addOnFailureListener { e ->
-                venuesFragment.hideProgressDialog()
-                venuesFragment.deleteVenueDeleteFailure(e)
+               failure(e)
             }
     }
 

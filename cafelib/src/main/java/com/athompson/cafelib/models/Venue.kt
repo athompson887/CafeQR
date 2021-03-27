@@ -10,7 +10,7 @@ data class Venue(
     val location: String = "",
     val description: String = "",
     val imageUrl: String = "",
-    val uid:String = "", //unique identifier for this venue
+    val vuid:String = "", //unique identifier for this venue
     val muid:String = "",//menu id
     @Transient
     var menu: CafeQrMenu? = null

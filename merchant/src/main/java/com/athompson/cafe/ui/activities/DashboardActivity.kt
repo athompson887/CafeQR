@@ -12,12 +12,13 @@ import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityDashboardBinding
 import com.athompson.cafe.ui.fragments.home.HomeFragment
 import com.athompson.cafe.ui.fragments.menu.MenuFragment
+import com.athompson.cafe.ui.fragments.menuitem.MenuItemFragment
+import com.athompson.cafe.ui.fragments.venues.VenuesFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,
-  MenuFragment.OnFragmentInteractionListener {
+class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,MenuItemFragment.OnFragmentInteractionListener, MenuFragment.OnFragmentInteractionListener {
 
     lateinit var binding: ActivityDashboardBinding
 
@@ -40,6 +41,7 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
             setOf(
                 R.id.navigation_dashboard,
                 R.id.navigation_venues,
+                R.id.navigation_menus,
                 R.id.navigation_food_menu,
                 R.id.navigation_codes
             )

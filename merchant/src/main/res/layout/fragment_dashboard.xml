@@ -16,29 +16,16 @@
     </androidx.viewpager2.widget.ViewPager2>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_all_menus"
+        android:id="@+id/menu_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:fontFamily="@font/nunitosans_extrabold"
-        tools:text="My Menu Title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/addMenuButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_pager" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addMenuButton"
-        style="@style/IconOnlyButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        app:cornerRadius="16dp"
-        app:icon="@drawable/ic_baseline_add_circle_outline_24"
-        app:iconTint="?attr/colorSurface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/menus_wrapper" />
+        app:layout_constraintTop_toBottomOf="@id/view_pager"
+        tools:text="My Menu Title" />
 
     <FrameLayout
         android:id="@+id/menus_wrapper"
@@ -47,7 +34,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_all_menus">
+        app:layout_constraintTop_toBottomOf="@id/menu_title">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/menusView"
@@ -55,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:elevation="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp">
 
@@ -86,7 +73,7 @@
             android:layout_height="200dp"
             android:layout_margin="8dp"
             android:elevation="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp">
 
@@ -96,7 +83,7 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/menu_title"
+                    android:id="@+id/no_menu_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_bold"
@@ -115,7 +102,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/menu_title" />
+                    app:layout_constraintTop_toBottomOf="@id/no_menu_title" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/menu_description2"

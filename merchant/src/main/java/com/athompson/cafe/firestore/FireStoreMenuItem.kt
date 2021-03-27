@@ -12,15 +12,16 @@ import kotlin.reflect.KFunction1
 
 class FireStoreMenuItem {
 
-    // Access a Cloud Firestore instance.
+
     private val mFireStore = FirebaseFirestore.getInstance()
 
     fun getMenuItems(
+        muid:String,
         success: KFunction1<ArrayList<FoodMenuItem>, Unit>,
         failure: (Exception) -> Unit
     ) {
         mFireStore.collection(MENUS)
-            .whereEqualTo("uid", CafeQRApplication.selectedVenue?.uid)
+            .whereEqualTo("uid", muid)
             .get()
             .addOnSuccessListener { document ->
                 val menuList: ArrayList<FoodMenuItem> = ArrayList()
@@ -40,16 +41,16 @@ class FireStoreMenuItem {
     }
 
 
-    fun deleteMenuItem(menuFragment: MenuFragment, menuItemID: String) {
+    fun deleteMenuItem(   success: KFunction0<Unit>,
+                          failure: (Exception) -> Unit, menuItemID: String) {
         mFireStore.collection(MENUS)
             .document(menuItemID)
             .delete()
             .addOnSuccessListener {
-                menuFragment.deleteMenuDeleteSuccess()
+               success()
             }
             .addOnFailureListener { e ->
-                menuFragment.hideProgressDialog()
-                menuFragment.deleteMenuDeleteFailure(e)
+                failure(e)
             }
     }
 

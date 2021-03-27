@@ -1,18 +1,16 @@
 package com.athompson.cafe.adapters
 
 import android.content.Context
-import android.os.Parcelable
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.VenueDisplayCardBinding
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.Venue
-import kotlinx.android.parcel.Parcelize
 
 
 open class VenuesViewPagerAdapter(
@@ -31,20 +29,31 @@ open class VenuesViewPagerAdapter(
         )
     }
 
+
     fun dataChanged() {
 
         venuesList.forEach {  vid ->
-            val menu = menusList.find { it.uid == vid.uid }
+            val menu = menusList.find { it.uid == vid.muid }
             if(menu!=null)
                 vid.menu = menu
             else
                 vid.menu = null
         }
         notifyDataSetChanged()
-
     }
 
 
+
+    fun getSelectedMenu(currentVenue:Venue):CafeQrMenu?
+    {
+        menusList.forEach {
+            if(it.uid.isNotBlank()&&it.uid== currentVenue.muid)
+            {
+                return  it
+            }
+        }
+        return null
+    }
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -52,20 +61,29 @@ open class VenuesViewPagerAdapter(
 
         if (holder is VenueViewHolder) {
 
-            GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.selectedVenueImage)
+            if(venue.imageUrl.safe().isNotEmpty())
+                GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
+            else
+                holder.binding.image.setImageResource(R.drawable.cafe_image)
+
             holder.binding.selectedVenueName.text = venue.name
             holder.binding.selectedVenueTown.text = venue.location
-            holder.binding.selectedMenuName.text = "Not Known"
-            holder.binding.selectedMenuDescription.text = "Not Known Description"
+            val selectedMenu=getSelectedMenu(venue)
+            holder.binding.selectedMenuName.text = selectedMenu?.name?:"No Menu Assigned To Venue"
+            holder.binding.selectedMenuDescription.text =  selectedMenu?.name?:""
         }
     }
 
-
-    /**
-     * Gets the number of items in the list
-     */
     override fun getItemCount(): Int {
         return venuesList.size
+    }
+
+    fun itemAt(currentItemIndex: Int): Venue? {
+        if(venuesList.isNullOrEmpty())
+            return null
+        if(currentItemIndex >  venuesList.size-1 )
+            return null
+        return venuesList[currentItemIndex]
     }
 
 

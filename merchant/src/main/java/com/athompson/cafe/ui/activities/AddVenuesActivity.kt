@@ -155,7 +155,7 @@ class AddVenuesActivity : BaseActivity(){
             location =  binding.etLocation.trimmed(),
             description =  binding.etDescription.trimmed(),
             imageUrl =    mVenueImageURL,
-            uid = "".uuid()
+            vuid = "".uuid()
         )
 
         FireStoreVenue().addVenue(::addVenueSuccess,::addVenueFailure, venue)
