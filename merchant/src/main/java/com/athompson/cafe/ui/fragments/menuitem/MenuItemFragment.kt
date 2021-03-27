@@ -6,19 +6,25 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.viewpager2.widget.ViewPager2
 import com.athompson.cafe.R
+import com.athompson.cafe.adapters.MenusViewPagerAdapter
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.databinding.FragmentMenuItemsBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
+import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
+import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
 
 
@@ -26,6 +32,11 @@ class MenuItemFragment : BaseFragment() {
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var mRootView: View
     private lateinit var binding:FragmentMenuItemsBinding
+    private var foodItems: ArrayList<FoodMenuItem?> = ArrayList()
+    private var cafeQrMenus: ArrayList<CafeQrMenu?> = ArrayList()
+    private var selectedMenu:CafeQrMenu? = null
+    private lateinit var simpleMenuItemAdapter:SimpleMenuItemAdapter
+    private lateinit var menusViewPagerAdapter: MenusViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -43,8 +54,47 @@ class MenuItemFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMenuItemsBinding.bind(view)
-        getMenuItemsListFromFireStore()
+
+        setupRecycler()
+        getMenusList()
     }
+
+    private fun getMenusList() {
+        showProgressDialog(R.string.please_wait.asString())
+        FireStoreMenu().getMenus(::successfulCafeQrMenuList,::failureCafeQrMenuList)
+    }
+
+    private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu>) {
+        if (menuList.size > 0) {
+            cafeQrMenus.clear()
+            cafeQrMenus.addAll(menuList)
+        } else {
+            addBlankItem()
+        }
+        menusViewPagerAdapter.dataChanged()
+        hideProgressDialog()
+        getMenuItemsFireStore()
+    }
+
+    private fun failureCafeQrMenuList(e: Exception) {
+        logError(e.toString())
+        hideProgressDialog()
+        addBlankItem()
+    }
+
+    private fun addBlankItem()
+    {
+        cafeQrMenus.clear()
+        cafeQrMenus.add(CafeQrMenu("You have no menus","Click to creat a menu","",""))
+        menusViewPagerAdapter.dataChanged()
+    }
+
+    fun getSelectedMenu(position: Int):CafeQrMenu?
+    {
+        return menusViewPagerAdapter.itemAt(position)
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_food_menu, menu)
@@ -64,16 +114,59 @@ class MenuItemFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getMenuItemsListFromFireStore() {
-        showProgressDialog(R.string.please_wait.asString())
-        FireStoreMenuItem().getMenus(::getSuccess,::getFailure)
+    private fun setupRecycler()
+    {
+        menusViewPagerAdapter = MenusViewPagerAdapter(requireContext(),cafeQrMenus) //for displaying menus
+        binding.viewPager.adapter = menusViewPagerAdapter
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                println(state)
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                println(position)
+            }
+
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                selectedMenu = getSelectedMenu(position)
+            }
+        })
+
+        simpleMenuItemAdapter = SimpleMenuItemAdapter(requireContext(),foodItems)
+        binding.recycler.setLayoutManagerVertical()
+        binding.recycler.itemAnimator = DefaultItemAnimator()
+        binding.recycler.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                DividerItemDecoration.HORIZONTAL
+            )
+        )
+        binding.recycler.adapter = simpleMenuItemAdapter
+
+    }
+
+    private fun getMenuItemsFireStore() {
+        val selected = selectedMenu
+        if(selected!=null) {
+            showProgressDialog(R.string.please_wait.asString())
+            FireStoreMenuItem().getMenuItems(selected.uid, ::getSuccess, ::getFailure)
+        }
     }
 
     private fun getFailure(e: Exception) {
+        logError(e.message.toString())
         hideProgressDialog()
     }
 
-    private fun getSuccess(menuList: ArrayList<FoodMenuItem>) {
+    private fun getSuccess(menuList: ArrayList<FoodMenuItem?>) {
         hideProgressDialog()
 
         if (menuList.size > 0) {
@@ -111,8 +204,8 @@ class MenuItemFragment : BaseFragment() {
     }
 
 
-    fun deleteMenuItem(orgID: String) {
-        showAlertDialogToDeleteMenuItem(orgID)
+    fun deleteMenuItem(id: String) {
+        showAlertDialogToDeleteMenuItem(id)
     }
 
     private fun deleteFailure(e: Exception) {
@@ -124,7 +217,7 @@ class MenuItemFragment : BaseFragment() {
     private fun deleteSuccess() {
         hideProgressDialog()
         showShortToast(R.string.menu_delete_success_message.asString())
-        getMenuItemsListFromFireStore()
+        getMenuItemsFireStore()
     }
 
 

@@ -29,13 +29,13 @@ open class SimpleMenuItemAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val menuItem = list[position]
 
-        if(menuItem.imageUrl.safe().isNotEmpty())
-            GlideLoader(context).loadImagePicture(menuItem.imageUrl, holder.binding.image)
+        if(menuItem?.imageUrl.safe().isNotEmpty())
+            GlideLoader(context).loadImagePicture(menuItem?.imageUrl.safe(), holder.binding.image)
         else
             holder.binding.image.setImageResource(R.drawable.cafe_image)
 
-        holder.binding.name.text = menuItem.name
-        holder.binding.description.text = menuItem.description
+        holder.binding.name.text = menuItem?.name
+        holder.binding.description.text = menuItem?.description
     }
 
 

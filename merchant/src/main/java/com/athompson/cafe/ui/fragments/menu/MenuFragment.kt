@@ -11,7 +11,6 @@ import com.athompson.cafe.adapters.SimpleMenuAdapter
 import com.athompson.cafe.databinding.FragmentMenuBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.ui.activities.AddMenuActivity
-import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
@@ -44,7 +43,7 @@ class MenuFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMenuBinding.bind(view)
-        getMenuItemsListFromFireStore()
+        getMenus()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,7 +65,8 @@ class MenuFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getMenuItemsListFromFireStore() {
+
+    private fun getMenus() {
         showProgressDialog(R.string.please_wait.asString())
         FireStoreMenu().getMenus(::getSuccess,::getFailure)
     }
@@ -144,7 +144,7 @@ class MenuFragment : BaseFragment() {
     private fun deleteSuccess() {
         hideProgressDialog()
         showShortToast(R.string.menu_delete_success_message.asString())
-        getMenuItemsListFromFireStore()
+        getMenus()
     }
 
 

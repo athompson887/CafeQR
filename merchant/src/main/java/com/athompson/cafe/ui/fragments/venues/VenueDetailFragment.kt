@@ -47,7 +47,7 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             drawingViewId = R.id.nav_host_fragment
             duration = resources.getInteger(com.athompson.cafe.R.integer.reply_motion_duration_large).toLong()
             scrimColor = Color.TRANSPARENT
-            setAllContainerColors(requireContext().themeColor(com.athompson.cafe.R.attr.colorSurface))
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
         }
     }
 
@@ -145,14 +145,12 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun successMenuItem(m:ArrayList<FoodMenuItem>?)
+    private fun successMenuItem(m:ArrayList<FoodMenuItem?>)
     {
         hideProgressDialog()
-        if (m != null) {
-            menuFoodItems.clear()
-            menuFoodItems.addAll(m)
-            adapter?.dataChanged(menuFoodItems)
-        }
+        menuFoodItems.clear()
+        menuFoodItems.addAll(m)
+        adapter?.dataChanged(menuFoodItems)
     }
 
     private fun failureMenuItem(e:Exception)

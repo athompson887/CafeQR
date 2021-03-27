@@ -16,5 +16,6 @@ object SharedConstants {
     const val ORGANISATIONS: String = "organisations"
     const val VENUES: String = "venues"
     const val MENUS: String = "menus"
+    const val MENU_ITEM: String = "menu_item"
     const val USERS: String = "users"
 }
