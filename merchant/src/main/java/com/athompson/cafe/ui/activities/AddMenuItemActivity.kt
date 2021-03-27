@@ -16,10 +16,10 @@ import com.athompson.cafe.databinding.ActivityAddMenuItemBinding
 import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
-import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -28,6 +28,7 @@ import java.io.IOException
 
 class AddMenuItemActivity : BaseActivity(){
 
+    private var selectedMenu: String? = null
     private var mSelectedImageFileUri: Uri? = null
     private var mFoodImageURL: String = ""
     lateinit var binding:ActivityAddMenuItemBinding
@@ -47,10 +48,12 @@ class AddMenuItemActivity : BaseActivity(){
 
         // Assign the click event to submit button.
         binding.btnSubmit.setOnClickListener{
-            if (validateOrganisationDetails()) {
-                uploadOrganisationImage()
+            if (validate()) {
+                uploadImage()
             }
         }
+        selectedMenu = intent.extras?.getString("menuID")
+        print(selectedMenu)
     }
 
     override fun onRequestPermissionsResult(
@@ -108,11 +111,16 @@ class AddMenuItemActivity : BaseActivity(){
     }
 
 
-    private fun validateOrganisationDetails(): Boolean {
+    private fun validate(): Boolean {
         return when {
 
             mSelectedImageFileUri == null -> {
                 showErrorSnackBar(R.string.err_msg_select_organisation_image.asString(), true)
+                false
+            }
+
+            selectedMenu==null -> {
+                showErrorSnackBar("You cannot add a menu item until you have created and selected a menu", true)
                 false
             }
 
@@ -142,35 +150,44 @@ class AddMenuItemActivity : BaseActivity(){
         }
     }
 
-    private fun uploadOrganisationImage() {
+    private fun uploadImage() {
 
-        showProgressDialog(R.string.please_wait.asString())
-        FireStoreImage().uploadImageToCloudStorage(this@AddMenuItemActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
+        if(selectedMenu!=null) {
+            showProgressDialog(R.string.please_wait.asString())
+            FireStoreImage().uploadImageToCloudStorage(
+                this@AddMenuItemActivity,
+                mSelectedImageFileUri,
+                ::imageUploadSuccess,
+                ::imageUploadFailure
+            )
+        }
     }
 
     private fun imageUploadSuccess(imageURL: String) {
         hideProgressDialog()
         mFoodImageURL = imageURL
-        uploadMenuItem()
+        if (!selectedMenu.isNullOrEmpty()) {
+            uploadMenuItem(selectedMenu.toString())
+        }
     }
 
     private fun imageUploadFailure(exception: Exception) {
-
+        logError(exception.message.toString())
         showShortToast(R.string.upload_image_failure.asString())
         hideProgressDialog()
     }
 
 
-    private fun uploadMenuItem() {
+    private fun uploadMenuItem(menuItemId:String) {
 
         // Here we get the text from editText and trim the space
         val food = FoodMenuItem(
-            binding.etMenuItemName.trimmed(),
-            binding.etMenuItemType.trimmed(),
-            binding.etMenuItemDescription.trimmed(),
-            mFoodImageURL,
-            binding.etPrice.trimmed().toDouble(),
-            "".uuid()
+            name = binding.etMenuItemName.trimmed(),
+            type =  binding.etMenuItemType.trimmed(),
+            description = binding.etMenuItemDescription.trimmed(),
+            imageUrl = mFoodImageURL,
+            price = binding.etPrice.trimmed().toDouble(),
+            menuId = menuItemId
         )
 
         FireStoreMenuItem().addMenuItem(::addMenuItemSuccess,::addMenuItemFailure, food)

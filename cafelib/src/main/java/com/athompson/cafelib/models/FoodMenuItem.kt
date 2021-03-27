@@ -10,13 +10,19 @@ data class FoodMenuItem(
     val description: String = "",
     val imageUrl: String = "",
     val price:Double = 0.0,
-    var uid:String = ""
+    var menuId:String = "",
+    @Transient
+    var id:String = ""
 ) : Parcelable
 {
     override fun toString(): String {
         println(name)
         println(type)
         println(description)
+        println(imageUrl)
+        println(price)
+        println(menuId)
+        println(id)
         return super.toString()
     }
 }

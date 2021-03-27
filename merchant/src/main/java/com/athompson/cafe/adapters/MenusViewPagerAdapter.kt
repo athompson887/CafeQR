@@ -10,7 +10,6 @@ import com.athompson.cafe.databinding.MenuDisplayCardBinding
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.models.CafeQrMenu
-import com.athompson.cafelib.models.Venue
 
 
 open class MenusViewPagerAdapter(
@@ -32,18 +31,6 @@ open class MenusViewPagerAdapter(
     fun dataChanged() {
 
         notifyDataSetChanged()
-    }
-
-
-    fun getSelectedMenu(currentVenue:Venue):CafeQrMenu?
-    {
-        menusList.forEach {
-            if(!it?.uid.isNullOrBlank()&&it?.uid== currentVenue.muid)
-            {
-                return  it
-            }
-        }
-        return null
     }
 
 

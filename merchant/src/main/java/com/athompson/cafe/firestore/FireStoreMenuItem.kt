@@ -13,20 +13,15 @@ class FireStoreMenuItem {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getMenuItems(
-        mUid:String,
-        success: KFunction1<ArrayList<FoodMenuItem?>, Unit>,
-        failure: (Exception) -> Unit
-    ) {
+    fun getMenuItems(selectedMenuId:String, success: KFunction1<ArrayList<FoodMenuItem?>, Unit>, failure: (Exception) -> Unit) {
         mFireStore.collection(MENU_ITEM)
-            .whereEqualTo("uid", mUid)
+            .whereEqualTo("menuId", selectedMenuId)
             .get()
             .addOnSuccessListener { document ->
                 val menuList: ArrayList<FoodMenuItem?> = ArrayList()
                 for (i in document.documents) {
-
                     val menu = i.toObject(FoodMenuItem::class.java)
-                    menu?.uid = i.id
+                    menu?.id = i.id
                     if (menu != null) {
                         menuList.add(menu)
                     }

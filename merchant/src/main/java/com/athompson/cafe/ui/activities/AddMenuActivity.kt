@@ -153,7 +153,6 @@ class AddMenuActivity : BaseActivity(){
         val menu = CafeQrMenu(
             name = binding.etMenuName.trimmed(),
             description =  binding.etDescription.trimmed(),
-            uid = "".uuid(),
             imageUrl = mSelectedImageFileUri.toString()
         )
         FireStoreMenu().addCafeQrMenu(::addMenuSuccess,::addMenuFailure, menu)

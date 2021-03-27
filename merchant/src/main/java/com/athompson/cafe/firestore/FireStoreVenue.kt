@@ -26,7 +26,7 @@ class FireStoreVenue {
                 for (i in document.documents) {
 
                     val venue = i.toObject(Venue::class.java)!!
-                    //venue.organisationId = i.id
+                    venue.id = i.id
                     venuesList.add(venue)
                 }
 

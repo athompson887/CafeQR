@@ -23,7 +23,7 @@ class FireStoreMenu {
                 for (i in document.documents) {
 
                     val menu = i.toObject(CafeQrMenu::class.java)
-                    menu?.uid = i.id
+                    menu?.id = i.id
                     if (menu != null) {
                         menuList.add(menu)
                     }

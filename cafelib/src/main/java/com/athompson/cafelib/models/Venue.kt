@@ -10,8 +10,9 @@ data class Venue(
     val location: String = "",
     val description: String = "",
     val imageUrl: String = "",
-    val vuid:String = "", //unique identifier for this venue
-    val muid:String = "",//menu id
+    val selectedMenuId:String = "",//menu id
+    @Transient
+    var id:String = "", //unique identifier for this venue
     @Transient
     var menu: CafeQrMenu? = null
 ) : Parcelable
@@ -21,6 +22,8 @@ data class Venue(
         println(location)
         println(description)
         println(imageUrl)
+        println(selectedMenuId)
+        println(id)
         return super.toString()
     }
 }

@@ -188,7 +188,7 @@ class DashboardFragment : BaseFragment() {
     {
          val currentVenue = venuesViewPagerAdapter.itemAt(position)
          cafeQrMenus.forEach {
-            if(it.uid.isNotBlank()&&it.uid==currentVenue?.muid)
+            if(it.id.isNotBlank()&&it.id==currentVenue?.selectedMenuId)
             {
                 return  it
             }

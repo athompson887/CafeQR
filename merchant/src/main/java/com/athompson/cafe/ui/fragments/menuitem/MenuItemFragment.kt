@@ -73,7 +73,6 @@ class MenuItemFragment : BaseFragment() {
         }
         menusViewPagerAdapter.dataChanged()
         hideProgressDialog()
-        getMenuItemsFireStore()
     }
 
     private fun failureCafeQrMenuList(e: Exception) {
@@ -105,7 +104,16 @@ class MenuItemFragment : BaseFragment() {
         val id = item.itemId
 
         if (id == R.id.action_add_food_item) {
-            startActivity(Intent(activity, AddMenuItemActivity::class.java))
+            if(selectedMenu==null)
+            {
+                showShortToast("You cannot add a menu item until you have created a menu")
+            }
+            else {
+
+                val intent = Intent(activity, AddMenuItemActivity::class.java)
+                intent.putExtra("menuID", selectedMenu?.id)
+                startActivity(intent)
+            }
             return true
         }
         else if (id == android.R.id.home){
@@ -137,6 +145,7 @@ class MenuItemFragment : BaseFragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 selectedMenu = getSelectedMenu(position)
+                getMenuItemsFireStore()
             }
         })
 
@@ -157,7 +166,7 @@ class MenuItemFragment : BaseFragment() {
         val selected = selectedMenu
         if(selected!=null) {
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreMenuItem().getMenuItems(selected.uid, ::getSuccess, ::getFailure)
+            FireStoreMenuItem().getMenuItems(selected.id, ::getSuccess, ::getFailure)
         }
     }
 
@@ -169,7 +178,7 @@ class MenuItemFragment : BaseFragment() {
     private fun getSuccess(menuList: ArrayList<FoodMenuItem?>) {
         hideProgressDialog()
 
-        if (menuList.size > 0) {
+        if (menuList.isNotEmpty()) {
             binding.recycler.show()
             binding.empty.remove()
 

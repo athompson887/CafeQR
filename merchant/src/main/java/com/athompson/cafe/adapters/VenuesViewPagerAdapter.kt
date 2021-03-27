@@ -33,7 +33,7 @@ open class VenuesViewPagerAdapter(
     fun dataChanged() {
 
         venuesList.forEach {  vid ->
-            val menu = menusList.find { it.uid == vid.muid }
+            val menu = menusList.find { it.id == vid.selectedMenuId }
             if(menu!=null)
                 vid.menu = menu
             else
@@ -47,7 +47,7 @@ open class VenuesViewPagerAdapter(
     fun getSelectedMenu(currentVenue:Venue):CafeQrMenu?
     {
         menusList.forEach {
-            if(it.uid.isNotBlank()&&it.uid== currentVenue.muid)
+            if(it.id.isNotBlank()&&it.id== currentVenue.selectedMenuId)
             {
                 return  it
             }

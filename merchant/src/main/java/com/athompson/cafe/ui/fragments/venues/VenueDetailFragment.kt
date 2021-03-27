@@ -141,7 +141,7 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             showProgressDialog("Getting Menu Items")
             adapter = SimpleMenuItemAdapter(requireContext(), menuFoodItems)
             binding.recycler.adapter = adapter
-            FireStoreMenuItem().getMenuItems(selected.uid, ::successMenuItem, ::failureMenuItem)
+            FireStoreMenuItem().getMenuItems(selected.id, ::successMenuItem, ::failureMenuItem)
         }
     }
 

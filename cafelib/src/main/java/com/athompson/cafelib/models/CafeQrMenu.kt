@@ -9,13 +9,16 @@ import kotlinx.android.parcel.Parcelize
 data class CafeQrMenu(
     val name: String = "",
     val description: String = "",
-    var uid:String = "",
-    var imageUrl:String = ""
+    var imageUrl:String = "",
+    @Transient
+    var id:String = ""
 ) : Parcelable
 {
     override fun toString(): String {
         println(name)
         println(description)
+        print(imageUrl)
+        print(id)
         return super.toString()
     }
 }
