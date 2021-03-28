@@ -4,13 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.viewpager2.widget.ViewPager2
 import com.athompson.cafe.R
-import com.athompson.cafe.adapters.SimpleMenuAdapter
+import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.adapters.VenuesViewPagerAdapter
 import com.athompson.cafe.databinding.FragmentDashboardBinding
 import com.athompson.cafe.firestore.FireStoreMenu
+import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.activities.SettingsActivity
@@ -22,6 +24,7 @@ import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.models.CafeQrMenu
+import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.models.Venue
 
 
@@ -31,9 +34,10 @@ class DashboardFragment : BaseFragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var binding: FragmentDashboardBinding
     private var cafeQrMenus: ArrayList<CafeQrMenu> = ArrayList()
+    private var menuItems: ArrayList<FoodMenuItem?> = ArrayList()
     private var venues: ArrayList<Venue> = ArrayList()
     private var selectedMenu:CafeQrMenu? = null
-    private lateinit var simpleMenuAdapter:SimpleMenuAdapter
+    private lateinit var simpleMenuItemAdapter:SimpleMenuItemAdapter
     private lateinit var venuesViewPagerAdapter: VenuesViewPagerAdapter
     private var called = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +93,7 @@ class DashboardFragment : BaseFragment() {
     private fun setupRecycler()
     {
         venuesViewPagerAdapter = VenuesViewPagerAdapter(requireContext(),venues,cafeQrMenus)
-        simpleMenuAdapter = SimpleMenuAdapter(requireContext(),cafeQrMenus)
+        simpleMenuItemAdapter = SimpleMenuItemAdapter(requireContext(),menuItems)
 
         binding.viewPager.adapter = venuesViewPagerAdapter
 
@@ -104,7 +108,8 @@ class DashboardFragment : BaseFragment() {
                 positionOffsetPixels: Int
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                println(position)
+
+                 println(position)
             }
 
 
@@ -112,6 +117,7 @@ class DashboardFragment : BaseFragment() {
                 super.onPageSelected(position)
                 selectedMenu = getSelectedMenu(position)
                 renderSelectedMenu()
+                getMenusItemsList(venues[position].selectedMenuId)
             }
         })
 
@@ -124,7 +130,7 @@ class DashboardFragment : BaseFragment() {
                 DividerItemDecoration.HORIZONTAL
             )
         )
-        binding.recyclerMenus.adapter = simpleMenuAdapter
+        binding.recyclerMenus.adapter = simpleMenuItemAdapter
 
     }
 
@@ -174,14 +180,17 @@ class DashboardFragment : BaseFragment() {
         if (menuList.size > 0) {
             cafeQrMenus.clear()
             cafeQrMenus.addAll(menuList)
-            setMenuTitle()
-            showMenu()
         } else {
-            showNoMenu()
+
         }
-        simpleMenuAdapter.dataChanged(cafeQrMenus)
+
         hideProgressDialog()
         getVenuesList()
+    }
+
+    private fun failureCafeQrMenuList(e: Exception) {
+        hideProgressDialog()
+        showNoMenu()
     }
 
     fun getSelectedMenu(position: Int):CafeQrMenu?
@@ -196,11 +205,24 @@ class DashboardFragment : BaseFragment() {
         return null
     }
 
-    private fun setMenuTitle() {
-        binding.menuTitle.text = cafeQrMenus[0].name
+    private fun getMenusItemsList(selectedMenuId:String) {
+        showProgressDialog(R.string.please_wait.asString())
+        FireStoreMenuItem().getMenuItems(selectedMenuId,::successfulMenuItemsList,::failureMenuItemsList)
     }
 
-    private fun failureCafeQrMenuList(e: Exception) {
+    private fun successfulMenuItemsList(menuList: ArrayList<FoodMenuItem?>) {
+        if (menuList.size > 0) {
+            menuItems.clear()
+            menuItems.addAll(menuList)
+            showMenu()
+        } else {
+            showNoMenu()
+        }
+        hideProgressDialog()
+        simpleMenuItemAdapter.dataChanged(menuItems)
+    }
+
+    private fun failureMenuItemsList(e: Exception) {
         hideProgressDialog()
         showNoMenu()
     }
