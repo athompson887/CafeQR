@@ -18,4 +18,9 @@ object SharedConstants {
     const val MENUS: String = "menus"
     const val MENU_ITEM: String = "menu_item"
     const val USERS: String = "users"
+
+
+    val FOOD_TYPES = arrayOf(
+        "Appetizer","Starter", "Main", "Desert","Alchoholic Beverage", "Non Alcoholic Beverage", "Cocktail"
+    )
 }

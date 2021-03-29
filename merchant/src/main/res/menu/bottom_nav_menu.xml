@@ -4,26 +4,31 @@
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_vector_dashboard"
+        android:iconTint="@color/colorOnPrimary"
         android:title="@string/title_dashboard" />
 
     <item
         android:id="@+id/navigation_venues"
         android:icon="@drawable/ic_venue"
-        android:title="Venues" />
+        android:iconTint="@color/colorOnPrimary"
+        android:title="My Venues" />
 
     <item
         android:id="@+id/navigation_menus"
-        android:icon="@drawable/ic_food_menu"
-        android:title="Venues" />
+        android:icon="@drawable/ic_baseline_restaurant_menu_24"
+        android:iconTint="@color/colorOnPrimary"
+        android:title="My Menus" />
 
     <item
         android:id="@+id/navigation_food_menu"
         android:icon="@drawable/ic_food_menu"
-        android:title="Menu" />
+        android:iconTint="@color/colorOnPrimary"
+        android:title="Food" />
 
     <item
         android:id="@+id/navigation_codes"
-        android:icon="@drawable/ic_vector_products"
-        android:title="Codes" />
+        android:icon="@drawable/ic_qr_download"
+        android:iconTint="@color/colorOnPrimary"
+        android:title="CafeQr" />
 
 </menu>

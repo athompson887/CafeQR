@@ -8,12 +8,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddMenuItemBinding
 import com.athompson.cafe.firestore.FireStoreImage
+import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.logError
@@ -23,14 +27,20 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
+import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
+import com.athompson.cafelib.shared.SharedConstants.FOOD_TYPES
 import java.io.IOException
 
 class AddMenuItemActivity : BaseActivity(){
 
-    private var selectedMenu: String? = null
+    private var selectedMenuID: String? = null
     private var mSelectedImageFileUri: Uri? = null
     private var mFoodImageURL: String = ""
+    private var selectedFoodType: String = ""
+    private var selectedMenu:CafeQrMenu? = null
+    private val menuListName = ArrayList<String?>()
+    private val menus = ArrayList<CafeQrMenu?>()
     lateinit var binding:ActivityAddMenuItemBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +62,74 @@ class AddMenuItemActivity : BaseActivity(){
                 uploadImage()
             }
         }
-        selectedMenu = intent.extras?.getString("menuID")
-        print(selectedMenu)
+        selectedMenuID = intent.extras?.getString("menuID")
+        print(selectedMenuID)
+
+        val foodTypesAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, FOOD_TYPES)
+        binding.foodTypesAutoComplete.setAdapter(foodTypesAdapter)
+        binding.foodTypesAutoComplete.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    selectedFoodType = FOOD_TYPES.get(0)
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedFoodType = FOOD_TYPES.get(position)
+                }
+            }
+        binding.menusAutoComplete.setText(selectedFoodType)
+        populateMenus()
     }
+
+    private fun populateMenus()
+    {
+        showProgressDialog("Getting Menus")
+        FireStoreMenu().getMenus(::successMenu, ::failureMenu)
+    }
+
+    private fun successMenu(menusItems: ArrayList<CafeQrMenu>?) {
+        hideProgressDialog()
+        menuListName.clear()
+        menusItems?.forEach { menuListName.add(it.name) }
+
+        val adapter =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, menuListName)
+
+        binding.menusAutoComplete.setAdapter(adapter)
+        binding.menusAutoComplete.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    selectedMenu = null
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedMenu = menus[position]
+                    selectedMenuID = selectedMenu?.id
+                }
+            }
+        if(menus.isNotEmpty()) {
+            binding.menusAutoComplete.setSelection(getSelectedMenuIndex(menusItems))
+            binding.menusAutoComplete.setText(selectedMenu?.name)
+        }
+
+    }
+    private fun getSelectedMenuIndex(m: ArrayList<CafeQrMenu>?): Int {
+        m?.forEach {
+            if(it.id == selectedMenuID)
+            {
+                return m.indexOf(it)
+            }
+        }
+        return 0
+    }
+
+
+    private fun failureMenu(e:Exception)
+    {
+        hideProgressDialog()
+        logError(e.toString())
+    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -119,7 +194,7 @@ class AddMenuItemActivity : BaseActivity(){
                 false
             }
 
-            selectedMenu==null -> {
+            selectedMenuID==null -> {
                 showErrorSnackBar("You cannot add a menu item until you have created and selected a menu", true)
                 false
             }
@@ -129,10 +204,6 @@ class AddMenuItemActivity : BaseActivity(){
                 false
             }
 
-            TextUtils.isEmpty(binding.etMenuItemType.trimmed()) -> {
-                showErrorSnackBar(R.string.err_msg_enter_organisation_type.asString(), true)
-                false
-            }
 
             TextUtils.isEmpty(binding.etMenuItemDescription.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_address.asString(), true)
@@ -152,7 +223,7 @@ class AddMenuItemActivity : BaseActivity(){
 
     private fun uploadImage() {
 
-        if(selectedMenu!=null) {
+        if(selectedMenuID!=null) {
             showProgressDialog(R.string.please_wait.asString())
             FireStoreImage().uploadImageToCloudStorage(
                 this@AddMenuItemActivity,
@@ -166,8 +237,8 @@ class AddMenuItemActivity : BaseActivity(){
     private fun imageUploadSuccess(imageURL: String) {
         hideProgressDialog()
         mFoodImageURL = imageURL
-        if (!selectedMenu.isNullOrEmpty()) {
-            uploadMenuItem(selectedMenu.toString())
+        if (!selectedMenuID.isNullOrEmpty()) {
+            uploadMenuItem(selectedMenuID.toString())
         }
     }
 
@@ -183,7 +254,7 @@ class AddMenuItemActivity : BaseActivity(){
         // Here we get the text from editText and trim the space
         val food = FoodMenuItem(
             name = binding.etMenuItemName.trimmed(),
-            type =  binding.etMenuItemType.trimmed(),
+            type =  selectedFoodType,
             description = binding.etMenuItemDescription.trimmed(),
             imageUrl = mFoodImageURL,
             price = binding.etPrice.trimmed().toDouble(),

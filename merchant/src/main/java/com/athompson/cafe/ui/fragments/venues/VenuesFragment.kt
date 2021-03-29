@@ -15,6 +15,8 @@ import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
+import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
@@ -49,6 +51,8 @@ class VenuesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVenuesBinding.bind(view)
+        toolBarTitle("My Venues")
+        toolBarSubTitle("")
         getVenuesListFromFireStore()
     }
 
@@ -199,5 +203,4 @@ class VenuesFragment : BaseFragment() {
             }
         }
     }
-
 }

@@ -5,20 +5,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.MenusViewPagerAdapter
-import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.databinding.FragmentMenuItemsBinding
+import com.athompson.cafe.databinding.SimpleFoodItemBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
+import com.athompson.cafe.ui.fragments.menu.MenuFragmentDirections
+import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.FragmentExtensions.logError
+import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
+import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
@@ -26,6 +33,7 @@ import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
+import com.google.android.material.transition.MaterialElevationScale
 
 
 class MenuItemFragment : BaseFragment() {
@@ -145,6 +153,8 @@ class MenuItemFragment : BaseFragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 selectedMenu = getSelectedMenu(position)
+                toolBarTitle(selectedMenu?.name.safe())
+                toolBarSubTitle(selectedMenu?.description.safe())
                 getMenuItemsFireStore()
             }
         })
@@ -244,5 +254,79 @@ class MenuItemFragment : BaseFragment() {
         listener = null
     }
     interface OnFragmentInteractionListener{
+    }
+
+    inner class SimpleMenuItemAdapter(
+        private val context: Context,
+        private var list: ArrayList<FoodMenuItem?>) : RecyclerView.Adapter<SimpleMenuItemAdapter.ViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            return ViewHolder(
+                LayoutInflater.from(context).inflate(
+                    R.layout.simple_food_item,
+                    parent,
+                    false
+                )
+            )
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val menuItem = list[position]
+
+            if (menuItem?.imageUrl.safe().isNotEmpty())
+                GlideLoader(context).loadImagePicture(
+                    menuItem?.imageUrl.safe(),
+                    holder.binding.image
+                )
+            else
+                holder.binding.image.setImageResource(R.drawable.cafe_image)
+
+            holder.binding.name.text = menuItem?.name
+            holder.binding.description.text = menuItem?.description
+
+            holder.itemView.setOnClickListener {
+                if (menuItem != null) {
+                    exitTransition = MaterialElevationScale(false).apply {
+                        duration =
+                            resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+                    }
+                    reenterTransition = MaterialElevationScale(true).apply {
+                        duration =
+                            resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+                    }
+                    val trans = getString(R.string.food_card_detail_transition_name)
+                    val extras = FragmentNavigatorExtras(holder.binding.card to trans)
+                    val directions =
+                        MenuItemFragmentDirections.actionNavigationFoodMenuToFoodDetailFragment(
+                            menuItem
+                        )
+                    try {
+                        findNavController().navigate(directions, extras)
+                    } catch (ex: java.lang.Exception) {
+                        print(ex)
+                    }
+                }
+            }
+        }
+
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+        fun dataChanged(items: ArrayList<FoodMenuItem?>) {
+            list = items
+            notifyDataSetChanged()
+        }
+
+
+        inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
+            val binding: SimpleFoodItemBinding =
+                SimpleFoodItemBinding.bind(mView)
+
+            override fun toString(): String {
+                return super.toString() + " '"
+            }
+        }
     }
 }

@@ -2,62 +2,60 @@
 <com.google.android.material.card.MaterialCardView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card"
+    android:id="@+id/venueCard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     android:elevation="8dp"
     app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="16dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintEnd_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:cardCornerRadius="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="200dp"
+            app:layout_constraintWidth_percent="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/cafe_image" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/name"
+            android:id="@+id/selectedMenuName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:lines="1"
-            android:gravity="center_horizontal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/nunitosans_regular"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Best from the West" />
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Evening Menu" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintTop_toBottomOf="@id/selectedMenuName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/name"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/description"
+                android:id="@+id/selectedMenuDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textColor="?attr/colorOnSurface"
                 tools:text="With your permission we and our partners may use precise geolocation data and identification through device scanning. You may click to consent to our and our partners’ processing as described above. Alternatively you may access more detailed information and change your preferences before consenting or to refuse consenting. Please note that some processing of your personal data may not require your consent, but you have a right to object to such processing. Your preferences will apply to this website only. You can change your preferences at any time by returning to this site or visit our privacy polic" />
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

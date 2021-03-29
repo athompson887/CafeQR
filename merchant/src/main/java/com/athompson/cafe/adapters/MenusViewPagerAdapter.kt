@@ -35,17 +35,17 @@ open class MenusViewPagerAdapter(
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val venue = menusList[position]
+        val menu = menusList[position]
 
-        if (holder is MenuViewHolder && venue!=null) {
+        if (holder is MenuViewHolder && menu!=null) {
 
-            if(venue.imageUrl.safe().isNotEmpty())
-                GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
+            if(menu.imageUrl.safe().isNotEmpty())
+                GlideLoader(context).loadImagePicture(menu.imageUrl, holder.binding.image)
             else
                 holder.binding.image.setImageResource(R.drawable.cafe_image)
 
-            holder.binding.name.text = venue.name
-            holder.binding.description.text = venue.description
+            holder.binding.selectedMenuName.text = menu.name
+            holder.binding.selectedMenuDescription.text = menu.description
         }
     }
 

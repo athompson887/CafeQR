@@ -35,12 +35,41 @@
         android:id="@+id/navigation_menus"
         android:name="com.athompson.cafe.ui.fragments.menu.MenuFragment"
         android:label="@string/title_menu"
-        tools:layout="@layout/fragment_menu" />
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_navigation_menus_to_menuDetailFragment"
+            app:destination="@id/menuDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menuDetailFragment"
+        android:name="com.athompson.cafe.ui.fragments.menu.MenuDetailFragment"
+        tools:layout="@layout/fragment_menus_details"
+        android:label="MenuDetailFragment">
+        <argument
+            android:name="selectedMenu"
+            app:argType="com.athompson.cafelib.models.CafeQrMenu" />
+    </fragment>
+
     <fragment
         android:id="@+id/navigation_food_menu"
         android:name="com.athompson.cafe.ui.fragments.menuitem.MenuItemFragment"
         android:label="@string/title_menu"
-        tools:layout="@layout/fragment_menu_items" />
+        tools:layout="@layout/fragment_menu_items" >
+        <action
+            android:id="@+id/action_navigation_food_menu_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/foodDetailFragment"
+        android:name="com.athompson.cafe.ui.fragments.menuitem.FoodDetailFragment"
+        tools:layout="@layout/fragment_menus_details"
+        android:label="FoodDetailFragment">
+        <argument
+            android:name="selectedFood"
+            app:argType="com.athompson.cafelib.models.FoodMenuItem" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_codes"

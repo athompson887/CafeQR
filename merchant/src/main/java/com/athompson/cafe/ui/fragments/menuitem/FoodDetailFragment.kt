@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.fragments.venues
+package com.athompson.cafe.ui.fragments.menuitem
 
 import android.graphics.Color
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
-import com.athompson.cafe.databinding.FragmentVenuesDetailsBinding
+import com.athompson.cafe.databinding.FragmentFoodDetailsBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.ui.fragments.BaseFragment
@@ -26,19 +26,18 @@ import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
-import com.athompson.cafelib.models.Venue
 import com.google.android.material.transition.MaterialContainerTransform
 
 
-class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class FoodDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private var adapter: SimpleMenuItemAdapter? = null
-    private val args: VenueDetailFragmentArgs by navArgs()
-    private val selectedVenue: Venue? by lazy(LazyThreadSafetyMode.NONE) { args.selectedVenue }
+    private val args: FoodDetailFragmentArgs by navArgs()
+    private val selectedFood: FoodMenuItem? by lazy(LazyThreadSafetyMode.NONE) { args.selectedFood }
     private var selectedMenu:CafeQrMenu? = null
     private val menuListName = ArrayList<String?>()
     private val menus = ArrayList<CafeQrMenu?>()
     private val menuFoodItems = ArrayList<FoodMenuItem?>()
-    private lateinit var binding: FragmentVenuesDetailsBinding
+    private lateinit var binding: FragmentFoodDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,7 +56,7 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_venues_details, container, false)
+        return inflater.inflate(R.layout.fragment_food_details, container, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -71,9 +70,9 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentVenuesDetailsBinding.bind(view)
+        binding = FragmentFoodDetailsBinding.bind(view)
 
-        val venue = selectedVenue
+        val venue = selectedFood
         if (venue == null) {
             showError()
             return
@@ -85,10 +84,9 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             binding.image.setImageResource(com.athompson.cafe.R.drawable.cafe_image)
 
         toolBarTitle(venue.name)
-        toolBarSubTitle(venue.location)
+        toolBarSubTitle(venue.description)
 
         binding.name.text = venue.name
-        binding.location.text = venue.location
         binding.description.text = venue.description
 
         populateMenus()

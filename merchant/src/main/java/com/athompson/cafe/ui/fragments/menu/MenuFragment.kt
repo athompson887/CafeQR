@@ -5,20 +5,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
-import com.athompson.cafe.adapters.SimpleMenuAdapter
 import com.athompson.cafe.databinding.FragmentMenuBinding
+import com.athompson.cafe.databinding.SimpleMenuItemBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
+import com.athompson.cafe.ui.fragments.menuitem.FoodDetailFragment
+import com.athompson.cafe.ui.fragments.venues.VenuesFragmentDirections
+import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
 import com.athompson.cafelib.models.CafeQrMenu
+import com.google.android.material.transition.MaterialElevationScale
 
 
 class MenuFragment : BaseFragment() {
@@ -150,4 +157,69 @@ class MenuFragment : BaseFragment() {
 
     interface OnFragmentInteractionListener{
     }
+
+    inner class SimpleMenuAdapter(
+        private val context: Context,
+        private var list: ArrayList<CafeQrMenu>,
+    ) : RecyclerView.Adapter<SimpleMenuAdapter.ViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            return ViewHolder(
+                LayoutInflater.from(context).inflate(
+                    R.layout.simple_menu_item,
+                    parent,
+                    false
+                )
+            )
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val menuItem = list[position]
+            if(menuItem.imageUrl.safe().isNotEmpty())
+                GlideLoader(context).loadImagePicture(menuItem.imageUrl, holder.binding.image)
+            else
+                holder.binding.image.setImageResource(R.drawable.cafe_image)
+            holder.binding.name.text = menuItem.name
+            holder.binding.description.text = menuItem.description
+            holder.itemView.setOnClickListener {
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+                }
+                val trans = getString(R.string.menu_card_detail_transition_name)
+                val extras = FragmentNavigatorExtras(holder.binding.card to trans)
+                val directions =  MenuFragmentDirections.actionNavigationMenusToMenuDetailFragment(menuItem)
+                try {
+                    findNavController().navigate(directions, extras)
+                }
+                catch (ex:java.lang.Exception)
+                {
+                   print(ex)
+                }
+            }
+        }
+
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+        fun dataChanged(cafeQrMenus: ArrayList<CafeQrMenu>) {
+            list = cafeQrMenus
+            notifyDataSetChanged()
+        }
+
+
+        inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
+            val binding: SimpleMenuItemBinding =
+                SimpleMenuItemBinding.bind(mView)
+
+            override fun toString(): String {
+                return super.toString() + " '"
+            }
+        }
+    }
+
 }

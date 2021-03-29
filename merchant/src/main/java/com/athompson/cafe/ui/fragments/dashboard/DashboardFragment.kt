@@ -17,6 +17,8 @@ import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
+import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
+import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
@@ -115,6 +117,8 @@ class DashboardFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                toolBarTitle(venues.get(position).name)
+                toolBarSubTitle(venues.get(position).location)
                 selectedMenu = getSelectedMenu(position)
                 renderSelectedMenu()
                 getMenusItemsList(venues[position].selectedMenuId)

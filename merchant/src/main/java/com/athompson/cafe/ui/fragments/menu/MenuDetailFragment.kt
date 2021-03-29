@@ -1,4 +1,4 @@
-package com.athompson.cafe.ui.fragments.venues
+package com.athompson.cafe.ui.fragments.menu
 
 import android.graphics.Color
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
-import com.athompson.cafe.databinding.FragmentVenuesDetailsBinding
+import com.athompson.cafe.databinding.FragmentMenusDetailsBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.ui.fragments.BaseFragment
@@ -26,19 +26,17 @@ import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
-import com.athompson.cafelib.models.Venue
 import com.google.android.material.transition.MaterialContainerTransform
 
 
-class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class MenuDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private var adapter: SimpleMenuItemAdapter? = null
-    private val args: VenueDetailFragmentArgs by navArgs()
-    private val selectedVenue: Venue? by lazy(LazyThreadSafetyMode.NONE) { args.selectedVenue }
-    private var selectedMenu:CafeQrMenu? = null
+    private val args: MenuDetailFragmentArgs by navArgs()
+    private val selectedMenu: CafeQrMenu? by lazy(LazyThreadSafetyMode.NONE) { args.selectedMenu }
     private val menuListName = ArrayList<String?>()
     private val menus = ArrayList<CafeQrMenu?>()
     private val menuFoodItems = ArrayList<FoodMenuItem?>()
-    private lateinit var binding: FragmentVenuesDetailsBinding
+    private lateinit var binding: FragmentMenusDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,7 +55,7 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_venues_details, container, false)
+        return inflater.inflate(R.layout.fragment_menus_details, container, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -71,25 +69,18 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentVenuesDetailsBinding.bind(view)
+        binding = FragmentMenusDetailsBinding.bind(view)
 
-        val venue = selectedVenue
-        if (venue == null) {
-            showError()
-            return
-        }
-
-        if (venue.imageUrl.safe().isNotEmpty())
-            GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.image)
+        if (selectedMenu?.imageUrl.safe().isNotEmpty())
+            GlideLoader(requireContext()).loadImagePicture(selectedMenu?.imageUrl.safe(), binding.image)
         else
             binding.image.setImageResource(com.athompson.cafe.R.drawable.cafe_image)
 
-        toolBarTitle(venue.name)
-        toolBarSubTitle(venue.location)
+        toolBarTitle(selectedMenu?.name.safe())
+        toolBarSubTitle(selectedMenu?.description.safe())
 
-        binding.name.text = venue.name
-        binding.location.text = venue.location
-        binding.description.text = venue.description
+        binding.name.text = selectedMenu?.name.safe()
+        binding.description.text = selectedMenu?.description.safe()
 
         populateMenus()
 
@@ -126,12 +117,12 @@ class VenueDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         binding.recycler.show()
-        selectedMenu = menus[position]
+      //  selectedMenu = menus[position]
         populateMenu()
     }
     override fun onNothingSelected(parent: AdapterView<*>?) {
         binding.recycler.remove()
-        selectedMenu = null
+ //       selectedMenu = null
     }
 
     private fun populateMenu()
