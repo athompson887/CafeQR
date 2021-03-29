@@ -9,6 +9,7 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
 import com.athompson.cafe.firestore.FireStoreUser
+import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ContextExtensions.isOnline
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
@@ -25,6 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 @Suppress("DEPRECATION")
@@ -87,10 +89,10 @@ class LoginActivity : BaseActivity() {
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 hideProgressDialog()
-                loginSuccess()
+                loginSuccessGoogle()
             } else {
                 hideProgressDialog()
-                loginError(task.exception?.message.toString())
+                loginErrorGoogle(task.exception?.message.toString())
             }
         }
     }
@@ -142,30 +144,17 @@ class LoginActivity : BaseActivity() {
 
 
                     if (task.isSuccessful) {
-                        FireStoreUser().getUserDetails(this@LoginActivity)
+                        FireStoreUser().getUserDetails(::success,::failure)
                     } else {
                         hideProgressDialog()
-                        loginError(task.exception?.message.toString())
+                        loginErrorGoogle(task.exception?.message.toString())
                     }
                 }
         }
     }
-    private fun loginSuccess()
-    {
-        showErrorSnackBar(R.string.successful_login.asString(), false)
-        lifecycleScope.launch(context = Dispatchers.Main) {
-            delay(1000)
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            finish()
-        }
-    }
 
-    private fun loginError(message:String)
-    {
-        showErrorSnackBar(message, true)
-    }
 
-    fun userLoggedInSuccess(user: User) {
+    fun success(user: User) {
         // Hide the progress dialog.
         hideProgressDialog()
 
@@ -181,5 +170,26 @@ class LoginActivity : BaseActivity() {
             startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
         }
         finish()
+    }
+
+    fun failure(e:Exception)
+    {
+        logError(e.message.toString())
+    }
+
+
+    private fun loginErrorGoogle(message:String)
+    {
+        showErrorSnackBar(message, true)
+    }
+
+    private fun loginSuccessGoogle()
+    {
+        showErrorSnackBar(R.string.successful_login.asString(), false)
+        lifecycleScope.launch(context = Dispatchers.Main) {
+            delay(1000)
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
+        }
     }
 }

@@ -14,8 +14,6 @@ import com.athompson.cafe.databinding.SimpleMenuItemBinding
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
-import com.athompson.cafe.ui.fragments.menuitem.FoodDetailFragment
-import com.athompson.cafe.ui.fragments.venues.VenuesFragmentDirections
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.safe

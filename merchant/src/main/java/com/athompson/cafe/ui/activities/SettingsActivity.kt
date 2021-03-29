@@ -9,6 +9,7 @@ import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivitySettingsBinding
 import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -74,10 +75,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun getUserDetails() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreUser().getUserDetails(this@SettingsActivity)
+        FireStoreUser().getUserDetails(::success,::failure,)
     }
 
-    fun userDetailsSuccess(user: User) {
+    fun success(user: User) {
 
         mUserDetails = user
 
@@ -89,5 +90,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         binding.tvGender.text = user.gender
         binding.tvEmail.text = user.email
         binding.tvMobileNumber.text = "${user.mobile}"
+    }
+
+    fun failure(e: Exception) {
+        logError(e.message.toString())
+        hideProgressDialog()
     }
 }

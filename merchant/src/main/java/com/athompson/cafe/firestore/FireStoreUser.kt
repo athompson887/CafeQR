@@ -6,17 +6,17 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import com.athompson.cafe.Constants
-import com.athompson.cafe.ui.activities.LoginActivity
 import com.athompson.cafe.ui.activities.RegisterActivity
-import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.activities.UserProfileActivity
 import com.athompson.cafelib.models.User
+import com.athompson.cafelib.shared.CafeQRApplication
 import com.athompson.cafelib.shared.SharedConstants.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlin.reflect.KFunction1
 
 
 class FireStoreUser {
@@ -56,22 +56,18 @@ class FireStoreUser {
     /**
      * A function to get the logged user details from from FireStore Database.
      */
-    fun getUserDetails(activity: Activity) {
+    fun getUserDetails(success: KFunction1<User, Unit>, failure: KFunction1<Exception, Unit>) {
 
         mFireStore.collection(USERS)
             .document(getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
-
-                Log.i(activity.javaClass.simpleName, document.toString())
-
                 val user = document.toObject(User::class.java)
 
-                val sharedPreferences =
-                    activity.getSharedPreferences(
-                        Constants.PREFERENCES,
-                        Context.MODE_PRIVATE
-                    )
+                val sharedPreferences = CafeQRApplication.appInstance.getSharedPreferences(
+                    Constants.PREFERENCES,
+                    Context.MODE_PRIVATE
+                )
 
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 if (user != null) {
@@ -81,113 +77,59 @@ class FireStoreUser {
                     )
                 }
                 editor.apply()
-
-                when (activity) {
-                    is LoginActivity -> {
-                        if (user != null) {
-                            activity.userLoggedInSuccess(user)
-                        }
-                    }
-
-                    is SettingsActivity -> {
-                        if (user != null) {
-                            activity.userDetailsSuccess(user)
-                        }
-                    }
+                if (user != null) {
+                    success(user)
                 }
             }
             .addOnFailureListener { e ->
-                when (activity) {
-                    is LoginActivity -> {
-                        activity.hideProgressDialog()
-                    }
-                    is SettingsActivity -> {
-                        activity.hideProgressDialog()
-                    }
-                }
-
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while getting user details.",
-                    e
-                )
+                failure(e)
             }
+
+
     }
 
-
-    fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>) {
-
+    fun updateUserProfileData(
+        success: KFunction1<User, Unit>,
+        failure: KFunction1<Exception, Unit>,
+        userHashMap: HashMap<String, Any>
+    ) {
         mFireStore.collection(USERS)
             .document(getCurrentUserID())
-
             .update(userHashMap)
             .addOnSuccessListener {
-
-                when (activity) {
-                    is UserProfileActivity -> {
-                        activity.userProfileUpdateSuccess()
-                    }
-                }
+                success(User())
             }
             .addOnFailureListener { e ->
-
-                when (activity) {
-                    is UserProfileActivity -> {
-                        activity.hideProgressDialog()
-                    }
-                }
-
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while updating the user details.",
-                    e
-                )
+                failure(e)
             }
     }
 
-    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?) {
+    fun uploadImageToCloudStorage(
+        success: KFunction1<String, Unit>,
+        failure: KFunction1<Exception, Unit>,
+        imageFileURI: Uri,
+        activity:Activity
+    ) {
 
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "." + Constants.getFileExtension(
-                activity,
-                imageFileURI
-            )
+            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "." + Constants.getFileExtension(activity, imageFileURI)
         )
 
-        sRef.putFile(imageFileURI!!)
-            .addOnSuccessListener { taskSnapshot ->
+        sRef.putFile(imageFileURI).addOnSuccessListener { taskSnapshot ->
                 // The image upload is success
-                Log.e(
-                    "Firebase Image URL",
-                    taskSnapshot.metadata?.reference?.downloadUrl.toString()
-                )
+                Log.e("Firebase Image URL", taskSnapshot.metadata?.reference?.downloadUrl.toString())
 
-                taskSnapshot.metadata?.reference?.downloadUrl
-                    ?.addOnSuccessListener { uri ->
-                        Log.e("Downloadable Image URL", uri.toString())
+                taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                    Log.e("Downloadable Image URL", uri.toString())
 
-                        // Here call a function of base activity for transferring the result to it.
-                        when (activity) {
-                            is UserProfileActivity -> {
-                                activity.imageUploadSuccess(uri.toString())
-                            }
-                            else -> {
-
-                            }
-                        }
-                    }
+                    success(uri.toString())
+                }
             }
             .addOnFailureListener { exception ->
-
-                when (activity) {
-                    is UserProfileActivity -> {
-                        activity.hideProgressDialog()
-                    }
-                }
-
-                Log.e(
-                    activity.javaClass.simpleName, exception.message, exception
-                )
+                failure(exception)
             }
     }
 }
+
+
+
