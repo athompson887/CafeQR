@@ -74,7 +74,7 @@ class MenuDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         if (selectedMenu?.imageUrl.safe().isNotEmpty())
             GlideLoader(requireContext()).loadImagePicture(selectedMenu?.imageUrl.safe(), binding.image)
         else
-            binding.image.setImageResource(com.athompson.cafe.R.drawable.cafe_image)
+            binding.image.setImageResource(R.drawable.cafe_image)
 
         toolBarTitle(selectedMenu?.name.safe())
         toolBarSubTitle(selectedMenu?.description.safe())
@@ -92,11 +92,11 @@ class MenuDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         FireStoreMenu().getMenus(::successMenu, ::failureMenu)
     }
 
-    private fun successMenu(m:ArrayList<CafeQrMenu>?)
+    private fun successMenu(m:ArrayList<CafeQrMenu?>)
     {
         hideProgressDialog()
         menuListName.clear()
-        m?.forEach { menuListName.add(it.name)}
+        m.forEach { menuListName.add(it?.name)}
 
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, menuListName)
 

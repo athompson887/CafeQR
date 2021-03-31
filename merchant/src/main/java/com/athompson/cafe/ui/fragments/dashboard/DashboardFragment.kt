@@ -20,6 +20,7 @@ import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.remove
@@ -35,7 +36,7 @@ class DashboardFragment : BaseFragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var binding: FragmentDashboardBinding
-    private var cafeQrMenus: ArrayList<CafeQrMenu> = ArrayList()
+    private var cafeQrMenus: ArrayList<CafeQrMenu?> = ArrayList()
     private var menuItems: ArrayList<FoodMenuItem?> = ArrayList()
     private var venues: ArrayList<Venue> = ArrayList()
     private var selectedMenu:CafeQrMenu? = null
@@ -180,7 +181,7 @@ class DashboardFragment : BaseFragment() {
         FireStoreMenu().getMenus(::successfulCafeQrMenuList,::failureCafeQrMenuList)
     }
 
-    private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu>) {
+    private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu?>) {
         if (menuList.size > 0) {
             cafeQrMenus.clear()
             cafeQrMenus.addAll(menuList)
@@ -201,7 +202,7 @@ class DashboardFragment : BaseFragment() {
     {
          val currentVenue = venuesViewPagerAdapter.itemAt(position)
          cafeQrMenus.forEach {
-            if(it.id.isNotBlank()&&it.id==currentVenue?.selectedMenuId)
+            if(it?.id.safe().isNotBlank()&&it?.id==currentVenue?.selectedMenuId)
             {
                 return  it
             }

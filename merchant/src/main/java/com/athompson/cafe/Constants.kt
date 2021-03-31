@@ -31,6 +31,14 @@ object Constants {
     const val COMPLETE_PROFILE: String = "profileCompleted"
     const val ADD_ITEM_NAME: String = "add"
 
+    const val VENUE_NAME: String = "name"
+    const val VENUE_DESCRIPTION: String = "description"
+    const val VENUE_LOCATION: String = "location"
+    const val VENUE_MENU_ID: String = "selectedMenuId"
+    const val VENUE_SELECTED_THEME: String = "selectedTheme"
+    const val VENUE_IMAGE:String = "imageUrl"
+
+
     fun showImageChooser(activity: Activity) {
 
         val galleryIntent = Intent(

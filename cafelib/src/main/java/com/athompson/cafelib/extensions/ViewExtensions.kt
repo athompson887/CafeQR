@@ -5,13 +5,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.athompson.cafelib.extensions.ViewExtensions.show
 
 object ViewExtensions {
-
 
     fun RecyclerView.setLayoutManagerVertical()
     {
@@ -57,6 +56,9 @@ object ViewExtensions {
         return tr.isEmpty()
     }
 
+    fun TextView?.trimmed(): String {
+        return this?.text.toString().trim()
+    }
 
 
     fun View.show(){

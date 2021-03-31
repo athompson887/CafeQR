@@ -1,5 +1,6 @@
 package com.athompson.cafe.ui.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -49,6 +50,10 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         navView.setupWithNavController(navController)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 

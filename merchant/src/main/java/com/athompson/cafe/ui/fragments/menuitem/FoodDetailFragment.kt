@@ -99,11 +99,11 @@ class FoodDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         FireStoreMenu().getMenus(::successMenu, ::failureMenu)
     }
 
-    private fun successMenu(m:ArrayList<CafeQrMenu>?)
+    private fun successMenu(m:ArrayList<CafeQrMenu?>)
     {
         hideProgressDialog()
         menuListName.clear()
-        m?.forEach { menuListName.add(it.name)}
+        m.forEach { menuListName.add(it?.name)}
 
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, menuListName)
 

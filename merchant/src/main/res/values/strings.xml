@@ -59,6 +59,7 @@
     <string name="image_selection_failed">Image selection Failed!</string>
     <string name="err_msg_enter_mobile_number">Please enter mobile number.</string>
     <string name="msg_profile_update_success">Your profile is updated successfully.</string>
+    <string name="msg_venue_update_success">Your venue is updated successfully.</string>
     <string name="content_description">image</string>
     <string name="error_getting_user_details">Error while getting user details.</string>
     <string name="error_registering_user">Error while registering the user.</string>
@@ -135,4 +136,5 @@
 
     <string name="navigate_back_icon_content_desc">Navigate back</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="btn_lbl_update">Update</string>
 </resources>

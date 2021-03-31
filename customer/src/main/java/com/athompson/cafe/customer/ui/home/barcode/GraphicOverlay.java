@@ -22,9 +22,9 @@ public class GraphicOverlay extends View {
     private boolean needUpdateTransformation = true;
 
     public abstract static class Graphic {
-        private GraphicOverlay overlay;
-        public Graphic(GraphicOverlay overlay) {
-            this.overlay = overlay;
+        GraphicOverlay overlay;
+        public Graphic(GraphicOverlay ov) {
+            this.overlay = ov;
         }
         public abstract void draw(Canvas canvas);
         public float scale(float imagePixel) {

@@ -185,7 +185,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     private fun userProfileUpdateSuccess(user:User) {
         hideProgressDialog()
         showShortToast(R.string.msg_profile_update_success)
-        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }
     private fun userProfileUpdateFailure(e:Exception) {

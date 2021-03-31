@@ -161,11 +161,11 @@ class HomeFragment : Fragment() {
                     val rotationDegrees =
                         imageProxy.imageInfo.rotationDegrees
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        binding.scanView.graphicOverlay?.setImageSourceInfo(
+                        binding.scanView.graphicOverlay.setImageSourceInfo(
                             imageProxy.width, imageProxy.height, isImageFlipped
                         )
                     } else {
-                        binding.scanView.graphicOverlay?.setImageSourceInfo(
+                        binding.scanView.graphicOverlay.setImageSourceInfo(
                             imageProxy.height, imageProxy.width, isImageFlipped
                         )
                     }

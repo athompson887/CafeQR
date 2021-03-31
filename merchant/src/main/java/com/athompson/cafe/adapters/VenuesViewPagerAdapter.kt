@@ -16,7 +16,7 @@ import com.athompson.cafelib.models.Venue
 open class VenuesViewPagerAdapter(
     private val context: Context,
     private var venuesList: ArrayList<Venue>,
-    private var menusList: ArrayList<CafeQrMenu>,
+    private var menusList: ArrayList<CafeQrMenu?>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -33,7 +33,7 @@ open class VenuesViewPagerAdapter(
     fun dataChanged() {
 
         venuesList.forEach {  vid ->
-            val menu = menusList.find { it.id == vid.selectedMenuId }
+            val menu = menusList.find { it?.id == vid.selectedMenuId }
             if(menu!=null)
                 vid.menu = menu
             else
@@ -47,7 +47,7 @@ open class VenuesViewPagerAdapter(
     fun getSelectedMenu(currentVenue:Venue):CafeQrMenu?
     {
         menusList.forEach {
-            if(it.id.isNotBlank()&&it.id== currentVenue.selectedMenuId)
+            if(it?.id.safe().isNotBlank()&&it?.id== currentVenue.selectedMenuId)
             {
                 return  it
             }

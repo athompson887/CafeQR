@@ -38,6 +38,16 @@ object StringExtensions {
             this
     }
 
+    fun String?.trimmed(): String {
+        if(this==null)
+            return ""
+        return when (this) {
+            "string" -> ""
+            "null" -> ""
+            else -> this.trim()
+        }
+    }
+
     fun String?.safe(): String {
         if(this==null)
             return ""

@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import com.athompson.cafelib.R
+import com.athompson.cafelib.extensions.ResourceExtensions.asColor
 import com.athompson.cafelib.extensions.SnackBarExtensions.snackBarWithAction
 import com.athompson.cafelib.shared.AppPermission
 import com.athompson.cafelib.shared.CafeQRApplication
@@ -24,9 +25,9 @@ object ActivityExtensions {
         // show alter to user or implement custom code here
     }
 
-    fun AppCompatActivity.isOnline(): Boolean {
+    fun Activity.isOnline(): Boolean {
 
-        this?.apply {
+        this.apply {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val nw      = connectivityManager.activeNetwork ?: return false
@@ -43,7 +44,6 @@ object ActivityExtensions {
                 connectivityManager.activeNetworkInfo?.isConnected ?: false
             }
         }
-        return false
     }
 
 
@@ -55,7 +55,7 @@ object ActivityExtensions {
     //   }
     @Suppress("DEPRECATION")
     fun AppCompatActivity.isOnline(failBlock : () -> Unit  = { globalInternetFailBock() }, successBlock : () -> Unit ) {
-        this?.apply {
+        this.apply {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val nw = connectivityManager.activeNetwork
@@ -74,8 +74,7 @@ object ActivityExtensions {
                 } else {
                     failBlock()
                 }
-            }
-            else {
+            } else {
                 val netInfo = connectivityManager.activeNetworkInfo
                 if (netInfo != null && netInfo.isConnected) {
                     successBlock()
@@ -93,28 +92,28 @@ object ActivityExtensions {
         this.supportActionBar?.subtitle = subtitle
     }
 
-    fun AppCompatActivity.logInfo(msg:String) {
+    fun Activity.logInfo(msg:String) {
         if(LOGGING_ON)
             Log.i("", msg)
     }
-    fun AppCompatActivity.logDebug(msg:String) {
+    fun Activity.logDebug(msg:String) {
         if(LOGGING_ON)
             Log.d("", msg)
     }
-    fun AppCompatActivity.logError(msg:String) {
+    fun Activity.logError(msg:String) {
         if(LOGGING_ON)
             Log.e("", msg)
     }
 
-    fun AppCompatActivity.logInfo(caller:String,msg:String) {
+    fun Activity.logInfo(caller:String,msg:String) {
         if(LOGGING_ON)
             Log.i(caller, msg)
     }
-    fun AppCompatActivity.logDebug(caller:String,msg:String) {
+    fun Activity.logDebug(caller:String,msg:String) {
         if(LOGGING_ON)
             Log.d(caller, msg)
     }
-    fun AppCompatActivity.logError(caller:String,msg:String) {
+    fun Activity.logError(caller:String,msg:String) {
         if(LOGGING_ON)
             Log.e(caller, msg)
     }
@@ -131,42 +130,31 @@ object ActivityExtensions {
         requireNotNull((if (value is T) value else defaultValue)){label}
     }
 
-    fun AppCompatActivity.checkPermission(permission: AppPermission) = run {
+    fun Activity.checkPermission(permission: AppPermission) = run {
         baseContext?.let {
             (ActivityCompat.checkSelfPermission(it, permission.permissionName
             ) == PermissionChecker.PERMISSION_GRANTED)
         } ?: false
     }
 
-    fun AppCompatActivity.shouldRequestPermissionRationale(permission: AppPermission) =
+    fun Activity.shouldRequestPermissionRationale(permission: AppPermission) =
         ActivityCompat.shouldShowRequestPermissionRationale(this, permission.permissionName)
 
-    fun AppCompatActivity.requestAllPermissions(permission: AppPermission) {
+    fun Activity.requestAllPermissions(permission: AppPermission) {
         ActivityCompat.requestPermissions(this, arrayOf(permission.permissionName), permission.requestCode)
     }
 
-    fun AppCompatActivity.showErrorSnackBar(message: String, errorMessage: Boolean) {
+    fun Activity.showErrorSnackBar(message: String, errorMessage: Boolean) {
 
         val snackBar =
                 Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
         val snackBarView = snackBar.view
 
         if (errorMessage) {
-            snackBarView.setBackgroundColor(
-                    ContextCompat.getColor(
-                            this,
-                            R.color.colorSnackBarError
-                    )
-            )
+            snackBarView.setBackgroundColor(R.color.colorSnackBarError.asColor())
         }else{
-            snackBarView.setBackgroundColor(
-                    ContextCompat.getColor(
-                            this,
-                            R.color.colorSnackBarSuccess
-                    )
-            )
+            snackBarView.setBackgroundColor(R.color.colorSnackBarSuccess.asColor())
         }
         snackBar.show()
     }
-
 }

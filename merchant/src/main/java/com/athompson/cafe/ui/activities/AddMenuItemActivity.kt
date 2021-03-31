@@ -70,14 +70,15 @@ class AddMenuItemActivity : BaseActivity(){
         binding.foodTypesAutoComplete.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    selectedFoodType = FOOD_TYPES.get(0)
+                    selectedFoodType = FOOD_TYPES[0]
                 }
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    selectedFoodType = FOOD_TYPES.get(position)
+                    selectedFoodType = FOOD_TYPES[position]
                 }
             }
-        binding.menusAutoComplete.setText(selectedFoodType)
+        binding.foodTypesAutoComplete.setText(selectedFoodType)
+        binding.foodTypesDropDown.editText?.setText(selectedMenu?.name)
         populateMenus()
     }
 
@@ -87,10 +88,10 @@ class AddMenuItemActivity : BaseActivity(){
         FireStoreMenu().getMenus(::successMenu, ::failureMenu)
     }
 
-    private fun successMenu(menusItems: ArrayList<CafeQrMenu>?) {
+    private fun successMenu(menusItems: ArrayList<CafeQrMenu?>) {
         hideProgressDialog()
         menuListName.clear()
-        menusItems?.forEach { menuListName.add(it.name) }
+        menusItems.forEach { menuListName.add(it?.name) }
 
         val adapter =
             ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, menuListName)
@@ -110,13 +111,13 @@ class AddMenuItemActivity : BaseActivity(){
         if(menus.isNotEmpty()) {
             binding.menusAutoComplete.setSelection(getSelectedMenuIndex(menusItems))
             binding.menusAutoComplete.setText(selectedMenu?.name)
+            binding.menusDropDown.editText?.setText(selectedMenu?.name)
         }
 
     }
-    private fun getSelectedMenuIndex(m: ArrayList<CafeQrMenu>?): Int {
-        m?.forEach {
-            if(it.id == selectedMenuID)
-            {
+    private fun getSelectedMenuIndex(m: ArrayList<CafeQrMenu?>): Int {
+        m.forEach {
+            if(it?.id == selectedMenuID) {
                 return m.indexOf(it)
             }
         }

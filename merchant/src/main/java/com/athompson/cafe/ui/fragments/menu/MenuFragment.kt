@@ -15,6 +15,7 @@ import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
@@ -77,10 +78,11 @@ class MenuFragment : BaseFragment() {
     }
 
     private fun getFailure(e: Exception) {
+        logError(e.message.toString())
         hideProgressDialog()
     }
 
-    private fun getSuccess(menuList: ArrayList<CafeQrMenu>) {
+    private fun getSuccess(menuList: ArrayList<CafeQrMenu?>) {
         hideProgressDialog()
 
         if (menuList.size > 0) {
@@ -158,7 +160,7 @@ class MenuFragment : BaseFragment() {
 
     inner class SimpleMenuAdapter(
         private val context: Context,
-        private var list: ArrayList<CafeQrMenu>,
+        private var list: ArrayList<CafeQrMenu?>,
     ) : RecyclerView.Adapter<SimpleMenuAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -173,8 +175,9 @@ class MenuFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val menuItem = list[position]
+            if(menuItem!=null) {
             if(menuItem.imageUrl.safe().isNotEmpty())
-                GlideLoader(context).loadImagePicture(menuItem.imageUrl, holder.binding.image)
+                GlideLoader(context).loadImagePicture(menuItem.imageUrl.safe(), holder.binding.image)
             else
                 holder.binding.image.setImageResource(R.drawable.cafe_image)
             holder.binding.name.text = menuItem.name
@@ -186,15 +189,16 @@ class MenuFragment : BaseFragment() {
                 reenterTransition = MaterialElevationScale(true).apply {
                     duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
                 }
-                val trans = getString(R.string.menu_card_detail_transition_name)
-                val extras = FragmentNavigatorExtras(holder.binding.card to trans)
-                val directions =  MenuFragmentDirections.actionNavigationMenusToMenuDetailFragment(menuItem)
-                try {
-                    findNavController().navigate(directions, extras)
-                }
-                catch (ex:java.lang.Exception)
-                {
-                   print(ex)
+
+                    val trans = getString(R.string.menu_card_detail_transition_name)
+                    val extras = FragmentNavigatorExtras(holder.binding.card to trans)
+                    val directions =
+                        MenuFragmentDirections.actionNavigationMenusToMenuDetailFragment(menuItem)
+                    try {
+                        findNavController().navigate(directions, extras)
+                    } catch (ex: java.lang.Exception) {
+                        print(ex)
+                    }
                 }
             }
         }
@@ -204,7 +208,7 @@ class MenuFragment : BaseFragment() {
             return list.size
         }
 
-        fun dataChanged(cafeQrMenus: ArrayList<CafeQrMenu>) {
+        fun dataChanged(cafeQrMenus: ArrayList<CafeQrMenu?>) {
             list = cafeQrMenus
             notifyDataSetChanged()
         }

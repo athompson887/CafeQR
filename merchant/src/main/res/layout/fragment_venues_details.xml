@@ -21,11 +21,11 @@
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
+                android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
-                android:layout_marginTop="8dp"
                 android:textColor="?attr/colorOnSurface"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,33 +79,68 @@
                 app:layout_constraintTop_toBottomOf="@id/location"
                 tools:text="@string/lorem_ipsum" />
 
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/menusDropDown"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select a menu"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/description"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:hint="Select a menu"
-                android:layout_height="wrap_content">
+                app:layout_constraintTop_toBottomOf="@id/description">
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/menusAutoComplete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"/>
+                    android:editable="false"
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/themesDropDown"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select a food type from the list"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menusDropDown">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/themesTypesAutoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:background="@drawable/button_background"
+                android:gravity="center"
+                android:text="@string/btn_lbl_update"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="@dimen/btn_textSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/themesDropDown" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_update"
                 tools:itemCount="10"
-                tools:listitem="@layout/simple_menu_item"
-                app:layout_constraintTop_toBottomOf="@id/menusDropDown"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                tools:listitem="@layout/simple_menu_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

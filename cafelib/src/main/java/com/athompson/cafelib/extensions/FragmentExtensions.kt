@@ -1,12 +1,33 @@
 package com.athompson.cafelib.extensions
+import android.app.Activity
 import android.util.Log
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import com.athompson.cafelib.R
+import com.athompson.cafelib.extensions.ResourceExtensions.asColor
+import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.shared.AppPermission
 import com.athompson.cafelib.shared.SharedConstants
+import com.google.android.material.snackbar.Snackbar
 
 object FragmentExtensions {
+
+    fun Fragment.showErrorSnackBar(message: String, errorMessage: Boolean) {
+
+        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+        val snackBarView = snackBar.view
+
+        if (errorMessage) {
+            snackBarView.setBackgroundColor(R.color.colorSnackBarError.asColor())
+        }else{
+            snackBarView.setBackgroundColor(R.color.colorSnackBarSuccess.asColor())
+        }
+        snackBar.show()
+    }
 
 
     fun Fragment.toolBarTitle(title:String) {
@@ -53,6 +74,7 @@ object FragmentExtensions {
         val value = arguments?.get(label)
         requireNotNull(if (value is T) value else defaultValue) { label }
     }}
+
     //https://betterprogramming.pub/5-more-kotlin-extensions-for-android-developers-3857b1f16407
     //https://proandroiddev.com/easy-way-to-ask-for-permissions-on-android-62a9ae4a22b0
     fun Fragment.isGranted(permission: AppPermission) = run {
@@ -70,3 +92,4 @@ object FragmentExtensions {
         requestPermissions(arrayOf(permission.permissionName), permission.requestCode
         )
     }
+

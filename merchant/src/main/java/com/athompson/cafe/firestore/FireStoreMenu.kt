@@ -13,13 +13,13 @@ class FireStoreMenu {
     private val mFireStore = FirebaseFirestore.getInstance()
 
     fun getMenus(
-        success: KFunction1<ArrayList<CafeQrMenu>, Unit>,
+        success: KFunction1<ArrayList<CafeQrMenu?>, Unit>,
         failure: (Exception) -> Unit
     ) {
         mFireStore.collection(MENUS)
             .get()
             .addOnSuccessListener { document ->
-                val menuList: ArrayList<CafeQrMenu> = ArrayList()
+                val menuList: ArrayList<CafeQrMenu?> = ArrayList()
                 for (i in document.documents) {
 
                     val menu = i.toObject(CafeQrMenu::class.java)

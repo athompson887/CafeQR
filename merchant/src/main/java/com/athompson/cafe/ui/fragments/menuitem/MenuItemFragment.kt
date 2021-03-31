@@ -19,7 +19,6 @@ import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
-import com.athompson.cafe.ui.fragments.menu.MenuFragmentDirections
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
@@ -72,7 +71,7 @@ class MenuItemFragment : BaseFragment() {
         FireStoreMenu().getMenus(::successfulCafeQrMenuList,::failureCafeQrMenuList)
     }
 
-    private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu>) {
+    private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu?>) {
         if (menuList.size > 0) {
             cafeQrMenus.clear()
             cafeQrMenus.addAll(menuList)

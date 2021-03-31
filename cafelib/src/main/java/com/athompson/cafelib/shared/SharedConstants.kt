@@ -23,4 +23,7 @@ object SharedConstants {
     val FOOD_TYPES = arrayOf(
         "Appetizer","Starter", "Main", "Desert","Alchoholic Beverage", "Non Alcoholic Beverage", "Cocktail"
     )
+    val THEMES = arrayOf(
+        "Dark","Light"
+    )
 }
