@@ -22,8 +22,8 @@ object ViewExtensions {
         builder.setPositiveButton("OK") {
                 dialogInterface, i ->
             if(binding.editText.text.toString()!=this.text.toString()) {
-                onChanged(this,this.text.toString(),binding.editText.text.toString())
                 this.setText(binding.editText.text.toString())
+                onChanged(this,this.text.toString(),binding.editText.text.toString())
             }
             dialogInterface.dismiss()
         }
@@ -41,8 +41,8 @@ object ViewExtensions {
         builder.setPositiveButton("OK") {
                 dialogInterface, i ->
             if(binding.editText.text.toString()!=this.text.toString()) {
-                onChanged(this,this.text.toString(),binding.editText.text.toString())
                 this.setText(binding.editText.text.toString())
+                onChanged(this,this.text.toString(),binding.editText.text.toString())
             }
             dialogInterface.dismiss()
         }

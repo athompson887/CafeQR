@@ -178,7 +178,7 @@ class VenueDetailFragment : BaseFragment(){
 
     private fun hasChanged():Boolean
     {
-        if(originalVenue?.name.trimmed()!=binding.name.trimmed())
+        if(originalVenue?.name.trimmed()!=binding.name.text.toString())
             return true
         if(originalVenue?.location.trimmed()!=binding.location.trimmed())
             return true
