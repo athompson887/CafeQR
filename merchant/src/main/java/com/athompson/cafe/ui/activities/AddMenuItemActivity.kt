@@ -17,11 +17,12 @@ import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddMenuItemBinding
 import com.athompson.cafe.firestore.FireStoreImage
-import com.athompson.cafe.firestore.FireStoreMenu
-import com.athompson.cafe.firestore.FireStoreMenuItem
+import com.athompson.cafe.firestore.FireStoreCafeQrMenu
+import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
@@ -85,7 +86,7 @@ class AddMenuItemActivity : BaseActivity(){
     private fun populateMenus()
     {
         showProgressDialog("Getting Menus")
-        FireStoreMenu().getMenus(::successMenu, ::failureMenu)
+        FireStoreCafeQrMenu().getAll(::successMenu, ::failureMenu)
     }
 
     private fun successMenu(menusItems: ArrayList<CafeQrMenu?>) {
@@ -263,7 +264,7 @@ class AddMenuItemActivity : BaseActivity(){
             menuId = menuItemId
         )
 
-        FireStoreMenuItem().addMenuItem(::addMenuItemSuccess,::addMenuItemFailure, food)
+        FireStoreFoodMenuItem().add(::addMenuItemSuccess,::addMenuItemFailure, food)
     }
 
     private fun addMenuItemSuccess() {
@@ -273,6 +274,6 @@ class AddMenuItemActivity : BaseActivity(){
     }
     private fun addMenuItemFailure(e:Exception) {
         hideProgressDialog()
-        showShortToast(R.string.add_menu_item_failure.asString())
+        logError(e.message.toString())
     }
 }

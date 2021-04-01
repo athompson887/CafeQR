@@ -75,7 +75,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun getUserDetails() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreUser().getUserDetails(::success,::failure,)
+        FireStoreUser().get(::success,::failure,)
     }
 
     fun success(user: User) {

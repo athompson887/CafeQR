@@ -16,7 +16,9 @@ import com.athompson.cafe.databinding.ActivityAddVenueBinding
 import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
+import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
@@ -143,9 +145,9 @@ class AddVenuesActivity : BaseActivity(){
         uploadVenue()
     }
 
-    private fun imageUploadFailure(exception: Exception) {
+    private fun imageUploadFailure(e: Exception) {
         hideProgressDialog()
-        showShortToast(R.string.upload_image_failure.asString())
+        logError(e.message.toString())
     }
 
     private fun uploadVenue() {
@@ -156,7 +158,7 @@ class AddVenuesActivity : BaseActivity(){
             imageUrl =    mVenueImageURL
         )
 
-        FireStoreVenue().addVenue(::addVenueSuccess,::addVenueFailure, venue)
+        FireStoreVenue().add(::addVenueSuccess,::addVenueFailure, venue)
     }
 
     private fun addVenueSuccess() {
@@ -167,6 +169,6 @@ class AddVenuesActivity : BaseActivity(){
 
     private fun addVenueFailure(e:Exception) {
         hideProgressDialog()
-        showShortToast(R.string.add_venue_failure.asString())
+        logError(e.message.toString())
     }
 }

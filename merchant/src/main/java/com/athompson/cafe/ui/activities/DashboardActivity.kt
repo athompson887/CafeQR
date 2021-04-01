@@ -11,7 +11,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityDashboardBinding
-import com.athompson.cafe.ui.fragments.home.HomeFragment
 import com.athompson.cafe.ui.fragments.menu.MenuFragment
 import com.athompson.cafe.ui.fragments.menuitem.MenuItemFragment
 import com.athompson.cafe.ui.fragments.venues.VenuesFragment
@@ -19,7 +18,7 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionListener,MenuItemFragment.OnFragmentInteractionListener, MenuFragment.OnFragmentInteractionListener {
+class DashboardActivity : BaseActivity(), MenuItemFragment.OnFragmentInteractionListener, MenuFragment.OnFragmentInteractionListener {
 
     lateinit var binding: ActivityDashboardBinding
 
@@ -61,7 +60,4 @@ class DashboardActivity : BaseActivity(), HomeFragment.OnFragmentInteractionList
         doubleBackToExit()
     }
 
-    override fun loggedOut() {
-
-    }
 }

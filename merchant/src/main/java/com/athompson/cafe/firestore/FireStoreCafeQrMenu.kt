@@ -8,11 +8,11 @@ import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
 
-class FireStoreMenu {
+class FireStoreCafeQrMenu {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getMenus(
+    fun getAll(
         success: KFunction1<ArrayList<CafeQrMenu?>, Unit>,
         failure: (Exception) -> Unit
     ) {
@@ -36,8 +36,8 @@ class FireStoreMenu {
     }
 
 
-    fun deleteCafeQrMenu(   success: KFunction0<Unit>,
-                            failure: (Exception) -> Unit, menuItemID: String) {
+    fun delete(success: KFunction0<Unit>,
+               failure: (Exception) -> Unit, menuItemID: String) {
         mFireStore.collection(MENUS)
             .document(menuItemID)
             .delete()
@@ -49,7 +49,7 @@ class FireStoreMenu {
             }
     }
 
-    fun addCafeQrMenu(
+    fun add(
         success: KFunction0<Unit>,
         failure: (Exception) -> Unit,
         menu: CafeQrMenu
@@ -59,6 +59,23 @@ class FireStoreMenu {
             .set(menu, SetOptions.merge())
             .addOnSuccessListener {
                 success()
+            }
+            .addOnFailureListener { e ->
+                failure(e)
+            }
+    }
+
+    fun update(
+        success: KFunction1<CafeQrMenu, Unit>,
+        failure: KFunction1<Exception, Unit>,
+        id: String,
+        hashMap: HashMap<String, Any>
+    ) {
+        mFireStore.collection(MENUS)
+            .document(id)
+            .update(hashMap)
+            .addOnSuccessListener {
+                success(CafeQrMenu())
             }
             .addOnFailureListener { e ->
                 failure(e)

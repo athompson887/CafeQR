@@ -11,12 +11,13 @@ import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.adapters.VenuesViewPagerAdapter
 import com.athompson.cafe.databinding.FragmentDashboardBinding
-import com.athompson.cafe.firestore.FireStoreMenu
-import com.athompson.cafe.firestore.FireStoreMenuItem
+import com.athompson.cafe.firestore.FireStoreCafeQrMenu
+import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.activities.SettingsActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
+import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
@@ -147,7 +148,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun getVenuesList() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreVenue().getVenues(::successVenuesList, ::failureVenueList)
+        FireStoreVenue().getAll(::successVenuesList, ::failureVenueList)
     }
 
     private fun successVenuesList(venuesList: java.util.ArrayList<Venue>) {
@@ -178,7 +179,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun getMenusList() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreMenu().getMenus(::successfulCafeQrMenuList,::failureCafeQrMenuList)
+        FireStoreCafeQrMenu().getAll(::successfulCafeQrMenuList,::failureCafeQrMenuList)
     }
 
     private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu?>) {
@@ -196,6 +197,7 @@ class DashboardFragment : BaseFragment() {
     private fun failureCafeQrMenuList(e: Exception) {
         hideProgressDialog()
         showNoMenu()
+        logError(e.message.toString())
     }
 
     fun getSelectedMenu(position: Int):CafeQrMenu?
@@ -212,7 +214,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun getMenusItemsList(selectedMenuId:String) {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreMenuItem().getMenuItems(selectedMenuId,::successfulMenuItemsList,::failureMenuItemsList)
+        FireStoreFoodMenuItem().getAll(selectedMenuId,::successfulMenuItemsList,::failureMenuItemsList)
     }
 
     private fun successfulMenuItemsList(menuList: ArrayList<FoodMenuItem?>) {
@@ -230,6 +232,7 @@ class DashboardFragment : BaseFragment() {
     private fun failureMenuItemsList(e: Exception) {
         hideProgressDialog()
         showNoMenu()
+        logError(e.message.toString())
     }
     private fun showMenu()
     {

@@ -1,20 +1,14 @@
 package com.athompson.cafe.firestore
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
-import android.util.Log
 import com.athompson.cafe.Constants
-import com.athompson.cafe.ui.activities.RegisterActivity
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.shared.CafeQRApplication
 import com.athompson.cafelib.shared.SharedConstants.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlin.reflect.KFunction1
 
 
@@ -22,40 +16,29 @@ class FireStoreUser {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun registerUser(activity: RegisterActivity, userInfo: User) {
-        // The "users" is collection name. If the collection is already created then it will not create the same one again.
+    fun add(success: KFunction1<User, Unit>, failure: KFunction1<Exception, Unit>, userInfo: User) {
         mFireStore.collection(USERS)
-            // Document ID for users fields. Here the document it is the User ID.
             .document(userInfo.id)
-            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge later on instead of replacing the fields.
             .set(userInfo, SetOptions.merge())
             .addOnSuccessListener {
-                // Here call a function of base activity for transferring the result to it.
-                activity.userRegistrationSuccess()
+                success(User())
             }
-            .addOnFailureListener { e ->
-                activity.userRegistrationFailure()
+            .addOnFailureListener {
+                failure(it)
             }
     }
 
 
     private fun getCurrentUserID(): String {
-        // An Instance of currentUser using FirebaseAuth
         val currentUser = FirebaseAuth.getInstance().currentUser
-
-        // A variable to assign the currentUserId if it is not null or else it will be blank.
         var currentUserID = ""
         if (currentUser != null) {
             currentUserID = currentUser.uid
         }
-
         return currentUserID
     }
 
-    /**
-     * A function to get the logged user details from from FireStore Database.
-     */
-    fun getUserDetails(success: KFunction1<User, Unit>, failure: KFunction1<Exception, Unit>) {
+    fun get(success: KFunction1<User, Unit>, failure: KFunction1<Exception, Unit>) {
 
         mFireStore.collection(USERS)
             .document(getCurrentUserID())
@@ -87,7 +70,7 @@ class FireStoreUser {
 
     }
 
-    fun updateUserProfileData(
+    fun update(
         success: KFunction1<User, Unit>,
         failure: KFunction1<Exception, Unit>,
         userHashMap: HashMap<String, Any>

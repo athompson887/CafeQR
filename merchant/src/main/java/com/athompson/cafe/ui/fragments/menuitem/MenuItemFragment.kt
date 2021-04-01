@@ -15,8 +15,8 @@ import com.athompson.cafe.R
 import com.athompson.cafe.adapters.MenusViewPagerAdapter
 import com.athompson.cafe.databinding.FragmentMenuItemsBinding
 import com.athompson.cafe.databinding.SimpleFoodItemBinding
-import com.athompson.cafe.firestore.FireStoreMenu
-import com.athompson.cafe.firestore.FireStoreMenuItem
+import com.athompson.cafe.firestore.FireStoreCafeQrMenu
+import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.ui.activities.AddMenuItemActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
@@ -68,7 +68,7 @@ class MenuItemFragment : BaseFragment() {
 
     private fun getMenusList() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreMenu().getMenus(::successfulCafeQrMenuList,::failureCafeQrMenuList)
+        FireStoreCafeQrMenu().getAll(::successfulCafeQrMenuList,::failureCafeQrMenuList)
     }
 
     private fun successfulCafeQrMenuList(menuList: ArrayList<CafeQrMenu?>) {
@@ -175,7 +175,7 @@ class MenuItemFragment : BaseFragment() {
         val selected = selectedMenu
         if(selected!=null) {
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreMenuItem().getMenuItems(selected.id, ::getSuccess, ::getFailure)
+            FireStoreFoodMenuItem().getAll(selected.id, ::getSuccess, ::getFailure)
         }
     }
 
@@ -210,7 +210,7 @@ class MenuItemFragment : BaseFragment() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreMenu().deleteCafeQrMenu(::deleteSuccess,::deleteFailure, productID)
+            FireStoreCafeQrMenu().delete(::deleteSuccess,::deleteFailure, productID)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
@@ -228,7 +228,7 @@ class MenuItemFragment : BaseFragment() {
 
     private fun deleteFailure(e: Exception) {
         hideProgressDialog()
-        showShortToast(R.string.menu_delete_success_message.asString())
+        logError(e.message.toString())
     }
 
 

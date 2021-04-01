@@ -79,11 +79,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
         </activity>
-
-        <activity
-            android:name=".ui.activities.MainActivity"
-            android:label="@string/app_name">
-        </activity>
-    </application>
+      </application>
 
 </manifest>

@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
@@ -179,13 +178,13 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         }
 
         // call the registerUser function of FireStore class to make an entry in the database.
-        FireStoreUser().updateUserProfileData(::userProfileUpdateSuccess,::userProfileUpdateFailure, userHashMap)
+        FireStoreUser().update(::userProfileUpdateSuccess,::userProfileUpdateFailure, userHashMap)
     }
 
 
     private fun userProfileUpdateSuccess(user:User) {
         hideProgressDialog()
-        showShortToast(R.string.msg_profile_update_success)
+        showShortToast(R.string.msg_profile_update_success.asString().plus(" ").plus(user.gender))
         startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }

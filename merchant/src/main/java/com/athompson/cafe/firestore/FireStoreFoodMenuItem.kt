@@ -1,20 +1,20 @@
 package com.athompson.cafe.firestore
 
 import com.athompson.cafelib.models.FoodMenuItem
-import com.athompson.cafelib.shared.SharedConstants.MENU_ITEM
+import com.athompson.cafelib.shared.SharedConstants.FOOD_MENU_ITEM
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
 
-class FireStoreMenuItem {
+class FireStoreFoodMenuItem {
 
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getMenuItems(selectedMenuId:String, success: KFunction1<ArrayList<FoodMenuItem?>, Unit>, failure: (Exception) -> Unit) {
-        mFireStore.collection(MENU_ITEM)
+    fun getAll(selectedMenuId:String, success: KFunction1<ArrayList<FoodMenuItem?>, Unit>, failure: (Exception) -> Unit) {
+        mFireStore.collection(FOOD_MENU_ITEM)
             .whereEqualTo("menuId", selectedMenuId)
             .get()
             .addOnSuccessListener { document ->
@@ -34,9 +34,9 @@ class FireStoreMenuItem {
     }
 
 
-    fun deleteMenuItem(   success: KFunction0<Unit>,
-                          failure: (Exception) -> Unit, menuItemID: String) {
-        mFireStore.collection(MENU_ITEM)
+    fun delete(success: KFunction0<Unit>,
+               failure: (Exception) -> Unit, menuItemID: String) {
+        mFireStore.collection(FOOD_MENU_ITEM)
             .document(menuItemID)
             .delete()
             .addOnSuccessListener {
@@ -47,8 +47,8 @@ class FireStoreMenuItem {
             }
     }
 
-    fun addMenuItem(success: KFunction0<Unit>, failure: (Exception) -> Unit, menu: FoodMenuItem) {
-        mFireStore.collection(MENU_ITEM)
+    fun add(success: KFunction0<Unit>, failure: (Exception) -> Unit, menu: FoodMenuItem) {
+        mFireStore.collection(FOOD_MENU_ITEM)
             .document()
             .set(menu, SetOptions.merge())
             .addOnSuccessListener {
@@ -58,4 +58,22 @@ class FireStoreMenuItem {
                 failure(e)
             }
     }
+
+    fun update(
+        success: KFunction1<FoodMenuItem, Unit>,
+        failure: KFunction1<Exception, Unit>,
+        id: String,
+        hashMap: HashMap<String, Any>
+    ) {
+        mFireStore.collection(FOOD_MENU_ITEM)
+            .document(id)
+            .update(hashMap)
+            .addOnSuccessListener {
+                success(FoodMenuItem())
+            }
+            .addOnFailureListener { e ->
+                failure(e)
+            }
+    }
+
 }

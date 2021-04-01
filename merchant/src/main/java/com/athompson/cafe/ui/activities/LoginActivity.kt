@@ -144,7 +144,7 @@ class LoginActivity : BaseActivity() {
 
 
                     if (task.isSuccessful) {
-                        FireStoreUser().getUserDetails(::success,::failure)
+                        FireStoreUser().get(::success,::failure)
                     } else {
                         hideProgressDialog()
                         loginErrorGoogle(task.exception?.message.toString())
@@ -154,7 +154,7 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    fun success(user: User) {
+    private fun success(user: User) {
         // Hide the progress dialog.
         hideProgressDialog()
 
@@ -172,7 +172,7 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
-    fun failure(e:Exception)
+    private fun failure(e:Exception)
     {
         logError(e.message.toString())
     }
@@ -188,7 +188,7 @@ class LoginActivity : BaseActivity() {
         showErrorSnackBar(R.string.successful_login.asString(), false)
         lifecycleScope.launch(context = Dispatchers.Main) {
             delay(1000)
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
             finish()
         }
     }

@@ -26,8 +26,8 @@ import com.athompson.cafe.databinding.FragmentVenuesDetailsBinding
 import com.athompson.cafe.extensions.ViewExtensions.Edit
 import com.athompson.cafe.extensions.ViewExtensions.EditLong
 import com.athompson.cafe.firestore.FireStoreImage
-import com.athompson.cafe.firestore.FireStoreMenu
-import com.athompson.cafe.firestore.FireStoreMenuItem
+import com.athompson.cafe.firestore.FireStoreCafeQrMenu
+import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
@@ -266,7 +266,7 @@ class VenueDetailFragment : BaseFragment(){
             map[Constants.VENUE_IMAGE] = mVenueImageUrl.safe()
         }
 
-        FireStoreVenue().updateVenue(::updateSuccess,::updateFailure, selectedVenue?.id.toString(),map)
+        FireStoreVenue().update(::updateSuccess,::updateFailure, selectedVenue?.id.toString(),map)
     }
 
 
@@ -285,7 +285,7 @@ class VenueDetailFragment : BaseFragment(){
     private fun populateMenus()
     {
         showProgressDialog("Getting Menus")
-        FireStoreMenu().getMenus(::successMenu, ::failureMenu)
+        FireStoreCafeQrMenu().getAll(::successMenu, ::failureMenu)
     }
 
     private fun setSelectedMenu()
@@ -340,7 +340,7 @@ class VenueDetailFragment : BaseFragment(){
             showProgressDialog("Getting Menu Items")
             adapter = SimpleMenuItemAdapter(requireContext(), menuFoodItems)
             binding.recycler.adapter = adapter
-            FireStoreMenuItem().getMenuItems(selected.id, ::successMenuItem, ::failureMenuItem)
+            FireStoreFoodMenuItem().getAll(selected.id, ::successMenuItem, ::failureMenuItem)
         }
     }
 

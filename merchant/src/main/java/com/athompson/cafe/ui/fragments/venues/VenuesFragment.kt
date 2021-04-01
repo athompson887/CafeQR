@@ -15,6 +15,7 @@ import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
+import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
@@ -77,7 +78,7 @@ class VenuesFragment : BaseFragment() {
 
     private fun getVenuesListFromFireStore() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreVenue().getVenues(::getSuccess,::getFailure)
+        FireStoreVenue().getAll(::getSuccess,::getFailure)
     }
 
     private fun getSuccess(venuesList: ArrayList<Venue>) {
@@ -100,6 +101,7 @@ class VenuesFragment : BaseFragment() {
     }
 
     private fun getFailure(e: Exception) {
+        logError(e.message.toString())
         hideProgressDialog()
     }
 
@@ -116,7 +118,7 @@ class VenuesFragment : BaseFragment() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreVenue().deleteVenue(::deleteSuccess,::deleteFailure,venueID)
+            FireStoreVenue().delete(::deleteSuccess,::deleteFailure,venueID)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
@@ -135,6 +137,7 @@ class VenuesFragment : BaseFragment() {
     }
 
     private fun deleteFailure(e: Exception) {
+        logError(e.message.toString())
         hideProgressDialog()
     }
 

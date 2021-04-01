@@ -6,6 +6,8 @@ import android.view.WindowManager
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityRegisterBinding
 import com.athompson.cafe.firestore.FireStoreUser
+import com.athompson.cafelib.extensions.ActivityExtensions.logDebug
+import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.StringExtensions.uuid
@@ -127,7 +129,7 @@ class RegisterActivity : BaseActivity() {
                             "".uuid()
                         )
 
-                        FireStoreUser().registerUser(this@RegisterActivity, user)
+                        FireStoreUser().add(::success,::failure, user)
                     } else {
                         showErrorSnackBar(task.exception?.message.toString(), true)
                     }
@@ -140,14 +142,15 @@ class RegisterActivity : BaseActivity() {
         finish()
     }
 
-    fun userRegistrationSuccess() {
+    fun success(user:User) {
         hideProgressDialog()
+        logDebug(user.email)
         showShortToast(R.string.register_success.asString())
         signOut()
     }
 
-    fun userRegistrationFailure() {
-        showShortToast(R.string.register_success.asString())
+    fun failure(e:Exception) {
         hideProgressDialog()
+        logError(e.message.toString())
     }
 }

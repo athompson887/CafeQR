@@ -13,8 +13,8 @@ import androidx.navigation.fragment.navArgs
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.databinding.FragmentFoodDetailsBinding
-import com.athompson.cafe.firestore.FireStoreMenu
-import com.athompson.cafe.firestore.FireStoreMenuItem
+import com.athompson.cafe.firestore.FireStoreCafeQrMenu
+import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ContextExtensions.themeColor
@@ -96,7 +96,7 @@ class FoodDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private fun populateMenus()
     {
         showProgressDialog("Getting Menus")
-        FireStoreMenu().getMenus(::successMenu, ::failureMenu)
+        FireStoreCafeQrMenu().getAll(::successMenu, ::failureMenu)
     }
 
     private fun successMenu(m:ArrayList<CafeQrMenu?>)
@@ -139,7 +139,7 @@ class FoodDetailFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             showProgressDialog("Getting Menu Items")
             adapter = SimpleMenuItemAdapter(requireContext(), menuFoodItems)
             binding.recycler.adapter = adapter
-            FireStoreMenuItem().getMenuItems(selected.id, ::successMenuItem, ::failureMenuItem)
+            FireStoreFoodMenuItem().getAll(selected.id, ::successMenuItem, ::failureMenuItem)
         }
     }
 

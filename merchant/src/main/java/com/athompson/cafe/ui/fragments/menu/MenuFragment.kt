@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentMenuBinding
 import com.athompson.cafe.databinding.SimpleMenuItemBinding
-import com.athompson.cafe.firestore.FireStoreMenu
+import com.athompson.cafe.firestore.FireStoreCafeQrMenu
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
@@ -74,7 +74,7 @@ class MenuFragment : BaseFragment() {
 
     private fun getMenus() {
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreMenu().getMenus(::getSuccess,::getFailure)
+        FireStoreCafeQrMenu().getAll(::getSuccess,::getFailure)
     }
 
     private fun getFailure(e: Exception) {
@@ -110,7 +110,7 @@ class MenuFragment : BaseFragment() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreMenu().deleteCafeQrMenu(::deleteSuccess,::deleteFailure, productID)
+            FireStoreCafeQrMenu().delete(::deleteSuccess,::deleteFailure, productID)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
@@ -144,7 +144,7 @@ class MenuFragment : BaseFragment() {
 
     private fun deleteFailure(e: Exception) {
         hideProgressDialog()
-        showShortToast(R.string.menu_delete_success_message.asString())
+        logError(e.message.toString())
     }
 
 

@@ -18,7 +18,7 @@ class FireStoreVenue {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getVenues(
+    fun getAll(
         success: KFunction1<ArrayList<Venue>, Unit>,
         failure: (Exception) -> Unit
     ) {
@@ -44,7 +44,7 @@ class FireStoreVenue {
     }
 
 
-    fun deleteVenue(
+    fun delete(
         success: KFunction0<Unit>,
         failure: (Exception) -> Unit, venueID: String
     ) {
@@ -59,7 +59,7 @@ class FireStoreVenue {
             }
     }
 
-    fun addVenue(success: KFunction0<Unit>, failure: KFunction1<Exception, Unit>, venue: Venue) {
+    fun add(success: KFunction0<Unit>, failure: KFunction1<Exception, Unit>, venue: Venue) {
         mFireStore.collection(VENUES)
             .document()
             .set(venue, SetOptions.merge())
@@ -72,7 +72,7 @@ class FireStoreVenue {
     }
 
 
-    fun updateVenue(
+    fun update(
         success: KFunction1<Venue, Unit>,
         failure: KFunction1<Exception, Unit>,
         id: String,
