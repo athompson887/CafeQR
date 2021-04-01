@@ -4,23 +4,37 @@ import android.app.Activity
 import android.net.Uri
 import android.util.Log
 import com.athompson.cafe.Constants
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
 
 class FireStoreImage {
 
+    fun deleteImage(success: KFunction0<Unit>,
+                    failure: (Exception) -> Unit, imageUrl: String) {
+        val firebaseStorage = FirebaseStorage.getInstance()
+        val storageReference = firebaseStorage.getReferenceFromUrl(imageUrl)
+        storageReference.delete().addOnSuccessListener{
+            success()
+        }
+        storageReference.delete().addOnFailureListener(){
+            failure(it)
+        }
+    }
+
+
     fun uploadImageToCloudStorage(
         activity: Activity,
         imageFileURI: Uri?,
+        pathConstant:String?,
         success: KFunction1<String, Unit>,
         failure: KFunction1<Exception, Unit>
     ) {
 
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "." + Constants.getFileExtension(
+            pathConstant + System.currentTimeMillis() + "." + Constants.getFileExtension(
                 activity,
                 imageFileURI
             )

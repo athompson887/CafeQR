@@ -32,7 +32,6 @@ import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.show
-import com.athompson.cafelib.firestore.FireStoreClassShared
 import com.athompson.cafelib.shared.CafeQrData
 import com.athompson.cafelib.shared.fromJson
 import com.athompson.cafelib.shared.valid
@@ -112,8 +111,6 @@ class HomeFragment : Fragment() {
         }
 
         permissionsCheck()
-
-        FireStoreClassShared().getOrganisationList(this@HomeFragment)
     }
 
 

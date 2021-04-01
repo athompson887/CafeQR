@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityUserProfileBinding
+import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.logError
@@ -212,7 +213,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         showProgressDialog(R.string.please_wait.asString())
                         val uri = mSelectedImageFileUri
                         if (uri != null) {
-                            FireStoreUser().uploadImageToCloudStorage(::imageUploadSuccess,::imageUploadFailure, uri,this)
+                            FireStoreImage().uploadImageToCloudStorage(this,uri,Constants.USER_PROFILE_IMAGE_SUFFIX, ::imageUploadSuccess,::imageUploadFailure)
                         } else {
                             updateUserProfileDetails()
                         }

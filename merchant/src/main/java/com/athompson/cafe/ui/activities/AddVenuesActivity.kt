@@ -46,8 +46,8 @@ class AddVenuesActivity : BaseActivity(){
 
         // Assign the click event to submit button.
         binding.btnSubmit.setOnClickListener{
-            if (validateOrganisationDetails()) {
-                uploadOrganisationImage()
+            if (validate()) {
+                uploadVenueImage()
             }
         }
     }
@@ -107,7 +107,7 @@ class AddVenuesActivity : BaseActivity(){
     }
 
 
-    private fun validateOrganisationDetails(): Boolean {
+    private fun validate(): Boolean {
         return when {
 
             TextUtils.isEmpty(binding.etVenueName.trimmed()) -> {
@@ -131,10 +131,10 @@ class AddVenuesActivity : BaseActivity(){
         }
     }
 
-    private fun uploadOrganisationImage() {
+    private fun uploadVenueImage() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreImage().uploadImageToCloudStorage(this@AddVenuesActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
+        FireStoreImage().uploadImageToCloudStorage(this@AddVenuesActivity, mSelectedImageFileUri,Constants.VENUE_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
     }
 
     private fun imageUploadSuccess(imageURL: String) {

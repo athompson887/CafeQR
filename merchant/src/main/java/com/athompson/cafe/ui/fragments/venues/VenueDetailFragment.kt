@@ -25,6 +25,7 @@ import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.databinding.FragmentVenuesDetailsBinding
 import com.athompson.cafe.extensions.ViewExtensions.Edit
 import com.athompson.cafe.extensions.ViewExtensions.EditLong
+import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreMenu
 import com.athompson.cafe.firestore.FireStoreMenuItem
 import com.athompson.cafe.firestore.FireStoreVenue
@@ -199,7 +200,7 @@ class VenueDetailFragment : BaseFragment(){
             showProgressDialog(R.string.please_wait.asString())
             val uri = imageFileLocation
             if (uri != null) {
-                FireStoreVenue().uploadImage(::imageUploadSuccess,::imageUploadFailure, uri,requireActivity())
+                FireStoreImage().uploadImageToCloudStorage(requireActivity(),uri,Constants.VENUE_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
             } else {
                 update()
             }

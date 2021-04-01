@@ -27,7 +27,6 @@ object Constants {
     const val IMAGE: String = "image"
     const val FIRST_NAME: String = "firstName"
     const val LAST_NAME: String = "lastName"
-    const val USER_PROFILE_IMAGE:String = "User_Profile_Image"
     const val COMPLETE_PROFILE: String = "profileCompleted"
     const val ADD_ITEM_NAME: String = "add"
 
@@ -37,6 +36,12 @@ object Constants {
     const val VENUE_MENU_ID: String = "selectedMenuId"
     const val VENUE_SELECTED_THEME: String = "selectedTheme"
     const val VENUE_IMAGE:String = "imageUrl"
+
+    const val USER_PROFILE_IMAGE_SUFFIX:String = "User_Profile_Image"
+    const val MENU_IMAGE_SUFFIX:String = "Menu_Image"
+    const val VENUE_IMAGE_SUFFIX:String = "Venue_Image"
+    const val MENU_ITEM_IMAGE_SUFFIX:String = "Menu_Item_Image"
+
 
 
     fun showImageChooser(activity: Activity) {

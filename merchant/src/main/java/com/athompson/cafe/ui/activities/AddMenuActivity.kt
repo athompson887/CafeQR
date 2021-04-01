@@ -2,7 +2,6 @@ package com.athompson.cafe.ui.activities
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,12 +15,10 @@ import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityAddMenuBinding
 import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreMenu
-import com.athompson.cafe.firestore.FireStoreUser
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
-import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -132,7 +129,7 @@ class AddMenuActivity : BaseActivity(){
 
         showProgressDialog(R.string.please_wait.asString())
         if(mSelectedImageFileUri!=null)
-            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri,::imageUploadSuccess,::imageUploadFailure)
+            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri, Constants.MENU_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
         else
             uploadCafeQrMenu()
     }
