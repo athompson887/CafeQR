@@ -5,10 +5,11 @@ import com.athompson.cafelib.extensions.StringExtensions.uuid
 import com.google.firebase.firestore.DocumentId
 import kotlinx.android.parcel.Parcelize
 
+
 @Parcelize
 data class CafeQrMenu(
-    val name: String = "",
-    val description: String = "",
+    var name: String = "",
+    var description: String = "",
     var imageUrl:String = "",
     @Transient
     var id:String = ""

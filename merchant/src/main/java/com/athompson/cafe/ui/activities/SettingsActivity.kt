@@ -12,6 +12,7 @@ import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.models.User
+import com.athompson.cafelib.shared.SharedConstants
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -40,7 +41,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
                 R.id.tv_edit -> {
                     val intent = Intent(this@SettingsActivity, UserProfileActivity::class.java)
-                    intent.putExtra(Constants.EXTRA_USER_DETAILS, mUserDetails)
+                    intent.putExtra(SharedConstants.EXTRA_USER_DETAILS, mUserDetails)
                     startActivity(intent)
                 }
 

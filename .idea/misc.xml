@@ -9,6 +9,7 @@
         <entry key="..\:/GitHub/CafeQr/customer/src/main/res/layout/fragment_home.xml" value="0.34270833333333334" />
         <entry key="..\:/GitHub/CafeQr/customer/src/main/res/layout/home_scan_layout.xml" value="0.325" />
         <entry key="..\:/GitHub/CafeQr/customer/src/main/res/layout/home_success_layout.xml" value="0.34270833333333334" />
+        <entry key="..\:/GitHub/CafeQr/customer/src/main/res/menu/bottom_nav_menu.xml" value="0.3494791666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/drawable/app_gradient_color_background.xml" value="0.29791666666666666" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/drawable/button_background.xml" value="0.29791666666666666" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/drawable/drawable_gender_tab_selector.xml" value="0.29791666666666666" />
@@ -20,7 +21,7 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/drawable/item_grey_border_background.xml" value="0.3098958333333333" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/drawable/user_image_background.xml" value="0.3098958333333333" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_add_menu.xml" value="0.40677083333333336" />
-        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_add_menu_item.xml" value="0.44514959202175886" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_add_menu_item.xml" value="0.37986270022883295" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_add_venue.xml" value="0.40677083333333336" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_dashboard.xml" value="0.19614711033274956" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_forgot_password.xml" value="0.28177083333333336" />
@@ -31,6 +32,7 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_splash.xml" value="0.3651041666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/activity_user_profile.xml" value="0.29375" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/add_item.xml" value="0.29375" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/choose_dialog.xml" value="0.3421875" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/edit_dialog.xml" value="0.325" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/edit_dialog_long.xml" value="0.325" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_dashboard.xml" value="0.67" />
@@ -40,11 +42,12 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.2557291666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menu.xml" value="0.43333333333333335" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menu_items.xml" value="0.43333333333333335" />
-        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menus_details.xml" value="0.2677083333333333" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menus_details.xml" value="0.284765625" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_organisations.xml" value="0.4239583333333333" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_organisations_list_item.xml" value="0.4239583333333333" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_qrcode.xml" value="0.30833333333333335" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_venues.xml" value="0.2833333333333333" />
-        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_venues_details.xml" value="0.3494318181818182" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_venues_details.xml" value="0.613882863340564" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/info_card.xml" value="0.24583333333333332" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/menu_display_card.xml" value="0.48489583333333336" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/progress_dialog_view.xml" value="0.2557291666666667" />
@@ -58,6 +61,9 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/add_venues_menu.xml" value="0.4666666666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/bottom_nav_menu.xml" value="0.40677083333333336" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/dashboard_menu.xml" value="0.40677083333333336" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/food_details_fragment_menus.xml" value="0.284765625" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/menu_details.xml" value="0.3494791666666667" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/venue_details_fragment_menus.xml" value="0.259375" />
         <entry key="customer/src/main/res/layout/fragment_home.xml" value="0.19464882943143813" />
         <entry key="customer/src/main/res/layout/home_scan_layout.xml" value="0.2519480519480519" />
         <entry key="merchant/src/main/res/layout/activity_login.xml" value="0.2222972972972973" />

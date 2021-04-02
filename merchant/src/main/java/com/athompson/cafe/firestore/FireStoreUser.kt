@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.athompson.cafe.Constants
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.shared.CafeQRApplication
+import com.athompson.cafelib.shared.SharedConstants
 import com.athompson.cafelib.shared.SharedConstants.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -47,14 +48,14 @@ class FireStoreUser {
                 val user = document.toObject(User::class.java)
 
                 val sharedPreferences = CafeQRApplication.appInstance.getSharedPreferences(
-                    Constants.PREFERENCES,
+                    SharedConstants.PREFERENCES,
                     Context.MODE_PRIVATE
                 )
 
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 if (user != null) {
                     editor.putString(
-                        Constants.LOGGED_IN_USERNAME,
+                        SharedConstants.LOGGED_IN_USERNAME,
                         "${user.firstName} ${user.lastName}"
                     )
                 }

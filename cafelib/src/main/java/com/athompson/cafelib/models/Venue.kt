@@ -2,19 +2,6 @@ package com.athompson.cafelib.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
- object VenueExtensions{
-     fun Venue.Copy(): Venue {
-         return Venue(name,location,description,imageUrl,selectedMenuId,selectedTheme)
-     }
-     fun Venue.CopyFields(from:Venue) {
-         name = from.name
-         location = from.location
-         description = from.description
-         imageUrl = from.imageUrl
-         selectedMenuId = from.selectedMenuId
-         selectedTheme = from.selectedTheme
-     }
- }
 
 @Parcelize
 data class Venue(

@@ -1,15 +1,9 @@
 package com.athompson.cafe.firestore
 
-import android.app.Activity
-import android.net.Uri
-import android.util.Log
-import com.athompson.cafe.Constants
 import com.athompson.cafelib.models.Venue
 import com.athompson.cafelib.shared.SharedConstants.VENUES
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
@@ -73,20 +67,19 @@ class FireStoreVenue {
 
 
     fun update(
-        success: KFunction1<Venue, Unit>,
+        success: KFunction0<Unit>,
         failure: KFunction1<Exception, Unit>,
         id: String,
-        venueHashMap: HashMap<String, Any>
+        venue: Venue
     ) {
         mFireStore.collection(VENUES)
             .document(id)
-            .update(venueHashMap)
+            .set(venue, SetOptions.merge())
             .addOnSuccessListener {
-                success(Venue())
+                success()
             }
             .addOnFailureListener { e ->
                 failure(e)
             }
     }
-
 }

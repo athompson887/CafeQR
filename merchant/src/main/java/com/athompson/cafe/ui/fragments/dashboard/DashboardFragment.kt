@@ -27,6 +27,7 @@ import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
+import com.athompson.cafelib.extensions.ViewExtensions.showHorizontalDividers
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.models.Venue
@@ -130,12 +131,7 @@ class DashboardFragment : BaseFragment() {
 
         binding.recyclerMenus.setLayoutManagerVertical()
         binding.recyclerMenus.itemAnimator = DefaultItemAnimator()
-        binding.recyclerMenus.addItemDecoration(
-            DividerItemDecoration(
-                activity,
-                DividerItemDecoration.HORIZONTAL
-            )
-        )
+        binding.recyclerMenus.showHorizontalDividers()
         binding.recyclerMenus.adapter = simpleMenuItemAdapter
 
     }

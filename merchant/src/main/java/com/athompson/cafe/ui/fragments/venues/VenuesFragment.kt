@@ -58,7 +58,7 @@ class VenuesFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.add_venues_menu, menu)
+        inflater.inflate(R.menu.venues_fragment_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

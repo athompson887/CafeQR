@@ -3,13 +3,14 @@ package com.athompson.cafelib.models
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
+
 @Parcelize
 data class FoodMenuItem(
-    val name: String = "",
-    val type: String = "",
-    val description: String = "",
-    val imageUrl: String = "",
-    val price:Double = 0.0,
+    var name: String = "",
+    var type: String = "",
+    var description: String = "",
+    var imageUrl: String = "",
+    var price:Double = 0.0,
     var menuId:String = "",
     @Transient
     var id:String = ""

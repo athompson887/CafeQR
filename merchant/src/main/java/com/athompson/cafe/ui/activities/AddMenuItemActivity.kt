@@ -30,6 +30,7 @@ import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
+import com.athompson.cafelib.shared.SharedConstants
 import com.athompson.cafelib.shared.SharedConstants.FOOD_TYPES
 import java.io.IOException
 
@@ -53,7 +54,7 @@ class AddMenuItemActivity : BaseActivity(){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@AddMenuItemActivity)
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_STORAGE_PERMISSION_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), SharedConstants.READ_STORAGE_PERMISSION_CODE)
             }
         }
 
@@ -139,7 +140,7 @@ class AddMenuItemActivity : BaseActivity(){
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
+        if (requestCode == SharedConstants.READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@AddMenuItemActivity)
             } else {
@@ -151,7 +152,7 @@ class AddMenuItemActivity : BaseActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK
-            && requestCode == Constants.PICK_IMAGE_REQUEST_CODE
+            && requestCode == SharedConstants.PICK_IMAGE_REQUEST_CODE
             && data?.data != null
         ) {
 
@@ -212,7 +213,7 @@ class AddMenuItemActivity : BaseActivity(){
                 false
             }
 
-            TextUtils.isEmpty(binding.etPrice.trimmed()) -> {
+            TextUtils.isEmpty(binding.price.trimmed()) -> {
                 showErrorSnackBar(R.string.err_msg_enter_address.asString(), true)
                 false
             }
@@ -230,7 +231,7 @@ class AddMenuItemActivity : BaseActivity(){
             FireStoreImage().uploadImageToCloudStorage(
                 this@AddMenuItemActivity,
                 mSelectedImageFileUri,
-                Constants.MENU_ITEM_IMAGE_SUFFIX,
+                SharedConstants.MENU_ITEM_IMAGE_SUFFIX,
                 ::imageUploadSuccess,
                 ::imageUploadFailure
             )
@@ -260,7 +261,7 @@ class AddMenuItemActivity : BaseActivity(){
             type =  selectedFoodType,
             description = binding.etMenuItemDescription.trimmed(),
             imageUrl = mFoodImageURL,
-            price = binding.etPrice.trimmed().toDouble(),
+            price = binding.price.trimmed().toDouble(),
             menuId = menuItemId
         )
 

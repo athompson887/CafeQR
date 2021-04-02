@@ -11,7 +11,7 @@ import kotlin.reflect.KFunction3
 
 object ViewExtensions {
 
-    fun TextView.Edit(title:String?, hint:String, onChanged: KFunction3<View, String?, String?, Unit>) {
+    fun TextView.choose(title:String?, hint:String, onChanged: KFunction3<View, String?, String?, Unit>) {
         val builder = MaterialAlertDialogBuilder(this.context, R.style.MaterialAlertDialog_Rounded)
         builder.setTitle(title)
         builder.setView( R.layout.edit_dialog)
@@ -30,7 +30,27 @@ object ViewExtensions {
         builder.show()
     }
 
-    fun TextView.EditLong(title:String?, hint:String, onChanged: KFunction3<View, String?, String?, Unit>) {
+
+    fun TextView.edit(title:String?, hint:String, onChanged: KFunction3<View, String?, String?, Unit>) {
+        val builder = MaterialAlertDialogBuilder(this.context, R.style.MaterialAlertDialog_Rounded)
+        builder.setTitle(title)
+        builder.setView( R.layout.edit_dialog)
+        val binding = EditDialogBinding.inflate(LayoutInflater.from(context))
+        binding.textInput.hint = hint
+        binding.editText.setText(this.text)
+        builder.setView(binding.root)
+        builder.setPositiveButton("OK") {
+                dialogInterface, i ->
+            if(binding.editText.text.toString()!=this.text.toString()) {
+                this.setText(binding.editText.text.toString())
+                onChanged(this,this.text.toString(),binding.editText.text.toString())
+            }
+            dialogInterface.dismiss()
+        }
+        builder.show()
+    }
+
+    fun TextView.editLong(title:String?, hint:String, onChanged: KFunction3<View, String?, String?, Unit>) {
         val builder = MaterialAlertDialogBuilder(this.context,R.style.MaterialAlertDialog_Rounded)
         builder.setTitle(title)
         builder.setView( R.layout.edit_dialog_long)

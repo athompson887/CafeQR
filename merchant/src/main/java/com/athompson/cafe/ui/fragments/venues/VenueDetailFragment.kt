@@ -7,27 +7,21 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.athompson.cafe.Constants
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
 import com.athompson.cafe.databinding.FragmentVenuesDetailsBinding
-import com.athompson.cafe.extensions.ViewExtensions.Edit
-import com.athompson.cafe.extensions.ViewExtensions.EditLong
-import com.athompson.cafe.firestore.FireStoreImage
+import com.athompson.cafe.extensions.ViewExtensions.edit
+import com.athompson.cafe.extensions.ViewExtensions.editLong
 import com.athompson.cafe.firestore.FireStoreCafeQrMenu
 import com.athompson.cafe.firestore.FireStoreFoodMenuItem
+import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
@@ -42,29 +36,30 @@ import com.athompson.cafelib.extensions.StringExtensions.trimmed
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
+import com.athompson.cafelib.extensions.getStoragePermissions
+import com.athompson.cafelib.extensions.showImageChooser
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.models.Venue
-import com.athompson.cafelib.models.VenueExtensions.Copy
-import com.athompson.cafelib.models.VenueExtensions.CopyFields
 import com.athompson.cafelib.shared.SharedConstants
 import com.google.android.material.transition.MaterialContainerTransform
 import java.io.IOException
 
 
 class VenueDetailFragment : BaseFragment(){
-    private var originalVenue: Venue? = null
-    private var selectedTheme: String? = "Dark"
+
+    private var saveMenuIcon: MenuItem? = null
     private var adapter: SimpleMenuItemAdapter? = null
     private val args: VenueDetailFragmentArgs by navArgs()
     private val selectedVenue: Venue? by lazy(LazyThreadSafetyMode.NONE) { args.selectedVenue }
+    private var imageUrl: String?= null
+    private var selectedTheme: String? = "Dark"
     private var selectedMenu:CafeQrMenu? = null
     private val menuListName = ArrayList<String?>()
     private var menus = ArrayList<CafeQrMenu?>()
     private val menuFoodItems = ArrayList<FoodMenuItem?>()
     private lateinit var binding: FragmentVenuesDetailsBinding
     private var imageFileLocation: Uri? = null
-    private var mVenueImageUrl: String = ""
     private var dataChanged = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +72,14 @@ class VenueDetailFragment : BaseFragment(){
             scrimColor = Color.TRANSPARENT
             setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.venue_details_fragment_menus, menu)
+
+        saveMenuIcon = menu.findItem(R.id.save_venue_details)
+        saveMenuIcon?.isEnabled = false
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 
@@ -93,6 +96,9 @@ class VenueDetailFragment : BaseFragment(){
         if (id == android.R.id.home) {
             findNavController().navigateUp()
         }
+        if (id == R.id.save_venue_details) {
+            save()
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -101,13 +107,11 @@ class VenueDetailFragment : BaseFragment(){
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVenuesDetailsBinding.bind(view)
 
-        binding.btnUpdate.isEnabled = false
         val venue = selectedVenue
         if (venue == null) {
             showError()
             return
         }
-        originalVenue = venue.Copy()
         if (venue.imageUrl.safe().isNotEmpty())
             GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.image)
         else
@@ -120,15 +124,10 @@ class VenueDetailFragment : BaseFragment(){
         binding.location.text = venue.location
         binding.description.text = venue.description
 
-        binding.btnUpdate.setOnClickListener {
-            save()
-        }
-
-
         val themesAdaptor = ArrayAdapter(requireActivity(), android.R.layout.simple_dropdown_item_1line, SharedConstants.THEMES)
         binding.themesTypesAutoComplete.setAdapter(themesAdaptor)
 
-        binding.themesTypesAutoComplete.setOnItemClickListener{ adapterView: AdapterView<*>, view1: View, position: Int, id: Long ->
+        binding.themesTypesAutoComplete.setOnItemClickListener{ _: AdapterView<*>, view1: View, position: Int, id: Long ->
             selectedTheme = SharedConstants.THEMES[position]
             changed()
         }
@@ -139,7 +138,7 @@ class VenueDetailFragment : BaseFragment(){
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 showImageChooser()
             } else {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_STORAGE_PERMISSION_CODE)
+                getStoragePermissions()
             }
         }
         edit()
@@ -147,23 +146,18 @@ class VenueDetailFragment : BaseFragment(){
 
     }
 
-    fun showImageChooser() {
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, Constants.PICK_IMAGE_REQUEST_CODE)
-    }
-
     private fun edit()
     {
         binding.name.setOnClickListener {
-            binding.name.Edit("Edit Name", "Type to edit name",::onChanged)
+            binding.name.edit("Edit Name", "Type to edit name",::onChanged)
         }
 
         binding.location.setOnClickListener {
-            binding.location.Edit("Edit Location", "Type to edit location",::onChanged)
+            binding.location.edit("Edit Location", "Type to edit location",::onChanged)
         }
 
         binding.description.setOnClickListener {
-            binding.description.EditLong("Edit description", "Type to edit description",::onChanged)
+            binding.description.editLong("Edit description", "Type to edit description",::onChanged)
         }
     }
 
@@ -174,20 +168,20 @@ class VenueDetailFragment : BaseFragment(){
     private fun changed()
     {
         dataChanged = hasChanged()
-        binding.btnUpdate.isEnabled = dataChanged
+        saveMenuIcon?.isEnabled = dataChanged
     }
 
     private fun hasChanged():Boolean
     {
-        if(originalVenue?.name.trimmed()!=binding.name.text.toString())
+        if(selectedVenue?.name.trimmed()!=binding.name.text.toString())
             return true
-        if(originalVenue?.location.trimmed()!=binding.location.trimmed())
+        if(selectedVenue?.location.trimmed()!=binding.location.trimmed())
             return true
-        if(originalVenue?.description.trimmed()!=binding.description.trimmed())
+        if(selectedVenue?.description.trimmed()!=binding.description.trimmed())
             return true
-        if(originalVenue?.selectedMenuId.trimmed()!=selectedMenu?.id)
+        if(selectedVenue?.selectedMenuId.trimmed()!=selectedMenu?.id)
             return true
-        if(originalVenue?.selectedTheme.trimmed()!=selectedTheme)
+        if(selectedVenue?.selectedTheme.trimmed()!=selectedTheme)
             return true
         if(imageFileLocation!=null)
             return true
@@ -200,17 +194,17 @@ class VenueDetailFragment : BaseFragment(){
             showProgressDialog(R.string.please_wait.asString())
             val uri = imageFileLocation
             if (uri != null) {
-                FireStoreImage().uploadImageToCloudStorage(requireActivity(),uri,Constants.VENUE_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
+                FireStoreImage().uploadImageToCloudStorage(requireActivity(),uri,SharedConstants.VENUE_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
             } else {
                 update()
             }
         }
     }
 
-    private fun imageUploadSuccess(imageURL: String) {
+    private fun imageUploadSuccess(url: String) {
 
         hideProgressDialog()
-        mVenueImageUrl = imageURL
+        imageUrl = url
         update()
     }
 
@@ -242,42 +236,48 @@ class VenueDetailFragment : BaseFragment(){
 
     private fun update() {
 
-        val map = HashMap<String, Any>()
-
-        val name = binding.name.text
-        if (name != selectedVenue?.name) {
-            map[Constants.VENUE_NAME] = name
+        if (selectedVenue != null) {
+            val name = binding.name.text
+            if (name != selectedVenue?.name) {
+                selectedVenue?.name = name.toString()
+            }
+            val location = binding.location.text
+            if (location != selectedVenue?.location) {
+                selectedVenue?.location = location.toString()
+            }
+            val description = binding.description.text
+            if (description != selectedVenue?.description) {
+                selectedVenue?.description = description.toString()
+            }
+            if (selectedMenu?.id != selectedVenue?.selectedMenuId) {
+                selectedVenue?.selectedMenuId = selectedMenu?.id.toString()
+            }
+            if (selectedTheme != selectedVenue?.selectedTheme) {
+                selectedVenue?.selectedTheme = selectedTheme.safe()
+            }
+            if (selectedVenue?.imageUrl != imageUrl && !imageUrl.isNullOrEmpty()) {
+                selectedVenue?.imageUrl = imageUrl.toString()
+            }
+            val ven = selectedVenue
+            if (ven != null) {
+                FireStoreVenue().update(
+                    ::updateSuccess,
+                    ::updateFailure,
+                    selectedVenue?.id.toString(),
+                    ven
+                )
+            }
         }
-        val location = binding.location.text
-        if (location != selectedVenue?.location) {
-            map[Constants.VENUE_LOCATION] = location
-        }
-        val description = binding.description.text
-        if (description != selectedVenue?.description) {
-            map[Constants.VENUE_DESCRIPTION] = description
-        }
-        if (selectedMenu?.id != selectedVenue?.selectedMenuId) {
-            map[Constants.VENUE_MENU_ID] = selectedMenu?.id.toString()
-        }
-        if (selectedTheme != selectedVenue?.selectedTheme) {
-            map[Constants.VENUE_SELECTED_THEME] = selectedTheme.safe()
-        }
-        if(selectedVenue?.imageUrl!= mVenueImageUrl.safe()){
-            map[Constants.VENUE_IMAGE] = mVenueImageUrl.safe()
-        }
-
-        FireStoreVenue().update(::updateSuccess,::updateFailure, selectedVenue?.id.toString(),map)
     }
 
 
-    private fun updateSuccess(venue: Venue) {
-        selectedVenue?.CopyFields(venue)
+    fun updateSuccess() {
         imageFileLocation = null
         changed()
         hideProgressDialog()
         showShortToast(R.string.msg_venue_update_success)
     }
-    private fun updateFailure(e:Exception) {
+     fun updateFailure(e:Exception) {
         logError(e.message.toString())
         hideProgressDialog()
     }
@@ -315,7 +315,7 @@ class VenueDetailFragment : BaseFragment(){
 
         binding.menusAutoComplete.setAdapter(adapter)
 
-        binding.menusAutoComplete.setOnItemClickListener{ adapterView: AdapterView<*>, view1: View, position: Int, id: Long ->
+        binding.menusAutoComplete.setOnItemClickListener{ _: AdapterView<*>, view1: View, position: Int, id: Long ->
             binding.recycler.show()
             selectedMenu = menus[position]
             populateMenu()
@@ -363,13 +363,13 @@ class VenueDetailFragment : BaseFragment(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Constants.PICK_IMAGE_REQUEST_CODE) {
+            if (requestCode == SharedConstants.PICK_IMAGE_REQUEST_CODE) {
                 if (data != null) {
                     try {
                         imageFileLocation = data.data
                         val url = imageFileLocation
                         if (url != null) {
-                            GlideLoader(requireContext()).loadUserPicture(url, binding.image)
+                            GlideLoader(requireContext()).loadImagePicture(url, binding.image)
                             changed()
                         }
                     } catch (e: IOException) {

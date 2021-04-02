@@ -66,16 +66,16 @@ class FireStoreCafeQrMenu {
     }
 
     fun update(
-        success: KFunction1<CafeQrMenu, Unit>,
+        success: KFunction0<Unit>,
         failure: KFunction1<Exception, Unit>,
         id: String,
-        hashMap: HashMap<String, Any>
+        menu: CafeQrMenu
     ) {
         mFireStore.collection(MENUS)
             .document(id)
-            .update(hashMap)
+            .set(menu, SetOptions.merge())
             .addOnSuccessListener {
-                success(CafeQrMenu())
+                success()
             }
             .addOnFailureListener { e ->
                 failure(e)

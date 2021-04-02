@@ -13,7 +13,11 @@ class FireStoreFoodMenuItem {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
-    fun getAll(selectedMenuId:String, success: KFunction1<ArrayList<FoodMenuItem?>, Unit>, failure: (Exception) -> Unit) {
+    fun getAll(
+        selectedMenuId: String,
+        success: KFunction1<ArrayList<FoodMenuItem?>, Unit>,
+        failure: (Exception) -> Unit
+    ) {
         mFireStore.collection(FOOD_MENU_ITEM)
             .whereEqualTo("menuId", selectedMenuId)
             .get()
@@ -34,13 +38,15 @@ class FireStoreFoodMenuItem {
     }
 
 
-    fun delete(success: KFunction0<Unit>,
-               failure: (Exception) -> Unit, menuItemID: String) {
+    fun delete(
+        success: KFunction0<Unit>,
+        failure: (Exception) -> Unit, menuItemID: String
+    ) {
         mFireStore.collection(FOOD_MENU_ITEM)
             .document(menuItemID)
             .delete()
             .addOnSuccessListener {
-               success()
+                success()
             }
             .addOnFailureListener { e ->
                 failure(e)
@@ -60,20 +66,19 @@ class FireStoreFoodMenuItem {
     }
 
     fun update(
-        success: KFunction1<FoodMenuItem, Unit>,
+        success: KFunction0<Unit>,
         failure: KFunction1<Exception, Unit>,
         id: String,
-        hashMap: HashMap<String, Any>
+        item: FoodMenuItem
     ) {
         mFireStore.collection(FOOD_MENU_ITEM)
             .document(id)
-            .update(hashMap)
+            .set(item, SetOptions.merge())
             .addOnSuccessListener {
-                success(FoodMenuItem())
+                success()
             }
             .addOnFailureListener { e ->
                 failure(e)
             }
     }
-
 }

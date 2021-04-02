@@ -24,6 +24,7 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.User
+import com.athompson.cafelib.shared.SharedConstants
 import java.io.IOException
 
 
@@ -40,8 +41,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityUserProfileBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        if (intent.hasExtra(Constants.EXTRA_USER_DETAILS)) {
-            mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
+        if (intent.hasExtra(SharedConstants.EXTRA_USER_DETAILS)) {
+            mUserDetails = intent.getParcelableExtra(SharedConstants.EXTRA_USER_DETAILS)!!
         }
 
         if (mUserDetails.profileCompleted == 0) {
@@ -64,7 +65,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             if (mUserDetails.mobile != 0L) {
                 binding.etMobileNumber.setText(mUserDetails.mobile.toString())
             }
-            if (mUserDetails.gender == Constants.MALE) {
+            if (mUserDetails.gender == SharedConstants.MALE) {
                 binding.rbMale.isChecked = true
             } else {
                 binding.rbFemale.isChecked = true
@@ -78,7 +79,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
+        if (requestCode == SharedConstants.READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@UserProfileActivity)
             } else {
@@ -91,7 +92,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Constants.PICK_IMAGE_REQUEST_CODE) {
+            if (requestCode == SharedConstants.PICK_IMAGE_REQUEST_CODE) {
                 if (data != null) {
                     try {
                         mSelectedImageFileUri = data.data
@@ -145,36 +146,36 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         val firstName = binding.etFirstName.trimmed()
         if (firstName != mUserDetails.firstName) {
-            userHashMap[Constants.FIRST_NAME] = firstName
+            userHashMap[SharedConstants.FIRST_NAME] = firstName
         }
 
         // Get the LastName from editText and trim the space
         val lastName = binding.etLastName.trimmed()
         if (lastName != mUserDetails.lastName) {
-            userHashMap[Constants.LAST_NAME] = lastName
+            userHashMap[SharedConstants.LAST_NAME] = lastName
         }
 
         val gender = if (binding.rbMale.isChecked) {
-            Constants.MALE
+            SharedConstants.MALE
         } else {
-            Constants.FEMALE
+            SharedConstants.FEMALE
         }
 
         if (mUserProfileImageURL.isNotEmpty()) {
-            userHashMap[Constants.IMAGE] = mUserProfileImageURL
+            userHashMap[SharedConstants.IMAGE] = mUserProfileImageURL
         }
 
         val mobileNumber = binding.etMobileNumber.trimmed()
         if (mobileNumber.isNotEmpty() && mobileNumber != mUserDetails.mobile.toString()) {
-            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
+            userHashMap[SharedConstants.MOBILE] = mobileNumber.toLong()
         }
 
         if (gender.isNotEmpty() && gender != mUserDetails.gender) {
-            userHashMap[Constants.GENDER] = gender
+            userHashMap[SharedConstants.GENDER] = gender
         }
 
         if (mUserDetails.profileCompleted == 0) {
-            userHashMap[Constants.COMPLETE_PROFILE] = 1
+            userHashMap[SharedConstants.COMPLETE_PROFILE] = 1
         }
 
         // call the registerUser function of FireStore class to make an entry in the database.
@@ -202,7 +203,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Constants.showImageChooser(this@UserProfileActivity)
                     } else {
-                        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_STORAGE_PERMISSION_CODE)
+                        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), SharedConstants.READ_STORAGE_PERMISSION_CODE)
                     }
                 }
 
@@ -212,7 +213,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         showProgressDialog(R.string.please_wait.asString())
                         val uri = mSelectedImageFileUri
                         if (uri != null) {
-                            FireStoreImage().uploadImageToCloudStorage(this,uri,Constants.USER_PROFILE_IMAGE_SUFFIX, ::imageUploadSuccess,::imageUploadFailure)
+                            FireStoreImage().uploadImageToCloudStorage(this,uri,SharedConstants.USER_PROFILE_IMAGE_SUFFIX, ::imageUploadSuccess,::imageUploadFailure)
                         } else {
                             updateUserProfileDetails()
                         }

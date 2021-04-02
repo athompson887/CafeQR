@@ -16,6 +16,7 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.User
+import com.athompson.cafelib.shared.SharedConstants
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -163,7 +164,7 @@ class LoginActivity : BaseActivity() {
         if (user.profileCompleted == 0) {
             // If the user profile is incomplete then launch the UserProfileActivity.
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
-            intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
+            intent.putExtra(SharedConstants.EXTRA_USER_DETAILS, user)
             startActivity(intent)
         } else {
             // Redirect the user to Main Screen after log in.

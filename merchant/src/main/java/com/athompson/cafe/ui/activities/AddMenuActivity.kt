@@ -25,6 +25,7 @@ import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.CafeQrMenu
+import com.athompson.cafelib.shared.SharedConstants
 import java.io.IOException
 
 class AddMenuActivity : BaseActivity(){
@@ -42,7 +43,7 @@ class AddMenuActivity : BaseActivity(){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@AddMenuActivity)
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_STORAGE_PERMISSION_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), SharedConstants.READ_STORAGE_PERMISSION_CODE)
             }
         }
 
@@ -60,7 +61,7 @@ class AddMenuActivity : BaseActivity(){
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
+        if (requestCode == SharedConstants.READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@AddMenuActivity)
             } else {
@@ -72,7 +73,7 @@ class AddMenuActivity : BaseActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK
-            && requestCode == Constants.PICK_IMAGE_REQUEST_CODE
+            && requestCode == SharedConstants.PICK_IMAGE_REQUEST_CODE
             && data?.data != null
         ) {
 
@@ -131,7 +132,7 @@ class AddMenuActivity : BaseActivity(){
 
         showProgressDialog(R.string.please_wait.asString())
         if(mSelectedImageFileUri!=null)
-            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri, Constants.MENU_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
+            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri, SharedConstants.MENU_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
         else
             uploadCafeQrMenu()
     }
