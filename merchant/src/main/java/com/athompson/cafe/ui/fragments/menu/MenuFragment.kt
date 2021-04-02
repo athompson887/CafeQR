@@ -1,5 +1,6 @@
 package com.athompson.cafe.ui.fragments.menu
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentMenuBinding
 import com.athompson.cafe.databinding.SimpleMenuItemBinding
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.firestore.FireStoreCafeQrMenu
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
@@ -176,10 +178,7 @@ class MenuFragment : BaseFragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val menuItem = list[position]
             if(menuItem!=null) {
-            if(menuItem.imageUrl.safe().isNotEmpty())
-                GlideLoader(context).loadImagePicture(menuItem.imageUrl.safe(), holder.binding.image)
-            else
-                holder.binding.image.setImageResource(R.drawable.cafe_image)
+            holder.binding.image.setImage(menuItem.imageUrl,R.drawable.cafe_image)
             holder.binding.name.text = menuItem.name
             holder.binding.description.text = menuItem.description
             holder.itemView.setOnClickListener {
@@ -208,6 +207,7 @@ class MenuFragment : BaseFragment() {
             return list.size
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         fun dataChanged(cafeQrMenus: ArrayList<CafeQrMenu?>) {
             list = cafeQrMenus
             notifyDataSetChanged()

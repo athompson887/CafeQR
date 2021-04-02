@@ -12,6 +12,9 @@
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
         <item name="cornerSize">50%</item>
     </style>
+    <style name="ShapeAppearanceOverlay.App.CornerSize16dp" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
 
     <style name="IconOnlyButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:minWidth">0dp</item>
@@ -31,6 +34,7 @@
     <style name="MaterialAlertDialog.Rounded" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialAlertDialog.Rounded</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.MaterialAlertDialog.Rounded" parent="">
         <item name="cornerSize">16dp</item>
     </style>

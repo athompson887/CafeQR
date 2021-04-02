@@ -20,7 +20,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image"
@@ -50,25 +50,20 @@
                 app:layout_constraintTop_toBottomOf="@id/image"
                 tools:text="Food Name" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/foodTypesDropDown"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
+             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/foodTypes"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Select a food type from the list"
-                android:padding="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name">
-
-                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/foodTypesAutoComplete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/name"
+                tools:text="Starter" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/description"
@@ -82,9 +77,8 @@
                 android:textColor="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/foodTypesDropDown"
+                app:layout_constraintTop_toBottomOf="@id/foodTypes"
                 tools:text="@string/lorem_ipsum" />
-
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/price"

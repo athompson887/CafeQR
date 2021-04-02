@@ -1,6 +1,7 @@
 package com.athompson.cafe.ui.fragments.menu
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,6 +20,7 @@ import com.athompson.cafe.databinding.FragmentMenusDetailsBinding
 import com.athompson.cafe.databinding.SimpleFoodItemBinding
 import com.athompson.cafe.extensions.ViewExtensions.edit
 import com.athompson.cafe.extensions.ViewExtensions.editLong
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.firestore.FireStoreCafeQrMenu
 import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.firestore.FireStoreImage
@@ -107,10 +109,7 @@ class MenuDetailFragment : BaseFragment() {
             return
         }
 
-        if (selectedMenu?.imageUrl.safe().isNotEmpty())
-            GlideLoader(requireContext()).loadImagePicture(selectedMenu?.imageUrl.safe(), binding.image)
-        else
-            binding.image.setImageResource(R.drawable.cafe_image)
+        binding.image.setImage(selectedMenu?.imageUrl,R.drawable.cafe_image)
 
         toolBarTitle(selectedMenu?.name.safe())
         toolBarSubTitle(selectedMenu?.description.safe())
@@ -178,7 +177,8 @@ class MenuDetailFragment : BaseFragment() {
         }
     }
 
-    private fun onChanged(view:View,oldValue:String?,newValue:String?)
+    @Suppress("UNUSED_PARAMETER")
+    private fun onChanged(view:View, oldValue:String?, newValue:String?)
     {
         changed()
     }
@@ -311,12 +311,7 @@ class MenuDetailFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val menuItem = menuFoodItems[position]
-
-            if(menuItem?.imageUrl.safe().isNotEmpty())
-                GlideLoader(requireContext()).loadImagePicture(menuItem?.imageUrl.safe(), holder.binding.image)
-            else
-                holder.binding.image.setImageResource(R.drawable.cafe_image)
-
+            holder.binding.image.setImage(menuItem?.imageUrl,R.drawable.cafe_image)
             holder.binding.name.text = menuItem?.name
             holder.binding.description.text = menuItem?.description
         }
@@ -326,6 +321,7 @@ class MenuDetailFragment : BaseFragment() {
             return menuFoodItems.size
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         fun dataChanged() {
             notifyDataSetChanged()
         }

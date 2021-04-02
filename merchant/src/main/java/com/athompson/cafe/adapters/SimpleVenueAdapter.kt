@@ -1,5 +1,6 @@
 package com.athompson.cafe.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.SimpleVenueItemBinding
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.models.Venue
@@ -28,11 +30,7 @@ class SimpleVenueAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val venueItem = venues[position]
-        if(venueItem.imageUrl.safe().isNotEmpty())
-            GlideLoader(context).loadImagePicture(venueItem.imageUrl, holder.binding.image)
-        else
-            holder.binding.image.setImageResource(R.drawable.cafe_image)
-
+        holder.binding.image.setImage(venueItem.imageUrl,R.drawable.cafe_image)
         holder.binding.name.text = venueItem.name
         holder.binding.location.text = venueItem.location
     }
@@ -42,6 +40,7 @@ class SimpleVenueAdapter(
         return venues.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun dataChanged(cafeQrMenus: ArrayList<Venue>) {
         venues = cafeQrMenus
         notifyDataSetChanged()

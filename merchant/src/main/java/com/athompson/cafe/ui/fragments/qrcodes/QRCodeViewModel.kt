@@ -5,19 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.athompson.cafelib.helpers.QRCodeHelper
-import com.athompson.cafelib.shared.CafeQrData
-import com.athompson.cafelib.shared.toJson
+import com.athompson.cafelib.models.Venue
 
 class QRCodeViewModel : ViewModel() {
 
     private var _qrImage = MutableLiveData<Bitmap>()
     val qrImage: LiveData<Bitmap> = _qrImage
 
-    fun generateBarCode(data: CafeQrData) {
-        val json = data.toJson()
-        if(json!=null) {
-            val bmp = QRCodeHelper.generateQRCode(json, 300)
+    fun generateBarCode(data: Venue) {
+        val bmp = QRCodeHelper.generateQRCode(data.id.toString(), 300)
             _qrImage.postValue(bmp)
         }
     }
-}

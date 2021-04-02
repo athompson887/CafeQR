@@ -42,6 +42,7 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.2557291666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menu.xml" value="0.43333333333333335" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menu_items.xml" value="0.43333333333333335" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menu_list_item.xml" value="0.326953125" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_menus_details.xml" value="0.284765625" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_organisations.xml" value="0.4239583333333333" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/fragment_organisations_list_item.xml" value="0.4239583333333333" />
@@ -53,8 +54,10 @@
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/progress_dialog_view.xml" value="0.2557291666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/simple_food_item.xml" value="0.48489583333333336" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/simple_menu_item.xml" value="0.4" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/simple_venue_display_card.xml" value="0.32890625" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/simple_venue_item.xml" value="0.4" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/venue_display_card.xml" value="0.2557291666666667" />
+        <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/venue_list_item.xml" value="0.32890625" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/layout/venues_list_item.xml" value="0.5541666666666667" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/add_food_menu.xml" value="0.40677083333333336" />
         <entry key="..\:/GitHub/CafeQr/merchant/src/main/res/menu/add_menu.xml" value="0.4114583333333333" />

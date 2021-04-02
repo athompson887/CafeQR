@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentVenuesBinding
 import com.athompson.cafe.databinding.VenuesListItemBinding
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
@@ -161,11 +162,7 @@ class VenuesFragment : BaseFragment() {
             val venue = list[position]
 
             if (holder is VenueViewHolder) {
-                if(venue.imageUrl.safe().isNotEmpty())
-                    GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
-                else
-                    holder.binding.image.setImageResource(R.drawable.cafe_image)
-
+                holder.binding.image.setImage(venue.imageUrl,R.drawable.cafe_image)
                 holder.binding.tvName.text = venue.name
                 holder.binding.description.text = venue.description
                 holder.binding.tvLocation.text = venue.location
@@ -197,7 +194,7 @@ class VenuesFragment : BaseFragment() {
         }
 
 
-        inner class VenueViewHolder(private val mView: View) : RecyclerView.ViewHolder(mView) {
+        inner class VenueViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
             val binding: VenuesListItemBinding =
                 VenuesListItemBinding.bind(mView)
 

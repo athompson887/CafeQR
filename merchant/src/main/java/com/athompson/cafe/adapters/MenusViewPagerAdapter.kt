@@ -1,5 +1,6 @@
 package com.athompson.cafe.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.MenuDisplayCardBinding
-import com.athompson.cafe.utils.GlideLoader
-import com.athompson.cafelib.extensions.StringExtensions.safe
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafelib.models.CafeQrMenu
 
 
@@ -28,8 +28,8 @@ open class MenusViewPagerAdapter(
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun dataChanged() {
-
         notifyDataSetChanged()
     }
 
@@ -38,12 +38,7 @@ open class MenusViewPagerAdapter(
         val menu = menusList[position]
 
         if (holder is MenuViewHolder && menu!=null) {
-
-            if(menu.imageUrl.safe().isNotEmpty())
-                GlideLoader(context).loadImagePicture(menu.imageUrl, holder.binding.image)
-            else
-                holder.binding.image.setImageResource(R.drawable.cafe_image)
-
+            holder.binding.image.setImage(menu.imageUrl,R.drawable.cafe_image)
             holder.binding.selectedMenuName.text = menu.name
             holder.binding.selectedMenuDescription.text = menu.description
         }
@@ -62,7 +57,7 @@ open class MenusViewPagerAdapter(
     }
 
 
-    inner class MenuViewHolder(private val mView: View) : RecyclerView.ViewHolder(mView) {
+    inner class MenuViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val binding: MenuDisplayCardBinding =
             MenuDisplayCardBinding.bind(mView)
 

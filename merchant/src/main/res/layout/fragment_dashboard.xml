@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
+    android:background="?attr/colorPrimaryVariant"
     tools:context=".ui.fragments.dashboard.DashboardFragment">
 
     <androidx.viewpager2.widget.ViewPager2
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_bold"
-                    android:text="You do not have any Menus!"
+                    android:text="@string/you_do_not_have_any_menus"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:text="You need at least one menu to show your items"
+                    android:text="@string/you_need_at_least_one_menu_to_show_your_items"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:text="You can have a menu for each venue or share the same menu across all of your venues!"
+                    android:text="@string/you_can_have_a_menu_for_each_venue_or_share_the_same_menu_across_all_of_your_venues"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +118,7 @@
                     android:id="@+id/addMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Menu"
+                    android:text="@string/add_menu"
                     app:cornerRadius="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

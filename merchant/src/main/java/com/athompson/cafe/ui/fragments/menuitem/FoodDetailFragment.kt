@@ -7,28 +7,32 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentFoodDetailsBinding
+import com.athompson.cafe.extensions.ViewExtensions.choose
 import com.athompson.cafe.extensions.ViewExtensions.edit
+import com.athompson.cafe.extensions.ViewExtensions.editCurrency
 import com.athompson.cafe.extensions.ViewExtensions.editLong
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.firestore.FireStoreFoodMenuItem
 import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.ui.fragments.BaseFragment
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ContextExtensions.themeColor
+import com.athompson.cafelib.extensions.DoubleExtensions.DoubleFromCurrency
+import com.athompson.cafelib.extensions.DoubleExtensions.priceValue
+import com.athompson.cafelib.extensions.DoubleExtensions.toPrice
 import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
-import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.StringExtensions.trimmed
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -95,33 +99,10 @@ class FoodDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFoodDetailsBinding.bind(view)
 
-        val venue = selectedFood
-        if (venue == null) {
+        val foodItem = selectedFood
+        if (foodItem == null) {
             showError()
             return
-        }
-
-        if (venue.imageUrl.safe().isNotEmpty())
-            GlideLoader(requireContext()).loadImagePicture(venue.imageUrl, binding.image)
-        else
-            binding.image.setImageResource(R.drawable.cafe_image)
-
-        toolBarTitle(venue.name)
-        toolBarSubTitle(venue.description)
-
-        binding.name.text = venue.name
-        binding.description.text = venue.description
-        binding.price.text = venue.price.toString()
-
-
-        binding.name.text = selectedFood?.name.safe()
-        binding.description.text = selectedFood?.description.safe()
-        binding.image.setOnClickListener{
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                showImageChooser()
-            } else {
-                getStoragePermissions()
-            }
         }
 
         selectedFoodType = selectedFood?.type.toString()
@@ -130,14 +111,14 @@ class FoodDetailFragment : BaseFragment() {
             selectedFood?.type = selectedFoodType
         }
 
-        val foodTypesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, SharedConstants.FOOD_TYPES)
-        binding.foodTypesAutoComplete.setAdapter(foodTypesAdapter)
-        binding.foodTypesAutoComplete.setOnItemClickListener{ _: AdapterView<*>, view1: View, position: Int, id: Long ->
-            selectedFoodType = SharedConstants.FOOD_TYPES[position]
-            changed()
-        }
+        toolBarTitle(foodItem.name)
+        toolBarSubTitle(foodItem.description)
 
-        binding.foodTypesAutoComplete.setText(selectedFoodType,false)
+        binding.name.text = foodItem.name
+        binding.description.text = foodItem.description
+        binding.foodTypes.text = selectedFoodType
+        binding.price.text = foodItem.price.toPrice()
+        binding.image.setImage(foodItem.imageUrl,R.drawable.cafe_image)
         edit()
     }
 
@@ -153,14 +134,27 @@ class FoodDetailFragment : BaseFragment() {
         }
 
         binding.price.setOnClickListener {
-            binding.price.edit("Edit Price", "Type to edit price",::onChanged)
+            binding.price.editCurrency("Edit Price", "Type to edit price",::onChanged)
         }
 
         binding.description.setOnClickListener {
             binding.description.editLong("Edit description", "Type to edit description",::onChanged)
         }
-    }
 
+        binding.foodTypes.setOnClickListener {
+            binding.foodTypes.choose("Edit Food Type", "Type to edit food type",SharedConstants.FOOD_TYPES,::onChanged)
+        }
+
+        binding.image.setOnClickListener{
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                showImageChooser()
+            } else {
+                getStoragePermissions()
+            }
+        }
+
+    }
+    @Suppress("UNUSED_PARAMETER")
     private fun onChanged(view:View,oldValue:String?,newValue:String?)
     {
         changed()
@@ -177,9 +171,9 @@ class FoodDetailFragment : BaseFragment() {
             return true
         if(selectedFood?.description.trimmed()!=binding.description.trimmed())
             return true
-        if(selectedFood?.price!=binding.price.text.safeDouble())
+        if(selectedFood?.price!=binding.price.text.toString().DoubleFromCurrency())
             return true
-        if(selectedFood?.type!=selectedFoodType)
+        if(selectedFood?.type!=binding.foodTypes.text.toString())
             return true
         if(imageFileLocation!=null)
             return true
@@ -235,20 +229,28 @@ class FoodDetailFragment : BaseFragment() {
         if (name != selectedFood?.name) {
             selectedFood?.name = name as String
         }
+
         val description = binding.description.text
         if (description != selectedFood?.description) {
             selectedFood?.description = description as String
         }
+
+        val foodType = binding.description.text
+        if (foodType != selectedFood?.type) {
+            selectedFood?.type = foodType as String
+        }
+
+        val price = binding.price.text.toString().priceValue()
+        if (price != selectedFood?.price) {
+            selectedFood?.price = price
+        }
+
         if (selectedFood?.imageUrl != imageUrl && !imageUrl.isNullOrEmpty()) {
             selectedFood?.imageUrl = imageUrl.toString()
         }
-        if (selectedFood?.type != selectedFoodType) {
-            selectedFood?.type = selectedFoodType
-        }
+
         selectedFood?.let {
-            FireStoreFoodMenuItem().update(::updateSuccess,::updateFailure, selectedFood?.id.toString(),
-                it
-            )
+            FireStoreFoodMenuItem().update(::updateSuccess,::updateFailure, selectedFood?.id.toString(), it)
         }
     }
 
@@ -288,9 +290,3 @@ class FoodDetailFragment : BaseFragment() {
     }
 }
 
-private fun CharSequence.safeDouble(): Double {
-   var res =toString().toDoubleOrNull()
-   if(res==null)
-        res=0.0
-    return res
-}

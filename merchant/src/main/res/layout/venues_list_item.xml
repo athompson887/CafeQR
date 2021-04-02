@@ -1,6 +1,6 @@
-
-<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/email_frame"
     android:layout_height="wrap_content"
@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:transitionName="@string/venue_card_detail_transition_name"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:background="?attr/colorSurface"
         android:padding="8dp"
         android:id="@+id/card"
@@ -25,7 +25,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
@@ -42,25 +42,11 @@
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintBottom_toTopOf="@+id/description"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 app:layout_constraintStart_toEndOf="@id/image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:text="Name" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/nunitosans_regular"
-                app:layout_constraintBottom_toTopOf="@+id/tv_location"
-                app:layout_constraintStart_toEndOf="@id/image"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name"
-                tools:layout_editor_absoluteX="0dp"
-                tools:text="Description" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_location"
@@ -68,12 +54,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:fontFamily="@font/nunitosans_regular"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="Location" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                tools:layout_editor_absoluteX="0dp"
-                tools:text="Location" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_location">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    tools:text="@string/lorem_ipsum" />
+            </androidx.core.widget.NestedScrollView>
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

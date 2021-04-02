@@ -1,5 +1,6 @@
 package com.athompson.cafe.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.VenueDisplayCardBinding
+import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.models.CafeQrMenu
@@ -30,6 +32,7 @@ open class VenuesViewPagerAdapter(
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun dataChanged() {
 
         venuesList.forEach {  vid ->
@@ -61,10 +64,7 @@ open class VenuesViewPagerAdapter(
 
         if (holder is VenueViewHolder) {
 
-            if(venue.imageUrl.safe().isNotEmpty())
-                GlideLoader(context).loadImagePicture(venue.imageUrl, holder.binding.image)
-            else
-                holder.binding.image.setImageResource(R.drawable.cafe_image)
+            holder.binding.image.setImage(venue.imageUrl,R.drawable.cafe_image)
 
             holder.binding.selectedVenueName.text = venue.name
             holder.binding.selectedVenueTown.text = venue.location
@@ -87,7 +87,7 @@ open class VenuesViewPagerAdapter(
     }
 
 
-    inner class VenueViewHolder(private val mView: View) : RecyclerView.ViewHolder(mView) {
+    inner class VenueViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val binding: VenueDisplayCardBinding =
             VenueDisplayCardBinding.bind(mView)
 

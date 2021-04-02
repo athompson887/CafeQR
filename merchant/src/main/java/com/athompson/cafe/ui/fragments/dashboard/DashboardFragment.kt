@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.viewpager2.widget.ViewPager2
 import com.athompson.cafe.R
 import com.athompson.cafe.adapters.SimpleMenuItemAdapter
@@ -27,7 +26,7 @@ import com.athompson.cafelib.extensions.ViewExtensions.hide
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
 import com.athompson.cafelib.extensions.ViewExtensions.show
-import com.athompson.cafelib.extensions.ViewExtensions.showHorizontalDividers
+import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.models.FoodMenuItem
 import com.athompson.cafelib.models.Venue
@@ -44,7 +43,7 @@ class DashboardFragment : BaseFragment() {
     private var selectedMenu:CafeQrMenu? = null
     private lateinit var simpleMenuItemAdapter:SimpleMenuItemAdapter
     private lateinit var venuesViewPagerAdapter: VenuesViewPagerAdapter
-    private var called = false
+    private var firstLoad = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -86,10 +85,10 @@ class DashboardFragment : BaseFragment() {
         binding.addMenu.setOnClickListener{
             startActivity(Intent(activity, AddMenuActivity::class.java))
         }
-
+        hideMenus()
         setupRecycler()
-        if(!called) {
-            called = true
+        if(!firstLoad) {
+            firstLoad = true
             getMenusList()
         }
     }
@@ -131,7 +130,7 @@ class DashboardFragment : BaseFragment() {
 
         binding.recyclerMenus.setLayoutManagerVertical()
         binding.recyclerMenus.itemAnimator = DefaultItemAnimator()
-        binding.recyclerMenus.showHorizontalDividers()
+        binding.recyclerMenus.showVerticalDividers()
         binding.recyclerMenus.adapter = simpleMenuItemAdapter
 
     }
@@ -139,15 +138,16 @@ class DashboardFragment : BaseFragment() {
     private fun renderSelectedMenu() {
         binding.menuTitle.show()
         binding.menuTitle.text = selectedMenu?.name
+        binding.menusWrapper.show()
     }
 
 
     private fun getVenuesList() {
-        showProgressDialog(R.string.please_wait.asString())
         FireStoreVenue().getAll(::successVenuesList, ::failureVenueList)
     }
 
     private fun successVenuesList(venuesList: java.util.ArrayList<Venue>) {
+
         if (venuesList.isNullOrEmpty()) {
             noVenue()
         }
@@ -157,6 +157,7 @@ class DashboardFragment : BaseFragment() {
             venues.addAll(venuesList)
             venuesViewPagerAdapter.dataChanged()
         }
+        binding.menusWrapper.show()
         hideProgressDialog()
     }
 
@@ -165,6 +166,7 @@ class DashboardFragment : BaseFragment() {
         venues.clear()
         venues.add(Venue("fake_venue","","","",""))
         venuesViewPagerAdapter.dataChanged()
+        binding.menusWrapper.show()
         hideProgressDialog()
     }
 
@@ -182,16 +184,12 @@ class DashboardFragment : BaseFragment() {
         if (menuList.size > 0) {
             cafeQrMenus.clear()
             cafeQrMenus.addAll(menuList)
-        } else {
-
         }
-
-        hideProgressDialog()
-        getVenuesList()
+            getVenuesList()
     }
 
     private fun failureCafeQrMenuList(e: Exception) {
-        hideProgressDialog()
+        getVenuesList()
         showNoMenu()
         logError(e.message.toString())
     }
@@ -209,7 +207,8 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun getMenusItemsList(selectedMenuId:String) {
-        showProgressDialog(R.string.please_wait.asString())
+        if(!firstLoad)
+            showProgressDialog(R.string.please_wait.asString())
         FireStoreFoodMenuItem().getAll(selectedMenuId,::successfulMenuItemsList,::failureMenuItemsList)
     }
 
@@ -240,5 +239,10 @@ class DashboardFragment : BaseFragment() {
         binding.menuTitle.hide()
         binding.menusView.remove()
         binding.noMenusView.show()
+    }
+    private fun hideMenus()
+    {
+        binding.menusWrapper.hide()
+        binding.menuTitle.hide()
     }
 }
