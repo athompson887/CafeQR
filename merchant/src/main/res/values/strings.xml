@@ -138,4 +138,8 @@
     <string name="navigate_back_icon_content_desc">Navigate back</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="btn_lbl_update">Update</string>
+    <string name="add_menu">Add Menu</string>
+    <string name="you_can_have_a_menu_for_each_venue_or_share_the_same_menu_across_all_of_your_venues">You can have a menu for each venue or share the same menu across all of your venues!</string>
+    <string name="you_need_at_least_one_menu_to_show_your_items">You need at least one menu to show your items</string>
+    <string name="you_do_not_have_any_menus">You do not have any Menus!</string>
 </resources>

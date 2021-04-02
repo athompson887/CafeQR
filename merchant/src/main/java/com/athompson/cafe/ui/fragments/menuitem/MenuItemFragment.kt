@@ -254,8 +254,7 @@ class MenuItemFragment : BaseFragment() {
         super.onDetach()
         listener = null
     }
-    interface OnFragmentInteractionListener{
-    }
+    interface OnFragmentInteractionListener
 
     inner class SimpleMenuItemAdapter(
         private val context: Context,

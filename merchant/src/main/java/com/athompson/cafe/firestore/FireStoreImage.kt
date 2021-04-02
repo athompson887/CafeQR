@@ -19,7 +19,7 @@ class FireStoreImage {
         storageReference.delete().addOnSuccessListener{
             success()
         }
-        storageReference.delete().addOnFailureListener(){
+        storageReference.delete().addOnFailureListener {
             failure(it)
         }
     }

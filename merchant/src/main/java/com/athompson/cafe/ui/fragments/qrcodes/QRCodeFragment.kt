@@ -103,7 +103,7 @@ class QRCodeFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_qrcode, container, false)
     }
 
-    inner class VenuesViewPagerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class VenuesViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return VenueViewHolder(

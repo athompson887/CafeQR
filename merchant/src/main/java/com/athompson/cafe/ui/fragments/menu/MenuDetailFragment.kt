@@ -297,7 +297,7 @@ class MenuDetailFragment : BaseFragment() {
         }
     }
 
-    inner class MenuItemAdapter() : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
+    inner class MenuItemAdapter : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(

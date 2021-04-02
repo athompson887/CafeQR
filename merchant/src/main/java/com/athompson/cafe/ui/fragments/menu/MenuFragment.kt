@@ -157,8 +157,7 @@ class MenuFragment : BaseFragment() {
     }
 
 
-    interface OnFragmentInteractionListener{
-    }
+    interface OnFragmentInteractionListener
 
     inner class SimpleMenuAdapter(
         private val context: Context,

@@ -83,7 +83,6 @@ object ContextExtensions {
                 connectivityManager.activeNetworkInfo?.isConnected ?: false
             }
         }
-        return false
     }
 
 
@@ -95,7 +94,7 @@ object ContextExtensions {
     //   }
     @Suppress("DEPRECATION")
     fun Context.isOnline(failBlock : () -> Unit  = { globalInternetFailBock() }, successBlock : () -> Unit ) {
-        this?.apply {
+        this.apply {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val nw = connectivityManager.activeNetwork
@@ -114,8 +113,7 @@ object ContextExtensions {
                 } else {
                     failBlock()
                 }
-            }
-            else {
+            } else {
                 val netInfo = connectivityManager.activeNetworkInfo
                 if (netInfo != null && netInfo.isConnected) {
                     successBlock()
@@ -126,7 +124,7 @@ object ContextExtensions {
         }
     }
 
-    private fun Context.globalInternetFailBock(){
+    private fun globalInternetFailBock() {
         // show alter to user or implement custom code here
     }
 }
