@@ -9,9 +9,6 @@ import com.athompson.cafelib.shared.SharedConstants.PICK_IMAGE_REQUEST_CODE
 
 object Constants {
 
-
-
-
     fun showImageChooser(activity: Activity) {
 
         val galleryIntent = Intent(

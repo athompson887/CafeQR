@@ -13,6 +13,10 @@ object SharedConstants {
     const val DISPLAY_NAME_FIELD = "displayName"
     const val UID_FIELD = "uid"
 
+    const val VENUE: String = "venue"
+    const val MENU: String = "menu"
+    const val FOOD: String = "food"
+
     const val VENUES: String = "venues"
     const val MENUS: String = "menus"
     const val FOOD_MENU_ITEM: String = "menu_item"

@@ -213,7 +213,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         showProgressDialog(R.string.please_wait.asString())
                         val uri = mSelectedImageFileUri
                         if (uri != null) {
-                            FireStoreImage().uploadImageToCloudStorage(this,uri,SharedConstants.USER_PROFILE_IMAGE_SUFFIX, ::imageUploadSuccess,::imageUploadFailure)
+                            FireStoreImage().uploadImageToCloudStorage(this,uri,SharedConstants.USER_PROFILE_IMAGE_SUFFIX,null, ::imageUploadSuccess,::imageUploadFailure)
                         } else {
                             updateUserProfileDetails()
                         }

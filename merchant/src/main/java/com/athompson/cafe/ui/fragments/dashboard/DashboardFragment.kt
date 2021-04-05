@@ -12,6 +12,7 @@ import com.athompson.cafe.adapters.VenuesViewPagerAdapter
 import com.athompson.cafe.databinding.FragmentDashboardBinding
 import com.athompson.cafe.firestore.FireStoreCafeQrMenu
 import com.athompson.cafe.firestore.FireStoreFoodMenuItem
+import com.athompson.cafe.firestore.FireStoreImage
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddMenuActivity
 import com.athompson.cafe.ui.activities.SettingsActivity
@@ -60,6 +61,8 @@ class DashboardFragment : BaseFragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner, {
             //textView.text = it
         })
+
+        FireStoreImage().listAllImages()
         return root
     }
 

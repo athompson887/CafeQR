@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.athompson.cafe.Constants
@@ -31,15 +32,18 @@ import java.io.IOException
 
 class AddVenuesActivity : BaseActivity(){
 
+    private var venue: Venue? = null
     private var mSelectedImageFileUri: Uri? = null
     private var mVenueImageURL: String = ""
     lateinit var binding:ActivityAddVenueBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddVenueBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
         setupActionBar()
+
         binding.ivUpdateVenue.setOnClickListener{
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@AddVenuesActivity)
@@ -141,7 +145,20 @@ class AddVenuesActivity : BaseActivity(){
     private fun uploadVenueImage() {
 
         showProgressDialog(R.string.please_wait.asString())
-        FireStoreImage().uploadImageToCloudStorage(this@AddVenuesActivity, mSelectedImageFileUri,SharedConstants.VENUE_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
+        if(mSelectedImageFileUri.toString().isNotEmpty()) {
+            FireStoreImage().uploadImageToCloudStorage(
+                this@AddVenuesActivity,
+                mSelectedImageFileUri,
+                null,
+                SharedConstants.VENUE_IMAGE_SUFFIX,
+                ::imageUploadSuccess,
+                ::imageUploadFailure
+            )
+        }
+        else {
+            mVenueImageURL = ""
+            uploadVenue()
+        }
     }
 
     private fun imageUploadSuccess(imageURL: String) {
@@ -156,19 +173,18 @@ class AddVenuesActivity : BaseActivity(){
     }
 
     private fun uploadVenue() {
-        val venue = Venue(
+        venue = Venue(
             name = binding.etVenueName.trimmed(),
             location =  binding.etLocation.trimmed(),
             description =  binding.etDescription.trimmed(),
             imageUrl =    mVenueImageURL
         )
-
-        FireStoreVenue().add(::addVenueSuccess,::addVenueFailure, venue)
+        FireStoreVenue().add(::addVenueSuccess,::addVenueFailure, venue!!)
     }
 
     private fun addVenueSuccess() {
         hideProgressDialog()
-        showShortToast(R.string.add_venue_success.asString())
+        setResult(Activity.RESULT_OK, Intent().putExtra(SharedConstants.VENUE, venue))
         finish()
     }
 

@@ -231,6 +231,7 @@ class AddMenuItemActivity : BaseActivity(){
             FireStoreImage().uploadImageToCloudStorage(
                 this@AddMenuItemActivity,
                 mSelectedImageFileUri,
+                null,
                 SharedConstants.MENU_ITEM_IMAGE_SUFFIX,
                 ::imageUploadSuccess,
                 ::imageUploadFailure

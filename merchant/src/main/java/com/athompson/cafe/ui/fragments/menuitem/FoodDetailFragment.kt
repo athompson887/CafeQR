@@ -192,7 +192,7 @@ class FoodDetailFragment : BaseFragment() {
             showProgressDialog(R.string.please_wait.asString())
             val uri = imageFileLocation
             if (uri != null) {
-                FireStoreImage().uploadImageToCloudStorage(requireActivity(),uri,
+                FireStoreImage().uploadImageToCloudStorage(requireActivity(),uri,selectedFood?.imageUrl,
                     SharedConstants.VENUE_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
             } else {
                 update()

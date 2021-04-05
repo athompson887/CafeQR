@@ -132,7 +132,7 @@ class AddMenuActivity : BaseActivity(){
 
         showProgressDialog(R.string.please_wait.asString())
         if(mSelectedImageFileUri!=null)
-            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri, SharedConstants.MENU_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
+            FireStoreImage().uploadImageToCloudStorage(this@AddMenuActivity, mSelectedImageFileUri,null, SharedConstants.MENU_IMAGE_SUFFIX,::imageUploadSuccess,::imageUploadFailure)
         else
             uploadCafeQrMenu()
     }
