@@ -111,8 +111,7 @@ class MenuDetailFragment : BaseFragment() {
 
         binding.image.setImage(selectedMenu?.imageUrl,R.drawable.cafe_image)
 
-        toolBarTitle(selectedMenu?.name.safe())
-        toolBarSubTitle(selectedMenu?.description.safe())
+        setToolBar()
 
         binding.name.text = selectedMenu?.name.safe()
         binding.description.text = selectedMenu?.description.safe()
@@ -126,6 +125,12 @@ class MenuDetailFragment : BaseFragment() {
 
         edit()
         populateMenu()
+    }
+
+    private fun setToolBar()
+    {
+        toolBarTitle(selectedMenu?.name.safe())
+        toolBarSubTitle(selectedMenu?.description.safe())
     }
 
     private fun showError() {
@@ -264,6 +269,7 @@ class MenuDetailFragment : BaseFragment() {
 
     private fun updateSuccess() {
         imageFileLocation = null
+        setToolBar()
         changed()
         hideProgressDialog()
         showShortToast(R.string.msg_menu_update_success)

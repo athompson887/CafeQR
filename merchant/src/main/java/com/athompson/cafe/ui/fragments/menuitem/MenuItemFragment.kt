@@ -46,6 +46,7 @@ class MenuItemFragment : BaseFragment() {
     private var selectedMenu:CafeQrMenu? = null
     private lateinit var simpleMenuItemAdapter:SimpleMenuItemAdapter
     private lateinit var menusViewPagerAdapter: MenusViewPagerAdapter
+    private var firstLoad = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -65,10 +66,14 @@ class MenuItemFragment : BaseFragment() {
         binding = FragmentMenuItemsBinding.bind(view)
 
         setupRecycler()
-        getMenusList()
+        if(!firstLoad) {
+            firstLoad = true
+            getMenusList()
+        }
     }
 
     private fun getMenusList() {
+
         showProgressDialog(R.string.please_wait.asString())
         FireStoreCafeQrMenu().getAll(::successfulCafeQrMenuList,::failureCafeQrMenuList)
     }
@@ -81,7 +86,7 @@ class MenuItemFragment : BaseFragment() {
             addBlankItem()
         }
         menusViewPagerAdapter.dataChanged()
-        hideProgressDialog()
+
     }
 
     private fun failureCafeQrMenuList(e: Exception) {

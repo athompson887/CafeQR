@@ -33,6 +33,7 @@ import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
+import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.StringExtensions.trimmed
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
@@ -111,8 +112,7 @@ class FoodDetailFragment : BaseFragment() {
             selectedFood?.type = selectedFoodType
         }
 
-        toolBarTitle(foodItem.name)
-        toolBarSubTitle(foodItem.description)
+        setToolBar()
 
         binding.name.text = foodItem.name
         binding.description.text = foodItem.description
@@ -120,6 +120,12 @@ class FoodDetailFragment : BaseFragment() {
         binding.price.text = foodItem.price.toPrice()
         binding.image.setImage(foodItem.imageUrl,R.drawable.cafe_image)
         edit()
+    }
+
+    private fun setToolBar()
+    {
+        toolBarTitle(selectedFood?.name.safe())
+        toolBarSubTitle(selectedFood?.description.safe())
     }
 
 
@@ -256,6 +262,7 @@ class FoodDetailFragment : BaseFragment() {
 
     private fun updateSuccess() {
         imageFileLocation = null
+        setToolBar()
         changed()
         hideProgressDialog()
         showShortToast(R.string.msg_menu_update_success)

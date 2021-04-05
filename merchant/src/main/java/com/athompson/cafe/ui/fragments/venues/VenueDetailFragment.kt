@@ -117,8 +117,8 @@ class VenueDetailFragment : BaseFragment(){
         else
             binding.image.setImageResource(R.drawable.cafe_image)
 
-        toolBarTitle(venue.name)
-        toolBarSubTitle(venue.location)
+
+        setToolBar()
 
         binding.name.text = venue.name
         binding.location.text = venue.location
@@ -144,6 +144,12 @@ class VenueDetailFragment : BaseFragment(){
         edit()
         populateMenus()
 
+    }
+
+    private fun setToolBar()
+    {
+        toolBarTitle(selectedVenue?.name.safe())
+        toolBarSubTitle(selectedVenue?.location.safe())
     }
 
     private fun edit()
@@ -272,6 +278,7 @@ class VenueDetailFragment : BaseFragment(){
 
 
     fun updateSuccess() {
+        setToolBar()
         imageFileLocation = null
         changed()
         hideProgressDialog()

@@ -23,6 +23,7 @@ import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
+import com.athompson.cafelib.extensions.ViewExtensions.loopAVD
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.Venue
 import com.athompson.cafelib.shared.SharedConstants
@@ -53,6 +54,9 @@ class AddVenuesActivity : BaseActivity(){
                 uploadVenueImage()
             }
         }
+
+
+        binding.ivVenueImage.loopAVD(R.drawable.cafe)
     }
 
     override fun onRequestPermissionsResult(

@@ -1,12 +1,12 @@
 package com.athompson.cafe.ui.fragments.venues
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentVenuesBinding
@@ -15,12 +15,10 @@ import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddVenuesActivity
 import com.athompson.cafe.ui.fragments.BaseFragment
-import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarSubTitle
 import com.athompson.cafelib.extensions.FragmentExtensions.toolBarTitle
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
-import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
 import com.athompson.cafelib.extensions.ViewExtensions.remove
 import com.athompson.cafelib.extensions.ViewExtensions.setLayoutManagerVertical
@@ -28,12 +26,15 @@ import com.athompson.cafelib.extensions.ViewExtensions.show
 import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
 import com.athompson.cafelib.models.Venue
 import com.google.android.material.transition.MaterialElevationScale
+import com.myshoppal.utils.SwipeToDeleteCallback
 
 
 class VenuesFragment : BaseFragment() {
 
     private lateinit var mRootView: View
     private lateinit var binding:FragmentVenuesBinding
+    private var list: ArrayList<Venue> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -83,10 +84,11 @@ class VenuesFragment : BaseFragment() {
     }
 
     private fun getSuccess(venuesList: ArrayList<Venue>) {
-
+        list.clear()
+        list.addAll(venuesList)
         hideProgressDialog()
 
-        if (venuesList.size > 0) {
+        if (list.size > 0) {
             binding.recycler.show()
             binding.empty.remove()
 
@@ -94,7 +96,16 @@ class VenuesFragment : BaseFragment() {
             binding.recycler.setHasFixedSize(true)
             binding.recycler.setLayoutManagerVertical()
             binding.recycler.showVerticalDividers()
-            binding.recycler.adapter = VenuesListAdapter(requireActivity(), venuesList)
+            binding.recycler.adapter = VenuesListAdapter()
+            val deleteSwipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val venue = venuesList[viewHolder.adapterPosition]
+                    venue.id?.let { deleteVenue(it,viewHolder.adapterPosition) }
+                  }
+            }
+            val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
+            deleteItemTouchHelper.attachToRecyclerView(binding.recycler)
+
         } else {
             binding.recycler.remove()
             binding.empty.show()
@@ -107,11 +118,11 @@ class VenuesFragment : BaseFragment() {
     }
 
 
-    fun deleteVenue(venueID: String) {
-        showAlertDialogToDeleteVenue(venueID)
+    fun deleteVenue(venueID: String,position: Int) {
+        showAlertDialogToDeleteVenue(venueID,position)
     }
 
-    private fun showAlertDialogToDeleteVenue(venueID: String) {
+    private fun showAlertDialogToDeleteVenue(venueID: String,position: Int) {
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(R.string.delete_dialog_title.asString())
@@ -119,11 +130,11 @@ class VenuesFragment : BaseFragment() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton(R.string.yes.asString()) { dialogInterface, _ ->
             showProgressDialog(R.string.please_wait.asString())
-            FireStoreVenue().delete(::deleteSuccess,::deleteFailure,venueID)
+            FireStoreVenue().delete(::deleteSuccess,::deleteFailure,venueID,position)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton(R.string.no.asString()) { dialogInterface, _ ->
-
+            binding.recycler.adapter?.notifyItemChanged(position)
             dialogInterface.dismiss()
         }
         val alertDialog: AlertDialog = builder.create()
@@ -131,22 +142,21 @@ class VenuesFragment : BaseFragment() {
         alertDialog.show()
     }
 
-    private fun deleteSuccess() {
+    private fun deleteSuccess(position: Int) {
         hideProgressDialog()
         showShortToast(R.string.venue_delete_success_message)
-        getVenuesListFromFireStore()
+        list.removeAt(position)
+        binding.recycler.adapter?.notifyItemRemoved(position)
     }
 
-    private fun deleteFailure(e: Exception) {
+    private fun deleteFailure(e: Exception,position: Int) {
         logError(e.message.toString())
+        binding.recycler.adapter?.notifyItemChanged(position)
         hideProgressDialog()
     }
 
 
-    inner class VenuesListAdapter(
-        private val context: Context,
-        private var list: ArrayList<Venue>,
-    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class VenuesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return VenueViewHolder(
@@ -184,8 +194,6 @@ class VenuesFragment : BaseFragment() {
                         print(ex)
                     }
                 }
-
-
             }
         }
 

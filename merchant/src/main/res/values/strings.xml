@@ -111,7 +111,7 @@
 
     <string name="organisation_delete_success_message">Your organisation is deleted successfully.</string>
     <string name="menu_delete_success_message">Your menu item is deleted successfully.</string>
-    <string name="venue_delete_success_message">Your organisation is deleted successfully.</string>
+    <string name="venue_delete_success_message">Your venue is deleted successfully.</string>
 
     <string name="menu_delete_failure_message">Failed to delete menu</string>
     <string name="venue_delete_failure_message">Failed to delete venue</string>

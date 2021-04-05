@@ -158,7 +158,6 @@ class DashboardFragment : BaseFragment() {
             venuesViewPagerAdapter.dataChanged()
         }
         binding.menusWrapper.show()
-        hideProgressDialog()
     }
 
     private fun noVenue()
@@ -167,7 +166,6 @@ class DashboardFragment : BaseFragment() {
         venues.add(Venue("fake_venue","","","",""))
         venuesViewPagerAdapter.dataChanged()
         binding.menusWrapper.show()
-        hideProgressDialog()
     }
 
     private fun failureVenueList(e: Exception) {
@@ -207,8 +205,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun getMenusItemsList(selectedMenuId:String) {
-        if(!firstLoad)
-            showProgressDialog(R.string.please_wait.asString())
+        showProgressDialog(R.string.please_wait.asString())
         FireStoreFoodMenuItem().getAll(selectedMenuId,::successfulMenuItemsList,::failureMenuItemsList)
     }
 

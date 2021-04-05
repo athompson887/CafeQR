@@ -1,11 +1,15 @@
 package com.athompson.cafe.ui.activities
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
-import com.athompson.cafe.Constants
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
 import com.athompson.cafe.firestore.FireStoreUser
@@ -14,6 +18,7 @@ import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ContextExtensions.isOnline
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ViewExtensions.isEmpty
+import com.athompson.cafelib.extensions.ViewExtensions.loopAVD
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.User
 import com.athompson.cafelib.shared.SharedConstants
@@ -27,7 +32,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 @Suppress("DEPRECATION")
@@ -40,6 +44,12 @@ class LoginActivity : BaseActivity() {
         private const val RC_SIGN_IN = 9001
     }
 
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(LayoutInflater.from(this))
@@ -66,6 +76,8 @@ class LoginActivity : BaseActivity() {
         binding.googleSignInButton.setOnClickListener { googleSignIn() }
 
         initGoogleClient()
+
+        binding.image.loopAVD(R.drawable.coffeecup)
     }
 
     private fun googleSignIn() {

@@ -18,11 +18,11 @@ import com.athompson.cafe.firestore.FireStoreCafeQrMenu
 import com.athompson.cafe.utils.GlideLoader
 import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
-import com.athompson.cafelib.extensions.FragmentExtensions.logError
 import com.athompson.cafelib.extensions.ResourceExtensions.asDrawable
 import com.athompson.cafelib.extensions.ResourceExtensions.asString
 import com.athompson.cafelib.extensions.ToastExtensions.showLongToast
 import com.athompson.cafelib.extensions.ToastExtensions.showShortToast
+import com.athompson.cafelib.extensions.ViewExtensions.loopAVD
 import com.athompson.cafelib.extensions.ViewExtensions.trimmed
 import com.athompson.cafelib.models.CafeQrMenu
 import com.athompson.cafelib.shared.SharedConstants
@@ -85,7 +85,7 @@ class AddMenuActivity : BaseActivity(){
             try {
                 // Load the product image in the ImageView.
                 mSelectedImageFileUri?.let {
-                    GlideLoader(this@AddMenuActivity).loadImagePicture(it, binding.menuImage)
+                    GlideLoader(this@AddMenuActivity).loadImagePicture(it, binding.image)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()

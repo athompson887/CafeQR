@@ -32,7 +32,6 @@ class CafeQrProgress {
             binding.cpTitle.text = title
         }
         binding.cpCardview.setCardBackgroundColor(Color.parseColor("#70000000"))
-        setColorFilter(binding.cpPbar.indeterminateDrawable, context.getColorFromAttr( R.attr.colorPrimary))
         binding.cpTitle.setTextColor(context.getColorFromAttr( R.attr.colorOnPrimary))
         dialog = CustomDialog(context)
         dialog.setContentView(binding.root)

@@ -1,16 +1,34 @@
 package com.athompson.cafelib.extensions
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 
 object ViewExtensions {
+
+    fun ImageView.loopAVD(drawableRes:Int)
+    {
+        val avd = androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.create(this.context, drawableRes)
+        setImageDrawable(avd)
+
+        avd?.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+            override fun onAnimationEnd(drawable: Drawable) {
+                avd.start()
+            }
+        })
+        avd?.start()
+    }
+
 
     fun RecyclerView.setLayoutManagerVertical()
     {

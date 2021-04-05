@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
+import kotlin.reflect.KFunction2
 
 
 class FireStoreVenue {
@@ -39,17 +40,17 @@ class FireStoreVenue {
 
 
     fun delete(
-        success: KFunction0<Unit>,
-        failure: (Exception) -> Unit, venueID: String
+        success: KFunction1<Int, Unit>,
+        failure: KFunction2<Exception, Int, Unit>, venueID: String, position: Int
     ) {
         mFireStore.collection(VENUES)
             .document(venueID)
             .delete()
             .addOnSuccessListener {
-                success()
+                success(position)
             }
             .addOnFailureListener { e ->
-                failure(e)
+                failure(e,position)
             }
     }
 
