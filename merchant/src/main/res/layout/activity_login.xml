@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/clickable_text_view_padding"
             android:text="@string/don_t_have_an_account"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/lbl_text_view_textSize" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -139,7 +139,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:padding="@dimen/clickable_text_view_padding"
             android:text="@string/register"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/lbl_text_view_textSize" />
     </LinearLayout>
 
@@ -162,5 +162,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/or" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

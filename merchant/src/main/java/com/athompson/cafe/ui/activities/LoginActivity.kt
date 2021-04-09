@@ -1,18 +1,17 @@
 package com.athompson.cafe.ui.activities
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ActivityLoginBinding
 import com.athompson.cafe.firestore.FireStoreUser
+import com.athompson.cafe.ui.snackbars.IconSnackbar
 import com.athompson.cafelib.extensions.ActivityExtensions.logError
 import com.athompson.cafelib.extensions.ActivityExtensions.showErrorSnackBar
 import com.athompson.cafelib.extensions.ContextExtensions.isOnline
@@ -27,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
@@ -42,11 +42,6 @@ class LoginActivity : BaseActivity() {
 
     companion object {
         private const val RC_SIGN_IN = 9001
-    }
-
-    override fun onStart() {
-        super.onStart()
-
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -73,7 +68,16 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
         }
-        binding.googleSignInButton.setOnClickListener { googleSignIn() }
+        binding.googleSignInButton.setOnClickListener {
+
+                IconSnackbar.make(
+                    window.decorView as ViewGroup,
+                    "Hello World!",
+                    Snackbar.LENGTH_LONG
+                ).show()
+
+         //   googleSignIn()
+        }
 
         initGoogleClient()
 

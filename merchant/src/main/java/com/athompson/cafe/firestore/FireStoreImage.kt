@@ -41,7 +41,7 @@ class FireStoreImage {
         }
     }
 
-    private fun deleteImageQuietly(imageUrl: String) {
+ /*   private fun deleteImageQuietly(imageUrl: String) {
         val firebaseStorage = FirebaseStorage.getInstance()
         val storageReference = firebaseStorage.getReferenceFromUrl(imageUrl)
         storageReference.
@@ -52,7 +52,7 @@ class FireStoreImage {
         .addOnFailureListener {
             Log.d("deleteImageQuietly", imageUrl.safe() + "failed to delete")
         }
-    }
+    }*/
 
     fun listAllImages() {
         val storage = Firebase.storage
@@ -128,10 +128,10 @@ class FireStoreImage {
                         if(!referencedImages.contains(item.imageUrl))
                              referencedImages.add(item.imageUrl)
                 }
-              deleteUnusedImages()
+              //deleteUnusedImages()
             }
             .addOnFailureListener { e ->
-                deleteUnusedImages()
+          //      deleteUnusedImages()
             }
     }
 
@@ -179,7 +179,7 @@ class FireStoreImage {
                         Log.e("Downloadable Image URL", uri.toString())
                         success(uri.toString())
                         if (!prevUrl.isNullOrEmpty()) {
-                            deleteImageQuietly(prevUrl)
+                            //deleteImageQuietly(prevUrl)
                         }
                     }
             }
