@@ -1,7 +1,6 @@
 package com.athompson.cafelib.models
 
 import android.os.Parcelable
-import com.athompson.cafelib.extensions.StringExtensions.uuid
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -14,7 +13,7 @@ data class User(
     val mobile: Long = 0,
     val gender: String = "",
     val profileCompleted: Int = 0,
-    val uid:String = ""
+    val uid:String = "",
 ) : Parcelable
 {
     override fun toString(): String {
