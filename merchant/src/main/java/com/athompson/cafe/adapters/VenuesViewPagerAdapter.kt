@@ -18,7 +18,7 @@ import com.athompson.cafelib.models.Venue
 open class VenuesViewPagerAdapter(
     private val context: Context,
     private var venuesList: ArrayList<Venue>,
-    private var menusList: ArrayList<CafeQrMenu?>,
+    private var menusList: ArrayList<CafeQrMenu?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

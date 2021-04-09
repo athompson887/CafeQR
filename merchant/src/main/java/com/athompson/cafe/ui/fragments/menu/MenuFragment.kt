@@ -161,7 +161,7 @@ class MenuFragment : BaseFragment() {
 
     inner class SimpleMenuAdapter(
         private val context: Context,
-        private var list: ArrayList<CafeQrMenu?>,
+        private var list: ArrayList<CafeQrMenu?>
     ) : RecyclerView.Adapter<SimpleMenuAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

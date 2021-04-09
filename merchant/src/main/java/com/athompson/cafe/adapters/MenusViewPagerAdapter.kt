@@ -14,7 +14,7 @@ import com.athompson.cafelib.models.CafeQrMenu
 
 open class MenusViewPagerAdapter(
     private val context: Context,
-    private var menusList: ArrayList<CafeQrMenu?>,
+    private var menusList: ArrayList<CafeQrMenu?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

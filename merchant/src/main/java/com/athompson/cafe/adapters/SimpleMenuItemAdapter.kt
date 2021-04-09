@@ -15,7 +15,7 @@ import com.athompson.cafelib.models.FoodMenuItem
 
 open class SimpleMenuItemAdapter(
     private val context: Context,
-    private var list: ArrayList<FoodMenuItem?>,
+    private var list: ArrayList<FoodMenuItem?>
 ) : RecyclerView.Adapter<SimpleMenuItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

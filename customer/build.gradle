@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
-    id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
     id 'com.google.firebase.crashlytics'
 }
 

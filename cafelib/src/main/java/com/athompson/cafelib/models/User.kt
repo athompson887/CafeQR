@@ -14,7 +14,7 @@ data class User(
     val mobile: Long = 0,
     val gender: String = "",
     val profileCompleted: Int = 0,
-    val uid:String = "",
+    val uid:String = ""
 ) : Parcelable
 {
     override fun toString(): String {
