@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.ChooseDialogBinding
 import com.athompson.cafe.databinding.EditDialogBinding
@@ -18,9 +20,33 @@ import com.athompson.cafelib.extensions.DoubleExtensions.priceValue
 import com.athompson.cafelib.extensions.DoubleExtensions.toPrice
 import com.athompson.cafelib.extensions.StringExtensions.safe
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.myshoppal.utils.SwipeToDeleteCallback
 import kotlin.reflect.KFunction3
 
 object ViewExtensions {
+
+    inline fun RecyclerView.doOnSwiped(
+        crossinline action: (
+            viewHolder: RecyclerView.ViewHolder,
+            direction: Int
+        ) -> Unit
+    ) = addSwipeListener(onSwiped = action)
+
+    inline fun RecyclerView.addSwipeListener(
+        crossinline onSwiped: (
+            viewHolder: RecyclerView.ViewHolder,
+            direction: Int
+        ) -> Unit = { _, _,-> },
+    ): SwipeToDeleteCallback {
+        val swipeHandler = object : SwipeToDeleteCallback(this.context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onSwiped.invoke(viewHolder,direction)
+            }
+        }
+        val deleteItemTouchHelper = ItemTouchHelper(swipeHandler)
+        deleteItemTouchHelper.attachToRecyclerView(this)
+        return swipeHandler
+    }
 
     fun ImageView.setImage(imageUrl:String?,drawable: Int)
     {

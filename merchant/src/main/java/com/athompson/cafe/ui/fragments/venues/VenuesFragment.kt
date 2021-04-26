@@ -1,8 +1,14 @@
 package com.athompson.cafe.ui.fragments.venues
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -10,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.athompson.cafe.R
 import com.athompson.cafe.databinding.FragmentVenuesBinding
 import com.athompson.cafe.databinding.VenuesListItemBinding
+import com.athompson.cafe.extensions.ViewExtensions.doOnSwiped
 import com.athompson.cafe.extensions.ViewExtensions.setImage
 import com.athompson.cafe.firestore.FireStoreVenue
 import com.athompson.cafe.ui.activities.AddVenueActivityContract
@@ -27,6 +34,8 @@ import com.athompson.cafelib.extensions.ViewExtensions.showVerticalDividers
 import com.athompson.cafelib.models.Venue
 import com.google.android.material.transition.MaterialElevationScale
 import com.myshoppal.utils.SwipeToDeleteCallback
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class VenuesFragment : BaseFragment() {
@@ -49,6 +58,9 @@ class VenuesFragment : BaseFragment() {
         return mRootView
     }
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVenuesBinding.bind(view)
@@ -61,19 +73,20 @@ class VenuesFragment : BaseFragment() {
         binding.recycler.showVerticalDividers()
         binding.recycler.adapter = VenuesListAdapter()
 
-        val deleteSwipeHandler = object : SwipeToDeleteCallback(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val venue = list[viewHolder.adapterPosition]
-                val id = venue.id
-                if (id != null) {
-                    deleteVenue(id,viewHolder.adapterPosition)
-                }
-            }
+        binding.recycler.doOnSwiped{viewHolder: RecyclerView.ViewHolder, direction: Int ->
+            onSwiped(viewHolder)
         }
-        val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
-        deleteItemTouchHelper.attachToRecyclerView(binding.recycler)
 
         getVenuesListFromFireStore()
+    }
+
+    private fun onSwiped(viewHolder: RecyclerView.ViewHolder) {
+        val venue = list[viewHolder.getAbsoluteAdapterPosition()]
+        val id = venue.id
+        if (id != null) {
+            deleteVenue(id, viewHolder.getAbsoluteAdapterPosition())
+        }
+        print("swiped")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -86,7 +99,7 @@ class VenuesFragment : BaseFragment() {
         if (data != null) {
             showShortToast(R.string.add_venue_success.asString())
             list.add(data)
-            list.sortBy { it.name.toUpperCase()}
+            list.sortBy { it.name.toUpperCase(Locale.ROOT)}
             val index = list.indexOf(data)
             binding.recycler.adapter?.notifyItemInserted(index)
         }
@@ -115,7 +128,7 @@ class VenuesFragment : BaseFragment() {
     private fun getSuccess(venuesList: ArrayList<Venue>) {
         list.clear()
         list.addAll(venuesList)
-        list.sortBy { it.name.toUpperCase() }
+        list.sortBy { it.name.toUpperCase(Locale.ROOT) }
         hideProgressDialog()
 
         if (list.size > 0) {
